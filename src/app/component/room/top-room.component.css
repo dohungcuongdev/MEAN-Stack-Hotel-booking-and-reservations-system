@@ -6,36 +6,41 @@ h3 {
 }
 
 
-table.activity {
+table.rooms {
     font-family: "Times New Roman", Times, serif;
     border-collapse: collapse;
     width: 100%;
 }
 
-table.activity th, td {
+table.rooms th, td {
     text-align: center;
     padding: 8px;
 }
 
-table.activity tr:nth-child(even){
+table.rooms tr:nth-child(even){
     background-color: #FFEDCA
 }
 
-table.activity tr:nth-child(odd){
+table.rooms tr:nth-child(odd){
     background-color: #FFFFFF
 }
 
-table.activity th {
+table.rooms th {
     background-color: #CC0033;
     color: #FFFFFF;
 }
 
-table.activity tbody>tr:hover>th{
+table.rooms tbody>tr:hover>th{
     background-color:#CC0033;
     color: #000000;
 }
 
-table.activity tbody>tr:hover{
+table.rooms tbody>tr:hover{
     background-color:#CC0033;
     color: #FFFFFF;
+}
+
+table.rooms tr {
+    font-size: 15px;
+    color: black;
 }
