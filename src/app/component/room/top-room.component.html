@@ -1,0 +1,33 @@
+<div class="spacer services wowload fadeInUp">
+    <div class="container" style="margin-top: -90px;">
+        <div class="carousel-inner">
+            <br>
+            <h3>Top Rooms</h3>
+            <table class="activity" border="1" id="top-room-table">
+                <tr>
+                    <th class="tr-p" onclick="sortNum(0,'top-room-table')">No.</th>
+                    <th class="tr-p" onclick="sortAlpha(1,'top-room-table')">Room</th>
+                    <th class="tr-p" onclick="sortAlpha(2,'top-room-table')">Type</th>
+                    <th class="tr-p" onclick="sortNum(3,'top-room-table')">Size</th>
+                    <th class="tr-p" onclick="sortNum(4,'top-room-table')">Price</th>
+                    <th class="tr-p" onclick="sortNum(5,'top-room-table')">Total Star</th>
+                    <th class="tr-p" onclick="sortNum(6,'top-room-table')">No. of Vote</th>
+                    <th class="tr-p" onclick="sortNum(7,'top-room-table')">Average Star</th>
+                    <th>View Details</th>
+                </tr>
+                <tr *ngFor="let room of listrooms | orderby : 'average_star'; let i=index">
+                    <td>{{i+1}}</td>
+                    <td>Room {{room.name}}</td>
+                    <td>{{room.type}}</td>
+                    <td>{{room.size}}</td>
+                    <td>{{room.price}}</td>
+                    <td>{{room.star}}</td>
+                    <td>{{room.numvote}}</td>
+                    <td>{{room.average_star | decimal}}</td>
+                    <td><a class="tr-p" onclick="document.documentElement.scrollTop = 0; document.body.scrollTop = 0;" [routerLink]="['/room-details', room._id]" >View content</a></td>
+                </tr>
+            </table>
+
+        </div>
+    </div>
+</div>

@@ -1,0 +1,58 @@
+<div class="container">
+
+  <h2>Recommendation Rooms</h2>
+
+
+  <!-- form -->
+
+  <div class="row">
+    <div class="toolbar">
+      <button (click)="search('all')" class="btn btn-type">All Rooms</button>
+      <button (click)="search('available')" class="btn btn-type">Available</button>
+      <button (click)="search('deluxe')" class="btn btn-type">Deluxe</button>
+      <button (click)="search('family')" class="btn btn-type">Family</button>
+      <button (click)="search('single')" class="btn btn-type">Single</button>
+      <button (click)="search('couple')" class="btn btn-type">Couple</button>
+      <br><input class="space" type="text" placeholder="Search for rooms" #searchbox [(ngModel)]='searchboxvalue' />
+      <button (click)="searchInput(searchbox.value)" class="btn search"></button>
+    </div>
+  </div>
+  <h3 [class]="searchselected + '-room'">{{searchselected | capitalize }} Room</h3>
+
+
+  <div class="row">
+    <div class="col-sm-6 wowload fadeInUp" *ngFor="let room of rooms_page">
+      <div class="rooms">
+        <a [href]="room.imgwithURL" (click)="clickImage(room.img)"  [title]="'Room ' + room.name" class="gallery-image" data-gallery><img [src]="room.imgwithURL" class="img-responsive"></a>
+        <div class="info">
+          <h3 [class]="room.type + '-room'">Room {{room.name}} - {{room.type}}</h3>
+          <p>Size: {{room.size}} sq</p>
+          <p>Price: ${{room.price}}</p>
+          <p>No.of Adult: {{room.numpeople}}</p>
+          <p class="available-room" *ngIf="room.status === 'available'">This room is available</p>
+          <p class="booked-room" *ngIf="room.status === 'booked'">This room is booked</p>
+          <a onclick="document.documentElement.scrollTop = 0; document.body.scrollTop = 0;" [routerLink]="['/room-details', room._id]" class="btn btn-default">Check Details</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="text-center">
+    <ul class="pagination">
+      <li *ngIf="pageclicked > 1"><a (click)="clickpreviouspage()">«</a></li>
+      <li *ngIf="pageclicked <= 1" class="disabled"><a>«</a></li>
+      <ng-container *ngFor="let page of pages; let i = index">
+        <li *ngIf="i+1 === pageclicked" class="active"><a (click)="clickpage(i+1)">{{i+1}} <span class="sr-only">(current)</span></a>
+        </li>
+
+        <li *ngIf="i+1 != pageclicked">
+          <a (click)="clickpage(i+1)">{{i+1}}</a>
+        </li>
+      </ng-container>
+      <li *ngIf="pageclicked < pages.length"><a (click)="clicknextpage()">»</a></li>
+      <li *ngIf="pageclicked >= pages.length" class="disabled"><a>»</a></li>
+    </ul>
+  </div>
+
+
+</div>

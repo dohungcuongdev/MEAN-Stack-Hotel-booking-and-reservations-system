@@ -1,0 +1,45 @@
+<div class="container">
+
+  <h1 class="title">{{data.hotelservice.name}}</h1>
+
+
+
+  <!-- RoomDetails -->
+  <div *ngIf="data.hotelservice.name !== 'not found'" id="RoomDetails" class="carousel slide" data-ride="carousel">
+    <div class="carousel-inner">
+
+      <div class="item active"><img [src]="data.hotelservice.imgwithURL" class="img-responsive" alt="slide"></div>
+      <div class="item  height-full"><img [src]="data.hotelservice.imgwithURL2" class="img-responsive" alt="slide"></div>
+    </div>
+    <!-- Controls -->
+    <a class="left carousel-control" href="#RoomDetails" role="button" data-slide="prev"><i class="fa fa-angle-left"></i></a>
+    <a class="right carousel-control" href="#RoomDetails" role="button" data-slide="next"><i class="fa fa-angle-right"></i></a>
+  </div>
+  <!-- RoomCarousel-->
+
+  <div *ngIf="data.hotelservice.name !== 'not found'" class="room-features spacer">
+    <div class="row">
+      <div class="col-sm-12 col-md-5">
+        <h3>Details</h3>
+        <p>{{data.hotelservice.details}}</p>
+      </div>
+      <div class="col-sm-3 col-md-2">
+        <div class="type-price">Type<span>{{data.hotelservice.type}}</span></div>
+
+
+      </div>
+      <div class="col-sm-3 col-md-2">
+        <div class="type-price">Price<span>${{data.hotelservice.price}}</span></div>
+      </div>
+      <div class="col-sm-3 col-md-2">
+        <div class="type-price">Quantity<span>{{data.hotelservice.quantity}}</span></div>
+      </div>
+    </div>
+    
+    <p class="space">(*Note that: {{data.hotelservice.note}})</p>
+
+
+
+
+
+  </div>

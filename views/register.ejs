@@ -1,0 +1,68 @@
+<% include header.ejs %>
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12 col-sm-8 col-md-6 col-sm-offset-2 col-md-offset-3">
+                <form role="form" method="POST" action="">
+                    <h2>Sign Up</h2>
+                    <hr class="colorgraph">
+                    <div class="warning">
+                        <% include alert.ejs %>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" name="username" id="username" class="form-control input-lg" placeholder="User Name" tabindex="1">
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-6 col-md-6">
+                            <div class="form-group">
+                                <input type="password" name="password" id="password" class="form-control input-lg" placeholder="Password" tabindex="2">
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-sm-6 col-md-6">
+                            <div class="form-group">
+                                <input type="password" name="password_confirmation" id="password_confirmation" class="form-control input-lg" placeholder="Confirm Password"
+                                    tabindex="3">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" name="name" id="name" class="form-control input-lg" placeholder="Full Name" tabindex="4">
+                    </div>
+                    <div class="form-group">
+                        <input type="text" name="phone" id="phone" class="form-control input-lg" placeholder="Phone Number" tabindex="5">
+                    </div>
+                    <div class="form-group">
+                        <input type="text" name="address" id="address" class="form-control input-lg" placeholder="Address" tabindex="6">
+                    </div>
+
+                    <hr class="colorgraph">
+                    <div class="col-xs-12 col-sm-6 col-md-6">
+                        <div class="form-group">
+
+                            <input type="submit" value="Register" class="btn btn-success btn-block btn-lg">
+                            <script type="text/javascript">
+                                window.onload = function () {
+                                    <%  if(success) { %>
+                                        swal({
+                                            title: "Congrats!",
+                                            text: "Your account is created! Login now!",
+                                            type: "success",
+                                            showCancelButton: true
+                                        }, function () {
+                                            window.location.href = '/login';
+                                        });
+                                        <% } %>
+                                }
+                            </script>
+
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-6 col-md-6">
+                        <div class="form-group">
+                            <input onclick="location.href='/login'" value="Already have an account" class="btn btn-primary btn-block btn-lg">
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <% include footer.ejs %>

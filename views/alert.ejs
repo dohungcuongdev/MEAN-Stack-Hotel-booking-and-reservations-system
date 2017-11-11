@@ -1,0 +1,9 @@
+<%  if(errors){ %>
+<div class="alert alert-danger" role="alert"> <strong>Alert : </strong> 
+    <ul>
+        <% errors.forEach( function(error){ %>
+        <li><%= error.msg %> </li>
+        <% }) %>
+    </ul>
+</div>
+<% } %>

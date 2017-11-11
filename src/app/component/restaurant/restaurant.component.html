@@ -1,0 +1,55 @@
+<div class="container">
+
+  <div class="row">
+    <h2>Restaurant & Services</h2>
+  </div>
+
+  <!-- form -->
+  <div class="row">
+    <div class="toolbar">
+      <button (click)="search('all')" class="btn btn-type">All Service</button>
+      <button (click)="search('food')" class="btn btn-type">Food</button>
+      <button (click)="search('drink')" class="btn btn-type">Drink</button>
+      <button (click)="search('fruit')" class="btn btn-type">Fruit</button>
+      <button (click)="search('ice-cream')" class="btn btn-type">Ice-cream</button>
+      <br><input class="space" type="text" placeholder="Search for services" #searchbox [(ngModel)]='searchboxvalue' />
+      <button (click)="searchInput(searchbox.value)" class="btn search"></button>
+    </div>
+  </div>
+
+  <h3 [class]="searchselected + '-service'">{{searchselected | capitalize }}</h3>
+
+  <div class="row">
+    <div class="col-sm-6 wowload fadeInUp" *ngFor="let service of services_page">
+      <div class="rooms">
+        <a [href]="service.imgwithURL" (click)="clickImage(service.img)" [title]="service.name" class="gallery-image" data-gallery><img [src]="service.imgwithURL" class="img-responsive"></a>
+        <div class="info">
+          <h3 [class]="service.type + '-service'">{{service.name}}</h3>
+          <p [class]="service.type + '-service'">Type: {{service.type}}</p>
+          <p> Price: ${{service.price}} </p>
+          <p> Quantity: {{service.quantity}}/portion</p>
+          <a onclick="document.documentElement.scrollTop = 0; document.body.scrollTop = 0;"  [routerLink]="['/hotel-services', service._id]" class="btn btn-default">Check Details</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="text-center">
+    <ul class="pagination">
+      <li *ngIf="pageclicked > 1"><a (click)="clickpreviouspage()">«</a></li>
+      <li *ngIf="pageclicked <= 1" class="disabled"><a>«</a></li>
+      <ng-container *ngFor="let page of pages; let i = index">
+        <li *ngIf="i+1 === pageclicked" class="active"><a (click)="clickpage(i+1)">{{i+1}} <span class="sr-only">(current)</span></a>
+        </li>
+
+        <li *ngIf="i+1 != pageclicked">
+          <a (click)="clickpage(i+1)">{{i+1}}</a>
+        </li>
+      </ng-container>
+      <li *ngIf="pageclicked < pages.length"><a (click)="clicknextpage()">»</a></li>
+      <li *ngIf="pageclicked >= pages.length" class="disabled"><a>»</a></li>
+    </ul>
+  </div>
+
+
+</div>

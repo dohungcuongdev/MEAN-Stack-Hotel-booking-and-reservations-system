@@ -1,0 +1,39 @@
+
+h1 {
+    color:blue;
+}
+
+.type-price{
+    background-color: #bfa145;
+    padding: 2em 0;
+    text-align: center;
+    color: #fff;
+    height: 10.97em;
+    line-height: 3em;
+}
+
+
+.type-price span{
+    display: block;
+    font-size: 2em;
+}
+
+p.space {
+    margin-left: 380px;
+    font-style:italic;
+    font-size:12px;
+}
+
+img-responsive,.thumbnail>img,.thumbnail a>img,.carousel-inner>.item>img,.carousel-inner>.item>a>img{
+    display:block;
+    max-width:100%;
+    height:auto;
+    position: relative;
+    width: 1280px;
+    height: 560px;
+    background-position: 50% 50%;
+    background-repeat:no-repeat;
+    background-size: cover;
+}
+
+

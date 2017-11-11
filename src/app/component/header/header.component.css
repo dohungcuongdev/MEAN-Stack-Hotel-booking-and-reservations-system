@@ -1,0 +1,66 @@
+
+
+.login-header {
+    height: 40px;
+    background-color: #363636;
+    color: white;
+}
+
+.account-logout {
+    margin-left: 1000px;
+}
+
+
+.button5 {
+    border: none;
+    color: white;
+    padding: 6px 12px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 10px;
+    -webkit-transition-duration: 0.4s; /* Safari */
+    transition-duration: 0.4s;
+    cursor: pointer;
+    background-color: white;
+    color: black;
+    border: 2px solid #555555;
+    font-weight: bold;
+}
+
+.button5:hover {
+    background-color: #555555;
+    color: white;
+}
+
+.navbar-nav{
+    margin:0 -15px;
+}
+
+.navbar-nav > li > a{
+    font-size: 1.25em;
+    line-height: 4.26em;
+    padding: 10px 0 10px 30px;
+    color: #bfa145
+}
+
+.navbar-nav li a:hover {
+    color:#000000;
+}
+
+@media only screen and (max-width: 1125px) { 
+    
+   .account-logout {
+        margin-left:0px;
+    }
+} /* responsive */
+
+@media only screen and (max-width: 450px) { 
+    
+    .login-header {
+       height: 80px;
+    }
+   .account-logout {
+        margin-left:0px;
+    }
+} /* responsive */

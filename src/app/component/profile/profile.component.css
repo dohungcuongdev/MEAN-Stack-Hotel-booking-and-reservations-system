@@ -1,0 +1,112 @@
+h1 {
+    color:#FF4500;
+}
+
+h4 {
+    color: #bfa145;
+    font-weight: bold;
+}
+
+h3 {
+    color: #CC0033;
+    font-weight: bold;
+}
+
+h5 {
+    color: #bfa145;
+    font-weight: bold;
+    font-size: 20px;
+    margin-top: 20px;
+    margin-left: 150px;
+}
+
+input {
+    width: 432px;
+    padding: 12px 20px;
+    margin: 8px 0;
+    box-sizing: border-box;
+    border: 1px solid #555;
+    outline: none;
+    font-size: 12px;
+    margin-left: 20px;
+}
+
+input[readonly] {
+    background-color: lemonchiffon;
+}
+
+/*input[type=text]:focus {
+    background-color: #bfa145;
+}*/
+
+table.activity {
+    font-family: "Times New Roman", Times, serif;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+table.activity th, td {
+    text-align: left;
+    padding: 8px;
+}
+
+table.activity tr:nth-child(even){
+    background-color: #FFEDCA
+}
+
+table.activity tr:nth-child(odd){
+    background-color: #FFFFFF
+}
+
+table.activity th {
+    background-color: #CC0033;
+    color: #FFFFFF;
+}
+
+table.activity tbody>tr:hover>th{
+    background-color:#CC0033;
+    color: #000000;
+}
+
+table.activity tbody>tr:hover{
+    background-color:#CC0033;
+    color: #FFFFFF;
+}
+
+.btn {
+    
+    border: none;
+    padding: 14px 28px;
+    font-size: 16px;
+    cursor: pointer;
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    -ms-border-radius: 10px;
+    -o-border-radius: 10px;
+    border-radius: 10px;
+    color: #fff;
+}
+
+.btn-orange{
+    background:#bfa145;
+    box-shadow: none !important;
+    color: #fff;
+}
+.btn-orange:hover, .btn-type:focus, .btn-type.focus, .btn-type:active, .btn-type.active{
+    box-shadow: none !important;
+    background:#756534;
+    color: #fff;
+    outline: none !important;
+}
+
+p {
+    font-style:italic;
+    font-size:12px;
+}
+
+.right {
+    position: absolute;
+    right: 0px;
+    width: 300px;
+    padding: 10px;
+}

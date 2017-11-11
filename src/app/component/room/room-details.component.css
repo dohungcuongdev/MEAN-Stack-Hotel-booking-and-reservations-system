@@ -1,0 +1,146 @@
+
+h1 {
+    color:#FF4500;
+}
+
+h4 {
+    color: #FF4500;
+    font-weight: bold;
+}
+
+h5 {
+    color: #bfa145;
+    font-weight: bold;
+}
+
+.room-features .size-price{
+    background-color: #bfa145;
+    padding: 2em 0;
+    text-align: center;
+    color: #fff;
+    height: 10.97em;
+    line-height: 3em;
+}
+
+
+
+img-responsive,.thumbnail>img,.thumbnail a>img,.carousel-inner>.item>img,.carousel-inner>.item>a>img{
+    display:block;
+    max-width:100%;
+    height:auto;
+    position: relative;
+    width: 1280px;
+    height: 720px;
+    background-position: 50% 50%;
+    background-repeat:no-repeat;
+    background-size: cover;
+}
+
+
+.room-features .size-price span{
+    display: block;
+    font-size: 2em;
+}
+
+h3.reservation-form {
+    margin-left: 200px;
+    color:#bfa145;
+}
+
+h3.reservation {
+    margin-left: 120px;
+}
+
+p.note {
+    font-style:italic;
+    font-size:12px;
+}
+
+.btn-booked{
+    background:red;
+    box-shadow: none !important;
+    color: #fff;
+}
+.btn-booked:hover, .btn-booked:focus, .btn-booked.focus, .btn-booked:active, .btn-booked.active{
+    box-shadow: none !important;
+    background: darkred;
+    color: #fff;
+    outline: none !important;
+}
+
+.star-cb-group {
+  /* remove inline-block whitespace */
+  font-size: 0;
+  /* flip the order so we can use the + and ~ combinators */
+  unicode-bidi: bidi-override;
+  direction: rtl;
+  /* the hidden clearer */
+}
+.star-cb-group * {
+  font-size: 25px;
+}
+.star-cb-group > input {
+  display: none;
+}
+.star-cb-group > input + label {
+  /* only enough room for the star */
+  display: inline-block;
+  overflow: hidden;
+  text-indent: 9999px;
+  width: 1em;
+  white-space: nowrap;
+  cursor: pointer;
+}
+.star-cb-group > input + label:before {
+  display: inline-block;
+  text-indent: -9999px;
+  content: "☆";
+  color: #888;
+}
+.star-cb-group > input:checked ~ label:before, .star-cb-group > input + label:hover ~ label:before, .star-cb-group > input + label:hover:before {
+  content: "★";
+  color: #e52;
+  text-shadow: 0 0 1px #333;
+}
+.star-cb-group > .star-cb-clear + label {
+  text-indent: -9999px;
+  width: .5em;
+  margin-left: -.5em;
+}
+.star-cb-group > .star-cb-clear + label:before {
+  width: .5em;
+}
+.star-cb-group:hover > input + label:before {
+  content: "☆";
+  color: #888;
+  text-shadow: none;
+}
+.star-cb-group:hover > input + label:hover ~ label:before, .star-cb-group:hover > input + label:hover:before {
+  content: "★";
+  color: #e52;
+  text-shadow: 0 0 1px #333;
+}
+
+:root {
+  font-size: 2em;
+  font-family: Helvetica, arial, sans-serif;
+}
+
+#log {
+  margin: 1em auto;
+  width: 5em;
+  text-align: center;
+  background: transparent;
+}
+
+.my-spacer {
+  margin-top: 30px;
+}
+
+b {
+  color:#bfa145;
+}
+
+br {
+  margin-top: 15px;
+}

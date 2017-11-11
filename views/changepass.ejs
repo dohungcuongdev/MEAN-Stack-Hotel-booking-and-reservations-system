@@ -1,0 +1,48 @@
+<% include header.ejs %>
+
+<div class="container">
+    <% if (success_msg){%>
+    <h1><%= success_msg %></h1>
+    <% } %>
+    <div class="row">
+        <div class="col-xs-12 col-sm-8 col-md-6 col-sm-offset-2 col-md-offset-3">
+            <form role="form" method="POST" action="">
+                <h2>Hotel Booking & Reservations System</h2>
+                <h3>Change your password!</h3>
+                <hr class="colorgraph">
+                <% include alert.ejs %>	
+                <% if (error != '') {%>
+                <div class="alert alert-danger" role="alert">
+                    <%= error %>
+                </div>
+                <% } %>
+                <div class="form-group">
+                    <input type="text" name="username" id="username" class="form-control input-lg" placeholder="Username" tabindex="1">
+                </div>
+                <div class="form-group">
+                    <div class="form-group">
+                        <input type="password" name="password" id="password" class="form-control input-lg" placeholder="Password" tabindex="2">
+                    </div>
+                </div>
+                <hr class="colorgraph">
+
+                <div class="row">
+                    <div class="col-xs-12 col-sm-6 col-md-6">
+                        <div class="form-group">
+                            <input type="submit" value="Login" class="btn btn-success btn-block btn-lg">
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-6 col-md-6">
+                        <div class="form-group">
+                            <input onclick="location.href='/register'" value="Sign Up" class="btn btn-primary btn-block btn-lg">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <input onclick="location.href='/'" value="Continue as a Guess" class="btn btn-danger btn-block">
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<% include footer.ejs %>
