@@ -135,7 +135,7 @@ export class RoomsTariffComponent implements OnInit {
     }
   }
 
-  private clickImage(img: string) {
-    this.followUserService.followUsers('click image in rooms: ' + img)
+  private clickImage(room: string) {
+    this.followUserService.followUsers('click image in rooms: ' + room);
   }
 }

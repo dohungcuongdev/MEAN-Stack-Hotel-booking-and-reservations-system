@@ -80,14 +80,14 @@ function get4NumNearest(att, value) {
 			attvalue = rooms[i].avgAminities;	
 		temp[i] = Math.abs(attvalue - value);
 	}
-	var result = getIndicesOfMax(temp, 4);
+	var result = getIndicesOfMin(temp, 4);
 	var finalresult = [];
 	for(var i = 0; i < result.length; i++)
 		finalresult[i] = rooms[result[i]];
 	return finalresult;
 }
 
-function getIndicesOfMax(inp, count) {
+function getIndicesOfMin(inp, count) {
     var outp = [];
     for (var i = 0; i < inp.length; i++) {
         outp.push(i); // add index to output array

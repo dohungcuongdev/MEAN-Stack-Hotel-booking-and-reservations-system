@@ -22,7 +22,6 @@ var roomapi = require('./routes/room-api');
 var hotel_service_api = require('./routes/hotel-service-api');
 var activity_api = require('./routes/activity-api');
 var follow_users_api = require('./routes/follow-users-api');
-var suggest_room_api = require('./routes/suggest-room-api');
 
 // app
 var app = express();
@@ -105,7 +104,6 @@ app.use('/api/hotel-services', hotel_service_api);
 app.use('/api/users', userapi);
 app.use('/api/activity', activity_api);
 app.use('/api/follow-users', follow_users_api);
-app.use('/api/suggest-room', suggest_room_api);
 
 
 // Initialize the app.

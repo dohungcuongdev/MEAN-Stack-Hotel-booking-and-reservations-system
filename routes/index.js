@@ -8,6 +8,7 @@ var FolowUsersModel = require('../models/follow-users-model');
 var cookie = require('cookie');
 var externalip = require('externalip');
 var geoip = require('geoip-lite');
+const getIP = require('external-ip')();
 
 passport.use(new LocalStrategy(
     {
@@ -91,7 +92,7 @@ function followUsers(page_access, req, res) {
         });
     });
 
-    externalip(function (err, external_ip) {
+    getIP(function (err, external_ip) {
         if (err) {
 
         } else {
