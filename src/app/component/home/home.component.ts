@@ -7,6 +7,7 @@ import { InMemoryDataService } from '../../service/in-memory-data.service';
 import { FollowUsersService } from '../../service/follow-users.service';
 import { User } from '../../model/user';
 import { CookieService } from 'angular2-cookie/core';
+import * as AppConst from '../../constant/app.const';
 
 @Component({
   selector: 'home',
@@ -22,7 +23,7 @@ export class HomeComponent implements OnInit {
     private data: InMemoryDataService,
     private cookie: CookieService,
     private followUserService: FollowUsersService) { 
-      this.followUserService.followUsers('click link /home');
+      this.followUserService.followUsers(AppConst.CLICK_HOMEPAGE);
     }
 
   ngOnInit(): void {

@@ -7,6 +7,7 @@ import { FollowUsersService } from '../../service/follow-users.service';
 import { Activity } from '../../model/activity';
 import { UserService } from '../../service/user.service';
 import { CookieService } from 'angular2-cookie/core';
+import * as AppConst from '../../constant/app.const';
 declare var swal: any;
 
 @Component({
@@ -29,7 +30,7 @@ export class ProfileComponent implements OnInit, OnChanges {
     private data: InMemoryDataService,
     private cookie: CookieService,
     private followUserService: FollowUsersService) {
-      this.followUserService.followUsers('click link /profile');
+      this.followUserService.followUsers(AppConst.CLICK_PROFILE);
     }
 
   private initialize() {
@@ -73,13 +74,6 @@ export class ProfileComponent implements OnInit, OnChanges {
   viewcontent(content: string) {
     swal(content)
   }
-
-  // viewServiceDetails(name: string) {
-  //   document.documentElement.scrollTop = 0
-  //   document.body.scrollTop = 0
-  //   this.router.navigate(['/hotel-services', name])
-  // }
-
   editInfo() {
     this.canEdit = true
   }
@@ -87,7 +81,7 @@ export class ProfileComponent implements OnInit, OnChanges {
   saveInfo(name: string, phone: string, address: string) {
     this.canEdit = false
     if (name === null || name === '' || phone === null || phone === '' || address === null || address === '')
-      swal("Oops...", "Please input all your information!", "error")
+      swal("Oops...", AppConst.NOT_ENOUGH_INFOR, "error")
     else {
       let user = this.data.user
       user.name = name
@@ -96,7 +90,7 @@ export class ProfileComponent implements OnInit, OnChanges {
       this.userservice.editUser(user).subscribe(
         responsse => {
           if (responsse) {
-            swal('Congrats!', 'Edit information successfully!', 'success')
+            swal('Congrats!', AppConst.EDIT_INFOR_SUCCESS, 'success')
           }
         }, err => this.showErr(err)
       )
@@ -109,7 +103,7 @@ export class ProfileComponent implements OnInit, OnChanges {
   }
 
   showErr(err: string) {
-    swal("Oops...", "Sorry. Something go wrong!", "error")
+    swal("Oops...", AppConst.ERROR, "error")
     console.log(err)
   }
 }

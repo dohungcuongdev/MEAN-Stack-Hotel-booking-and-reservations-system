@@ -30,7 +30,7 @@ export class RestaurantComponent implements OnInit {
     private data: InMemoryDataService,
     private followUserService: FollowUsersService
   ) { 
-    this.followUserService.followUsers('click link /restaurant');
+    this.followUserService.followUsers(AppConst.CLICK_RESTAURANT);
   }
 
 
@@ -102,7 +102,7 @@ export class RestaurantComponent implements OnInit {
   }
 
   private search(type: string): void {
-    this.followUserService.followUsers('filter in restaurant: ' + type)
+    this.followUserService.followUsers(AppConst.FILTER_RESTAURANT + type)
     this.resetpage()
     this.searchselected = type
     if (type === 'all') {
@@ -119,7 +119,7 @@ export class RestaurantComponent implements OnInit {
 
   private searchInput(key: string): void {
     if (key !== '') {
-      this.followUserService.followUsers('search in restaurant: ' + key)
+      this.followUserService.followUsers(AppConst.SEARCH_RESTAURANT + key)
       this.resetpage()
       this.searchselected = "Keyword '" + key + "'"
       this.searchboxvalue = key
@@ -132,6 +132,6 @@ export class RestaurantComponent implements OnInit {
   }
 
   private clickImage(img: string) {
-    this.followUserService.followUsers('click image in restaurant: ' + img)
+    this.followUserService.followUsers(AppConst.CLICK_IMG_RESTAURANT + img)
   }
 }

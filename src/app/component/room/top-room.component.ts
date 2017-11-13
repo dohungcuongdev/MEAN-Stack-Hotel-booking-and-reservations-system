@@ -24,7 +24,7 @@ export class TopRoomComponent implements OnInit {
     private roomservice: RoomService,
     private data: InMemoryDataService,
     private followUserService: FollowUsersService) {
-    this.followUserService.followUsers('click link /top-room');
+    this.followUserService.followUsers(AppConst.CLICK_TOPROOM);
   }
 
   check(value: any): number {

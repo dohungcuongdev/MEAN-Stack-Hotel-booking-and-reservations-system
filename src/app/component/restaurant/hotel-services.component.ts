@@ -28,7 +28,7 @@ export class HotelServicesComponent {
         this.data.hotelservice = hotelservice
         this.data.addImgURLService()
         console.log(hotelservice.name)
-        this.followUserService.followUsers('click link /hotel-services: ' + hotelservice.name)
+        this.followUserService.followUsers(AppConst.CLICK_HOTEL_SERVICE + hotelservice.name)
       }
     },
       err => {

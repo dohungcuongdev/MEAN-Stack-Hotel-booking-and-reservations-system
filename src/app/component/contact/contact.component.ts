@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { ActivityService } from '../../service/activity.service';
 import { Activity } from '../../model/activity';
 import { FollowUsersService } from '../../service/follow-users.service';
-
+import * as AppConst from '../../constant/app.const';
 import * as swal from 'sweetalert';
 
 @Component({
@@ -13,12 +13,12 @@ import * as swal from 'sweetalert';
 
 export class ContactComponent {
   constructor(private activityservice: ActivityService, private followUserService: FollowUsersService) {
-    this.followUserService.followUsers('click link /contact');
+    this.followUserService.followUsers(AppConst.CLICK_CONTACT);
    }
 
   sendContact(fullname: string, email: string, phone: string, mes: string) {
     if (fullname === '' || email === '' || phone === '' || mes === '') {
-      swal("Oops...", "Please input all neccesary information!", "error")
+      swal("Oops...", AppConst.NOT_ENOUGH_INFOR, "error")
     } else {
       let name = "Send Contact"
       let username = "A guest with email: " + email

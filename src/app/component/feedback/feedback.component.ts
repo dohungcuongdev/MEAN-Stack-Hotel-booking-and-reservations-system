@@ -5,6 +5,7 @@ import { FollowUsersService } from '../../service/follow-users.service';
 import { AuthenticationService } from '../../service/authentication.service';
 import { Activity } from '../../model/activity';
 import { CookieService } from 'angular2-cookie/core';
+import * as AppConst from '../../constant/app.const';
 import * as swal from 'sweetalert';
 
 @Component({
