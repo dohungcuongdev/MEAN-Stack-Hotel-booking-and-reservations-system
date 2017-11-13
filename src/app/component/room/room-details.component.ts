@@ -42,7 +42,7 @@ export class RoomDetailComponent implements OnInit {
         this.data.room = room
         this.calculateRating()
         this.data.addImgURLRoom()
-        this.followUserService.followUsers('click link /room-details: ' + this.data.room.name);
+        this.followUserService.followUsers(AppConst.CLICK_ROOM_DETAIL + this.data.room.name);
       }
     },
       err => {
@@ -81,7 +81,7 @@ export class RoomDetailComponent implements OnInit {
     if (this.auth.authenticated == false) {
       this.auth.pleaselogin()
     } else {
-      swal('Please input check in and check out date!')
+      swal(AppConst.INPUT_CHECKIN_CHECKOUT)
       this.clicked_book_now = true;
     }
   }
@@ -90,15 +90,15 @@ export class RoomDetailComponent implements OnInit {
     this.clicked_book_now = true;
     if (checkindate == null || checkoutdate == null || checkindate.toString() == '' || checkindate.toString() == '') {
       this.followUserService.followUsers('book room ' + this.data.room.name + ' failed: not input checkin and checkout');
-      swal("Oops...", "You forgot to input check in and check out date!", "error")
+      swal("Oops...", AppConst.NO_CHECKIN_CHECKOUT, "error")
     } else {
       if (new Date().getTime() > new Date(checkindate).getTime()) {
         this.followUserService.followUsers('book room ' + this.data.room.name + ' failed: checkin date much be from today');
-        swal("Oops...", "Checkin date much be from today!", "error")
+        swal("Oops...", AppConst.OUT_OF_DATE, "error")
       }
       else if (checkindate > checkoutdate) {
         this.followUserService.followUsers('book room ' + this.data.room.name + ' failed: checkout date much be after checkin date');
-        swal("Oops...", "Checkout date much be after checkin date!", "error")
+        swal("Oops...", AppConst.UP_TO_DATE, "error")
       } else {
         this.computeBalance(checkindate, checkoutdate)
       }

@@ -28,7 +28,7 @@ export class RoomsTariffComponent implements OnInit {
     private data: InMemoryDataService,
     private followUserService: FollowUsersService
   ) { 
-    this.followUserService.followUsers('click link /rooms-tariff');
+    this.followUserService.followUsers(AppConst.CLICK_ROOMS);
   }
 
   public ngOnInit(): void {
@@ -102,14 +102,14 @@ export class RoomsTariffComponent implements OnInit {
   }
 
   private search(room_infor: string): void {
-    this.followUserService.followUsers('filter in rooms: ' + room_infor)
+    this.followUserService.followUsers(AppConst.FILTER_ROOM + room_infor)
     this.resetpage()
     this.searchselected = room_infor
     if (room_infor === 'all')
       this.ngOnInit()
     else {
       this.pages = [1]
-      if (room_infor === 'deluxe' || room_infor === 'single' || room_infor === 'family' || room_infor === 'couple') {
+      if (AppConst.ROOM_TYPES.includes(room_infor)) {
         for (var i = 0; i < this.listrooms.length; i++)
           if (this.listrooms[i].type === room_infor)
             this.rooms_page.push(this.listrooms[i])
@@ -123,7 +123,7 @@ export class RoomsTariffComponent implements OnInit {
 
   private searchInput(key: string): void {
     if (key !== '') {
-      this.followUserService.followUsers('search in rooms: ' + key)
+      this.followUserService.followUsers(AppConst.SEARCH_ROOM + key)
       this.resetpage()
       this.searchboxvalue = key
       this.searchselected = "Keyword '" + key + "'"
@@ -136,6 +136,6 @@ export class RoomsTariffComponent implements OnInit {
   }
 
   private clickImage(room: string) {
-    this.followUserService.followUsers('click image in rooms: ' + room);
+    this.followUserService.followUsers(AppConst.CLICK_IMG_ROOM + room);
   }
 }
