@@ -16,6 +16,7 @@ var passport = require('passport'), LocalStrategy = require('passport-local').St
 
 //declare var routes
 var index = require('./routes/index');
+
 //api
 var userapi = require('./routes/user-api');
 var roomapi = require('./routes/room-api');
@@ -23,16 +24,19 @@ var hotel_service_api = require('./routes/hotel-service-api');
 var activity_api = require('./routes/activity-api');
 var follow_users_api = require('./routes/follow-users-api');
 
+//const
+var appConst = require('./const/app-const');
+
 // app
 var app = express();
 
 //declare MongoDb connection
-var mongoDBUrl = "mongodb://localhost:27017/HotelBookingReservationsSystem";
+var mongoDBUrl = appConst.DB_CONNECTION;
 var mongoose = require('mongoose');
 
 // connect to MongoDB
 mongoose.connect(mongoDBUrl, { useMongoClient: true })
-    .then(() => console.log('connection succesful'))
+    .then(() => console.log(appConst.DB_CONNECT_SUCCESS))
     .catch((err) => console.error(err));
 
 // cors
@@ -42,18 +46,18 @@ app.use(cors());
 //app.set('views', path.join(__dirname, 'src'));
 
 // engine
-app.set('view enginer', 'ejs');
-app.engine('html', require('ejs').renderFile);
+app.set('view enginer', appConst.VIEW_FILE_EXTENSION);
+app.engine('html', require(appConst.VIEW_FILE_EXTENSION).renderFile);
 
 // angular 2 dist
-app.use(express.static(__dirname + '/dist'));
+app.use(express.static(__dirname + appConst.ANGULAR_DIR));
 
 // view engine setup - ejs views
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, appConst.VIEW));
+app.set('view engine', appConst.VIEW_FILE_EXTENSION);
 
 // ejs public
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, appConst.RESOURCE)));
 
 //express-validator
 app.use(expressValidator({
@@ -73,19 +77,19 @@ app.use(expressValidator({
 }));
 
 
-app.use(logger('dev'));
+app.use(logger(appConst.LOGGER));
 
 
 app.use(cookieParser());
-app.use(session({ secret: 'dohungcuong', resave: true, saveUninitialized: true }))
+app.use(session({ secret: appConst.SERCRET, resave: true, saveUninitialized: true }))
 app.use(passport.initialize());
 app.use(passport.session());
 
 
 app.use(flash());
 app.use(function (req, res, next) {
-    res.locals.success_msg = req.flash('success_msg');
-    res.locals.err_msg = req.flash('err_msg');
+    res.locals.success_msg = req.flash(appConst.SUCCESS_MES);
+    res.locals.err_msg = req.flash(appConst.ERROR_MES);
     res.locals.error = req.flash('error');
     next();
 })
@@ -99,22 +103,22 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 // route 
 app.use('/', index);
-app.use('/api/rooms', roomapi);
-app.use('/api/hotel-services', hotel_service_api);
-app.use('/api/users', userapi);
-app.use('/api/activity', activity_api);
-app.use('/api/follow-users', follow_users_api);
+app.use(appConst.ROOM_API, roomapi);
+app.use(appConst.RESTAURANT_API, hotel_service_api);
+app.use(appConst.USER_API, userapi);
+app.use(appConst.ACTIVITY_API, activity_api);
+app.use(appConst.FOLLOW_USER_API, follow_users_api);
 
 
 // Initialize the app.
-var server = app.listen(process.env.PORT || 3000, function () {
+var server = app.listen(process.env.PORT || appConst.PORT, function () {
     var port = server.address().port;
-    console.log("App now running on port", port);
+    console.log(appConst.APP_RUNNING_RESULT, port);
 });
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
-    var err = new Error('Not Found');
+    var err = new Error(appConst.PAGE404);
     err.status = 404;
     res.redirect('/');
     //next(err);

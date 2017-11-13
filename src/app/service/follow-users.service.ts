@@ -6,13 +6,14 @@ import { Observable } from "rxjs/Observable";
 import { InMemoryDataService } from '../service/in-memory-data.service';
 import { CookieService } from 'angular2-cookie/core';
 import 'rxjs/add/operator/map';
+import * as AppConst from '../constant/app.const';  //use constant
 
 @Injectable()
 export class FollowUsersService extends ApiService<FollowUsers> {
 
     constructor(injector: Injector, public _http: Http, private data: InMemoryDataService, private cookie: CookieService) {
         super(injector)
-        this.apiUrl += 'follow-users/';
+        this.apiUrl += AppConst.FOLLOWUSER_API;
     }
 
     getAll(): Observable<FollowUsers[]> {
@@ -24,7 +25,7 @@ export class FollowUsersService extends ApiService<FollowUsers> {
     }
 
     getByUserIP(userIP: string): Observable<FollowUsers[]> {
-        return this.getAllby(userIP, this.apiUrl + "userIP/")
+        return this.getAllby(userIP, AppConst.USER_IP_FULL_API)
     }
 
     addFollowUsers(follow_users: FollowUsers): Observable<Response> {

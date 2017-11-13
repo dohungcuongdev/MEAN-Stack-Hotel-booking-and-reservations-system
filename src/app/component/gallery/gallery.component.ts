@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FollowUsersService } from '../../service/follow-users.service';
+import * as AppConst from '../../constant/app.const';
 
 @Component({
   selector: 'gallery',
@@ -8,7 +9,7 @@ import { FollowUsersService } from '../../service/follow-users.service';
 })
 export class GalleryComponent {
   constructor(private followUserService: FollowUsersService) { 
-    this.followUserService.followUsers('click link /gallery');
+    this.followUserService.followUsers(AppConst.CLICK_GALLERY);
   }
 
  }

@@ -4,13 +4,14 @@ import ApiService from './api.service';
 import { Activity } from '../model/activity';
 import { Observable } from "rxjs/Observable";
 import 'rxjs/add/operator/map';
+import * as AppConst from '../constant/app.const';  //use constant
 
 @Injectable()
 export class ActivityService extends ApiService<Activity> {
 
     constructor(injector: Injector, public _http: Http) {
         super(injector)
-        this.apiUrl += 'activity/';
+        this.apiUrl += AppConst.ACTIVITY_API;
     }
 
     getAllActivity(): Observable<Activity[]> {

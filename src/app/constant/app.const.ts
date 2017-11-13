@@ -1,13 +1,24 @@
 
 'use strict';
 
-export const adminServerURL = "http://localhost:8080/Hotel-booking-and-reservations-system-admin/resources/img/"
+export const adminServerURL = "http://localhost:8080/Hotel-booking-and-reservations-system-admin/resources/"
+export const apiURL = 'http://localhost:3000/api/'
+export const USER_API = 'users/'
+export const ACTIVITY_API = 'activity/'
+export const FOLLOWUSER_API = 'follow-users/'
+export const RESTAURANT_API = 'hotel-services/'
+export const ROOM_API = 'rooms/'
 export const SUGGEST_ROOM_API = "follow-users/room/suggest-room"
+export const USER_IP_FULL_API = apiURL + FOLLOWUSER_API + "userIP/"
+
+
 export const ImgUrl = "images/"
 export const photoUrl = ImgUrl + "photos/"
-export const roomImgUrl = adminServerURL + "rooms/"
-export const restaurantImgUrl = adminServerURL + "restaurant/"
-export const apiURL = 'http://localhost:3000/api/'
+export const roomImgUrl = adminServerURL + "img/rooms/"
+export const restaurantImgUrl = adminServerURL + "img/restaurant/"
+
+export const LOGIN_RES = "Please login!"
+export const LOGIN_TO_USE = "Please login to use this feature"
 export const ERROR = 'Sorry. Something go wrong!'
 export const NOT_ENOUGH_INFOR = "Please input all necessary information!"
 export const EDIT_INFOR_SUCCESS = 'Edit information successfully!'
@@ -35,5 +46,43 @@ export const INPUT_CHECKIN_CHECKOUT = 'Please input check in and check out date!
 export const NO_CHECKIN_CHECKOUT = "You forgot to input check in and check out date!"
 export const UP_TO_DATE = "Checkin date much be from today!"
 export const OUT_OF_DATE = "Checkout date much be after checkin date!"
-
-CONTACT_ACT_NAME
+export const CLICK_GALLERY = 'click link /gallery'
+export const SEND_CONTACT = "Send Contact"
+export const GUEST = "A guest with email: "
+export const CONTACT = "contact"
+export const MES_SENT = "Message sent successfully."
+export const NOT_RES_YET = "Not Yet"
+export const NO_RES = "Waiting for response!"
+export const MES_SENT_SUCCESS = 'Message sent! Please waiting for our response. Thank you!'
+export const CLICK_FEED_BACK = 'click link /feedback'
+export const FEEDBACK = 'Feedback'
+export const FEEDBACK_SENT = "Feedback sent successfully!"
+export const RATING = "Rating with "
+export const STAR = " ★"
+export const NO_CONT = 'no content'
+export const FEEDBACK_HOTEL = 'send feedback for service'
+export const TKS_FB = 'Thanks for your feedback!'
+export const FB_SENT_SUCCESS = 'Your feedback is sent successfully!'
+export const SUCCESS = 'success'
+export const CONGRATS = 'Congrats!'
+export const ERR = 'error'
+export const ERR_TITLE = "Oops..."
+export const FB_ROOM = 'send feedback for room '
+export const NOT_INPUT_CI_CO = ' failed: not input checkin and checkout'
+export const NOT_TODAY = ' failed: checkin date much be from today'
+export const CI_BEFORE_CI = ' failed: checkout date much be after checkin date'
+export const NO_MONEY = ' failed: account balance is not enough to pay'
+export const CANNOT_PAY = "Sorry. Your account balance is not enough to pay!"
+export const BOOK_SUCCESS = 'Booking Request sent successfully! Thank you!'
+export const BOOKED = "You have booked room "
+export const PAYMENT = " and made pre-payment for one day with total $"
+export const CANCEL = "Cancel Room"
+export const SURE_CANCEL = "Are you sure cancel this room?"
+export const ACCEPT_CANCEL = "Yes, cancle it!"
+export const CLICK_CANCEL = "Clicked Cancel Room "
+export const CLICK_CANCEL_ROOM = "You have clicked Cancel Room "
+export const CANCEL_CONT = "! Please waiting for our response. If your requirement is accepted. You might still lose half of the price of this room"
+export const SENT_FB_ROOM = 'send feedback for room '
+export const NOT_FOUND = "not found"
+export const IMG_NOT_FOUND = NOT_FOUND + ".jpg"
+export const FOOTER = 'Holiday Crown was these three and songs arose whose. Of in vicinity contempt together in possible branched. Assured company hastily looking garrets in oh. Most have love my gone to this so. Discovered interested prosperous the our affronting insipidity day. Missed lovers way one vanity wishes nay but. Use shy seemed within twenty wished old few regret passed. Absolute one hastened mrs any sensible.'

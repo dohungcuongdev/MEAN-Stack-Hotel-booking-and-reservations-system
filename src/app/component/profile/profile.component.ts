@@ -81,7 +81,7 @@ export class ProfileComponent implements OnInit, OnChanges {
   saveInfo(name: string, phone: string, address: string) {
     this.canEdit = false
     if (name === null || name === '' || phone === null || phone === '' || address === null || address === '')
-      swal("Oops...", AppConst.NOT_ENOUGH_INFOR, "error")
+      swal(AppConst.ERR_TITLE, AppConst.NOT_ENOUGH_INFOR, AppConst.ERR)
     else {
       let user = this.data.user
       user.name = name
@@ -90,7 +90,7 @@ export class ProfileComponent implements OnInit, OnChanges {
       this.userservice.editUser(user).subscribe(
         responsse => {
           if (responsse) {
-            swal('Congrats!', AppConst.EDIT_INFOR_SUCCESS, 'success')
+            swal(AppConst.CONGRATS, AppConst.EDIT_INFOR_SUCCESS, AppConst.SUCCESS)
           }
         }, err => this.showErr(err)
       )
@@ -103,7 +103,7 @@ export class ProfileComponent implements OnInit, OnChanges {
   }
 
   showErr(err: string) {
-    swal("Oops...", AppConst.ERROR, "error")
+    swal(AppConst.ERR_TITLE, AppConst.ERROR, AppConst.ERR)
     console.log(err)
   }
 }

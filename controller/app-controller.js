@@ -10,6 +10,9 @@ var geoip = require('geoip-lite');
 var externalip = require('externalip');
 var cookie = require('cookie');
 
+//const
+var appConst = require('../const/app-const');
+
 exports.getActivityByUserName = function(request, response) {
     var username = request.params.username;
     activityModel.findActivityByUserName(username, function(err, res) {
@@ -314,6 +317,169 @@ exports.getRoomSuggestion = function (request, response) {
         }
     });
 };
+
+
+
+exports.serializeUser = function (username, done) {
+    done(null, username.id);
+};
+
+exports.deserializeUser = function (id, done) {
+    userModel.GetUserByID(id, function (error, username) {
+        done(error, username);
+    });
+};
+
+function checkAuthentication(req, res, next) {
+    if (req.isAuthenticated()) {
+        next();
+    } else {
+        res.redirect('/login');
+    }
+}
+
+function followUsers(page_access, req, res) {
+
+    var duration = 0;
+    if (req.cookies['start_access'] == null) {
+        res.cookie('start_access', Date.now() + "");
+        duration = 0;
+    } else {
+        duration = Date.now() - +req.cookies['start_access'];
+        res.cookie('start_access', Date.now() + "");
+    }
+
+    var ip_address = '';
+    var os = require('os');
+    var ifaces = os.networkInterfaces();
+    Object.keys(ifaces).forEach(function (ifname) {
+        var alias = 0;
+        ifaces[ifname].forEach(function (iface) {
+            if ('IPv4' !== iface.family || iface.internal !== false) {
+                // skip over internal (i.e. 127.0.0.1) and non-ipv4 addresses
+                return;
+            }
+            if (alias >= 1) {
+                // this single interface has multiple ipv4 addresses
+                //console.log(ifname + ':' + alias, iface.address);
+                ip_address = iface.address;
+            } else {
+                // this interface has only one ipv4 adress
+                //console.log(ifname, iface.address);
+                ip_address = iface.address;
+            }
+            ++alias;
+        });
+    });
+
+    getIP(function (err, external_ip) {
+        if (err) {
+
+        } else {
+            var geo = geoip.lookup(external_ip);
+
+            var newFolowUsersModel = new followUserModel(
+                {
+                    user_ip_address: ip_address,
+                    external_ip_address: external_ip,
+                    page_access: page_access,
+                    duration: duration,
+                    country: geo.country,
+                    city: geo.city
+                });
+            followUserModel.add(newFolowUsersModel);
+        }
+    });
+}
+
+exports.logout = function (req, res) {
+    followUsers(appConst.CLICK_LOGOUT, req, res);
+    res.clearCookie("id");
+    req.logout();
+    res.redirect('/');
+};
+
+exports.login = function (req, res, next) {
+    followUsers(appConst.CLICK_LOGIN, req, res);
+    res.render("login", { errors: null, title: 'Login' });
+};
+
+exports.loginsuccess = function (req, res, next) {
+    followUsers(appConst.LOGIN_SUCCESS + req.user.username, req, res);
+    var id = req.user._id + "";
+    res.cookie('id', id, { maxAge: 60 * 60 * 24 * 7 * 1000 }); // 1 week
+    res.redirect('/');
+};
+
+
+exports.register = function (req, res, next) {
+    followUsers(appConst.CLICK_REGISTER, req, res);
+    res.render("register", { errors: null, success: false, title: 'Sign Up' });
+};
+
+
+exports.checkregister = function (req, res, next) {
+    //use express-validator
+    req.checkBody('username', appConst.INPUT_USERNAME).notEmpty();
+    req.checkBody('password', appConst.INPUT_PASSWORD).notEmpty();
+    req.checkBody('password_confirmation', appConst.CONFIRM_PW).equals(req.body.password);
+    req.checkBody('name', appConst.INPUT_NAME).notEmpty();
+    req.checkBody('phone', appConst.INPUT_PHONE).notEmpty();
+    req.checkBody('phone', appConst.PHONE_INVALID).isInt();
+    req.checkBody('address', appConst.INPUT_ADDRESS).notEmpty();
+    var errors = req.validationErrors();
+    if (errors) {
+        followUsers(appConst.SIGNUP_INVALID, req, res);
+        res.render("register", { errors: errors, success: false, title: "Sign Up" });
+    } else {
+        var username = req.body.username;
+        userModel.GetUserByUsername(username, function (error, user) {
+            if (error) {
+                followUsers(appConst.SIGNUP_ERR, req, res);
+                console.log(error);
+            }
+            if (user) {
+                errors = [{
+                    param: 'username',
+                    msg: appConst.EMAIL_TAKEN,
+                    value: ''
+                }];
+                followUsers(appConst.ACCOUNT_USED + username, req, res);
+                res.render("register", { errors: errors, success: false, title: "Sign Up" });
+            } else {
+                var newUser = new userModel(
+                    {
+                        username: req.body.username,
+                        password: req.body.password,
+                        name: req.body.name,
+                        phone: req.body.phone,
+                        address: req.body.address,
+                        balance: appConst.BALANCE_INIT
+                    });
+                userModel.addUser(newUser);
+
+                var newActivity = new activityModel(
+                    {
+                        username: req.body.username,
+                        name: 'Sign up',
+                        fullname: req.body.name,
+                        email: req.body.username,
+                        phone: req.body.phone,
+                        click: 'register',
+                        details: appConst.SIGNUP_DETAIL + req.body.username,
+                        note: appConst.ACCOUNT_INIT,
+                        content: appConst.TKS_SIGNUP,
+                        response: appConst.NO_RES
+                    });
+                activityModel.addActivity(newActivity);
+                followUsers(appConst.SIGNUP_SUCESS + username, req, res);
+                res.render("register", { errors: false, success: true, title: "Sign Up" });
+            }
+        })
+    }
+
+};
+
 
 function get4NumNearest(rooms, att, value) {
 	var temp = [];

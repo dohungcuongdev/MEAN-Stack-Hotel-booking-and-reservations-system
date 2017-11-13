@@ -4,13 +4,14 @@ import ApiService from './api.service';
 import { HotelService } from '../model/hotel-service';
 import { Observable } from "rxjs/Observable";
 import 'rxjs/add/operator/map';
+import * as AppConst from '../constant/app.const';
 
 @Injectable()
 export class RestaurantService extends ApiService<HotelService> {
     
     constructor(injector: Injector, public _http: Http) {
         super(injector)
-        this.apiUrl += 'hotel-services/';
+        this.apiUrl += AppConst.RESTAURANT_API;
     }
 
     getAllService(): Observable<HotelService[]> {

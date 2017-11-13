@@ -18,18 +18,18 @@ export class ContactComponent {
 
   sendContact(fullname: string, email: string, phone: string, mes: string) {
     if (fullname === '' || email === '' || phone === '' || mes === '') {
-      swal("Oops...", AppConst.NOT_ENOUGH_INFOR, "error")
+      swal(AppConst.ERR_TITLE, AppConst.NOT_ENOUGH_INFOR, AppConst.ERR)
     } else {
-      let name = "Send Contact"
-      let username = "A guest with email: " + email
-      let click = "contact"
-      let details = "Message sent successfully."
-      let note = "Waiting for response!"
-      let activity = new Activity(name, username, click, details, note, mes, "Not Yet", fullname, email, phone)
+      let name = AppConst.SEND_CONTACT
+      let username = AppConst.GUEST + email
+      let click = AppConst.CONTACT
+      let details = AppConst.MES_SENT
+      let note = AppConst.NO_RES
+      let activity = new Activity(name, username, click, details, note, mes, AppConst.NOT_RES_YET, fullname, email, phone)
       this.activityservice.addActivity(activity).subscribe(
         responsse => {
           if (responsse) {
-            swal('Congrats!', 'Message send! Please waiting for our response. Thank you!', 'success')
+            swal(AppConst.CONGRATS, AppConst.MES_SENT_SUCCESS, AppConst.SUCCESS)
           }
         },
         err => this.showErr(err)
@@ -38,7 +38,7 @@ export class ContactComponent {
   }
 
   showErr(err: string) {
-    swal("Oops...", "Sorry. Something go wrong!", "error")
+    swal(AppConst.ERR_TITLE, AppConst.ERROR, AppConst.ERR)
     console.log(err)
   }
 

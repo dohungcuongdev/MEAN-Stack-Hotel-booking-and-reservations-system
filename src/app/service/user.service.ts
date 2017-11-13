@@ -4,13 +4,14 @@ import ApiService from './api.service';
 import { User } from '../model/user';
 import { Observable } from "rxjs/Observable";
 import 'rxjs/add/operator/map';
+import * as AppConst from '../constant/app.const';
 
 @Injectable()
 export class UserService extends ApiService<User> {
     
     constructor(injector: Injector, public _http: Http) {
         super(injector)
-        this.apiUrl += 'users/';
+        this.apiUrl += AppConst.USER_API;
     }
 
     getUser(id: string): Observable<User> {

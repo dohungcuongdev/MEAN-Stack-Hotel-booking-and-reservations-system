@@ -24,7 +24,7 @@ export class FeedBackComponent implements OnInit {
     private data: InMemoryDataService,
     private cookie: CookieService
   ) { 
-    this.followUserService.followUsers('click link /feedback');
+    this.followUserService.followUsers(AppConst.CLICK_FEED_BACK);
   }
 
   ngOnInit(): void {
@@ -38,23 +38,23 @@ export class FeedBackComponent implements OnInit {
   }
 
   sendfeedback(mes: string) {
-    let name = "Feedback"
-    let click = "feedback"
+    let name = AppConst.FEEDBACK
+    let click = AppConst.FEEDBACK
     let username = this.data.user.username
-    let details = "Feedback sent successfully!"
-    let note = "Rating with " + this.star + " ★"
+    let details = AppConst.FEEDBACK_SENT
+    let note = AppConst.RATING + this.star + AppConst.STAR
     if (mes == null || mes == '')
-      mes = 'no content'
+      mes = AppConst.NO_CONT
     let fullname = this.data.user.name
     let email = username
     let phone = this.data.user.phone
-    let activity = new Activity(name, username, click, details, note, mes, "Not Yet", fullname, email, phone)
+    let activity = new Activity(name, username, click, details, note, mes, AppConst.NOT_RES_YET, fullname, email, phone)
     this.activityservice.addActivity(activity).subscribe(
       responsse => {
         if (responsse) {
           //this.roomservice.LoadData();
-          this.followUserService.followUsers('send feedback for service');
-          swal('Thanks for your feedback!', 'Your feedback is sent successfully!', 'success')
+          this.followUserService.followUsers(AppConst.FEEDBACK_HOTEL);
+          swal(AppConst.TKS_FB, AppConst.FB_SENT_SUCCESS, AppConst.SUCCESS)
         }
       },
       err => console.log(err)

@@ -89,15 +89,15 @@ export class RoomDetailComponent implements OnInit {
   bookroom(checkindate: Date, checkoutdate: Date) {
     this.clicked_book_now = true;
     if (checkindate == null || checkoutdate == null || checkindate.toString() == '' || checkindate.toString() == '') {
-      this.followUserService.followUsers('book room ' + this.data.room.name + ' failed: not input checkin and checkout');
+      this.followUserService.followUsers('book room ' + this.data.room.name + AppConst.NOT_INPUT_CI_CO);
       swal("Oops...", AppConst.NO_CHECKIN_CHECKOUT, "error")
     } else {
       if (new Date().getTime() > new Date(checkindate).getTime()) {
-        this.followUserService.followUsers('book room ' + this.data.room.name + ' failed: checkin date much be from today');
+        this.followUserService.followUsers('book room ' + this.data.room.name + AppConst.NOT_TODAY);
         swal("Oops...", AppConst.OUT_OF_DATE, "error")
       }
       else if (checkindate > checkoutdate) {
-        this.followUserService.followUsers('book room ' + this.data.room.name + ' failed: checkout date much be after checkin date');
+        this.followUserService.followUsers('book room ' + this.data.room.name + AppConst.CI_BEFORE_CI);
         swal("Oops...", AppConst.UP_TO_DATE, "error")
       } else {
         this.computeBalance(checkindate, checkoutdate)
@@ -107,7 +107,7 @@ export class RoomDetailComponent implements OnInit {
 
   showErr(err: string) {
     this.followUserService.followUsers('book room ' + this.data.room.name + ' failed: error');
-    swal("Oops...", "Sorry. Something go wrong!", "error")
+    swal("Oops...", AppConst.ERROR, "error")
     console.log(err)
   }
 
@@ -125,8 +125,8 @@ export class RoomDetailComponent implements OnInit {
         }, err => this.showErr(err)
       )
     } else {
-      this.followUserService.followUsers('book room ' + this.data.room.name + ' failed: account balance is not enough to pay');
-      swal("Oops...", "Sorry. Your account balance is not enough to pay!", "error")
+      this.followUserService.followUsers('book room ' + this.data.room.name + AppConst.NO_MONEY);
+      swal("Oops...", AppConst.CANNOT_PAY, "error")
     }
   }
 
@@ -145,7 +145,7 @@ export class RoomDetailComponent implements OnInit {
       err => this.showErr(err)
     );
     this.followUserService.followUsers('book room ' + this.data.room.name + ' successfully');
-    swal('Congrats!', 'Booking Request sent successfully! Thank you!', 'success')
+    swal('Congrats!', AppConst.BOOK_SUCCESS, 'success')
   }
 
   postActivity(checkindate: Date, checkoutdate: Date): void {
@@ -154,7 +154,7 @@ export class RoomDetailComponent implements OnInit {
     let click = this.room_id
     let details = "Booked Room " + this.data.room.name
     let note = "Check in: " + checkindate + " & Check out: " + checkoutdate
-    let content = "You have booked room " + this.data.room.name + " and made pre-payment for one day with total $" + this.data.room.price
+    let content = AppConst.BOOKED + this.data.room.name + AppConst.PAYMENT + this.data.room.price
     let fullname = this.data.user.name
     let email = username
     let phone = this.data.user.phone
@@ -171,12 +171,12 @@ export class RoomDetailComponent implements OnInit {
 
   cancelRoom() {
     swal({
-      title: "Cancel Room!",
-      text: "Are you sure cancel this room?",
+      title: AppConst.CANCEL,
+      text: AppConst.SURE_CANCEL,
       type: "warning",
       showCancelButton: true,
       confirmButtonColor: "#DD6B55",
-      confirmButtonText: "Yes, cancle it!",
+      confirmButtonText: AppConst.ACCEPT_CANCEL,
       closeOnConfirm: true
     }
       ,
@@ -189,12 +189,12 @@ export class RoomDetailComponent implements OnInit {
   }
 
   sendCancleRequest() {
-    let name = "Cancel Room"
+    let name = AppConst.CANCEL
     let username = this.data.user.username
     let click = this.room_id
-    let details = "Clicked Cancel Room " + this.data.room.name
-    let note = "Waiting for response!"
-    let content = "You have clicked Cancel Room " + this.data.room.name + "! Please waiting for our response. If your requirement is accepted. You might still lose half of the price of this room"
+    let details = AppConst.CLICK_CANCEL + this.data.room.name
+    let note = AppConst.NO_RES
+    let content = AppConst.CLICK_CANCEL_ROOM + this.data.room.name + AppConst.CANCEL_CONT
     let fullname = this.data.user.name
     let email = username
     let phone = this.data.user.phone
@@ -218,7 +218,7 @@ export class RoomDetailComponent implements OnInit {
     let name = "Feedback Room"
     let click = this.room_id
     let username = this.data.user.username
-    let details = "Feedback sent successfully!"
+    let details = AppConst.FEEDBACK_SENT
     let note = "Rating room " + this.data.room.name + " with " + this.star + " ★"
     if (mes == null || mes == '')
       mes = 'no content'
@@ -242,8 +242,8 @@ export class RoomDetailComponent implements OnInit {
               if (responsse) {
                 this.loadFeedbackRoomData()
                 this.calculateRating()
-                this.followUserService.followUsers('send feedback for room ' + this.data.room.name)
-                swal('Thanks for your feedback!', 'Your feedback is sent successfully!', 'success')
+                this.followUserService.followUsers(AppConst.SENT_FB_ROOM + this.data.room.name)
+                swal(AppConst.TKS_FB, AppConst.FB_SENT_SUCCESS, 'success')
               }
             },
             err => console.log(err)

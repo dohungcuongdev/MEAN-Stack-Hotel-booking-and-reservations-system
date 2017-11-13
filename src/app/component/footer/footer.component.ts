@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import * as AppConst from '../../constant/app.const';
 
 @Component({
   selector: 'footer',
@@ -6,5 +7,5 @@ import { Component } from '@angular/core';
   styleUrls: ['footer.component.css']
 })
 export class FooterComponent {
-  title = 'hello Cuong';
+  footercontent = AppConst.FOOTER;
 }
