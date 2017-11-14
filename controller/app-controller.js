@@ -13,9 +13,39 @@ var cookie = require('cookie');
 //const
 var appConst = require('../const/app-const');
 
-exports.getActivityByUserName = function(request, response) {
-    var username = request.params.username;
-    activityModel.findActivityByUserName(username, function(err, res) {
+exports.getActivityByUserName = function (request, response) {
+    if (request.cookies.id == null)
+        response.send(null).status(404);
+    else {
+        var username = request.params.username;
+        activityModel.findActivityByUserName(username, function (err, res) {
+            if (err) {
+                response.send(err).status(404);
+            } else {
+                response.send(res).status(200);
+            }
+        });
+    }
+};
+
+exports.getActivityByID = function (request, response) {
+    if (request.cookies.id == null)
+        response.send(null).status(404);
+    else {
+        var id = request.params.id;
+        activityModel.findById(id, function (err, res) {
+            if (err) {
+                response.send(err).status(404);
+            } else {
+                response.json(res);
+            }
+        });
+    }
+};
+
+exports.getActivityFeedBackRoom = function (request, response) {
+    var id = request.params.id;
+    activityModel.findFeedbackRoom(id, function (err, res) {
         if (err) {
             response.send(err).status(404);
         } else {
@@ -24,53 +54,35 @@ exports.getActivityByUserName = function(request, response) {
     });
 };
 
-exports.getActivityByID =  function (request, response) {
-    var id = request.params.id;
-    activityModel.findById(id, function (err, res) {
-        if (err) {
-            response.send(err).status(404);
-        } else {
-            response.json(res);
-        }
-    });
+
+exports.getActivity = function (request, response) {
+    if (request.cookies.id == null)
+        response.send(null).status(404);
+    else {
+        activityModel.find({}, function (err, resources) {
+            if (err) {
+                response.send(err).status(404);
+            } else {
+                response.send(resources).status(200);
+            }
+        });
+    }
 };
 
-exports.getActivityFeedBackRoom =  function (request, response) {
+exports.deleteActivity = function (request, response) {
     var id = request.params.id;
-    activityModel.findFeedbackRoom(id, function(err, res) {
-        if (err) {
-            response.send(err).status(404);
-        } else {
-            response.send(res).status(200);
-        }
-    });
-};
-
-
-exports.getActivity =  function(request, response) {
-    activityModel.find({}, function(err, resources) {
-        if (err) {
-            response.send(err).status(404);
-        } else {
-            response.send(resources).status(200);
-        }
-    });
-};
-
-exports.deleteActivity = function(request, response) {
-    var id = request.params.id;
-    activityModel.remove({ _id: id }, function(err, resource) {
+    activityModel.remove({ _id: id }, function (err, resource) {
         if (err) {
             return response.send(err);
         } else {
             response.send(resource);
         }
-    })
+    });
 };
 
-exports.postActivity = function(request, response) {
+exports.postActivity = function (request, response) {
     var activity = new activityModel(request.body);
-    activity.save(function(err, resource) {
+    activity.save(function (err, resource) {
         if (err) {
             response.send(err).status(501);
         } else {
@@ -81,26 +93,34 @@ exports.postActivity = function(request, response) {
 
 
 exports.getUserByID = function (request, response) {
-    var id = request.params.id;
-    userModel.GetUserByID(id, function (err, res) {
-        if (err) {
-            return response.send(err);
-        } else {
-            var user = res;
-            response.json(user);
-        }
-    });
+    if (request.cookies.id == null)
+        response.send(null).status(404);
+    else {
+        var id = request.params.id;
+        userModel.GetUserByID(id, function (err, res) {
+            if (err) {
+                return response.send(err);
+            } else {
+                var user = res;
+                response.json(user);
+            }
+        });
+    }
 };
 
 
 exports.getUser = function (request, response) {
-    userModel.find({}, function (err, resources) {
-        if (err) {
-            response.send(err).status(404);
-        } else {
-            response.send(resources).status(200);
-        }
-    });
+    if (request.cookies.id == null)
+        response.send(null).status(404);
+    else {
+        userModel.find({}, function (err, resources) {
+            if (err) {
+                response.send(err).status(404);
+            } else {
+                response.send(resources).status(200);
+            }
+        });
+    }
 };
 
 exports.putUser = function (req, res, next) {
@@ -165,11 +185,11 @@ exports.getService = function (request, response) {
 };
 
 
-exports.putService = function(req, res, next) {
-  serviceModel.findByIdAndUpdate(req.params.id, req.body, function (err, service) {
-    if (err) return next(err);
-    res.json(service);
-  });
+exports.putService = function (req, res, next) {
+    serviceModel.findByIdAndUpdate(req.params.id, req.body, function (err, service) {
+        if (err) return next(err);
+        res.json(service);
+    });
 };
 
 exports.getFollowUserByUserIP = function (request, response) {
@@ -238,23 +258,23 @@ exports.postFollowUser = function (request, response) {
 
             var roomname = '';
 
-            if(follow_users.page_access.includes('room-details')) {
+            if (follow_users.page_access.includes('room-details')) {
                 roomname = follow_users.page_access.substring(26, 29);
             }
 
-            if(follow_users.page_access.includes('click image in rooms')) {
+            if (follow_users.page_access.includes('click image in rooms')) {
                 roomname = follow_users.page_access.substring(22, 25);
             }
 
-            if(follow_users.page_access.includes('book room')) {
+            if (follow_users.page_access.includes('book room')) {
                 roomname = follow_users.page_access.substring(10, 13);
             }
 
-            if(follow_users.page_access.includes('send feedback for room')) {
+            if (follow_users.page_access.includes('send feedback for room')) {
                 roomname = follow_users.page_access.substring(23, 26);
             }
 
-            if(roomname != '') {
+            if (roomname != '') {
                 roomModel.findRoomByRoomName(roomname, function (err, room) {
                     if (err) {
                         console.log(err);
@@ -262,7 +282,7 @@ exports.postFollowUser = function (request, response) {
                         ipSuggestModel.findByUserIP(ip_address, function (err, userip) {
                             if (err) {
                                 console.log(err);
-                            } 
+                            }
                             var ipSuggest = new ipSuggestModel(
                                 {
                                     ip: ip_address,
@@ -271,15 +291,15 @@ exports.postFollowUser = function (request, response) {
                                     avgAminities: room.avgAminities,
                                     count: 1,
                                 });
-                                
+
                             //console.log(room);
 
-                            if(userip) {
+                            if (userip) {
                                 //console.log("update");
                                 ipSuggest.count = userip.count + 1;
-                                ipSuggest.size = (userip.size + ipSuggest.size)*1.0/2;
-                                ipSuggest.price = (userip.size + ipSuggest.size)*1.0/2;
-                                ipSuggest.avgAminities = (userip.size + ipSuggest.size)*1.0/2;
+                                ipSuggest.size = (userip.size + ipSuggest.size) * 1.0 / 2;
+                                ipSuggest.price = (userip.size + ipSuggest.size) * 1.0 / 2;
+                                ipSuggest.avgAminities = (userip.size + ipSuggest.size) * 1.0 / 2;
                                 // ipSuggest.size = (userip.size*userip.count + ipSuggest.size)/ipSuggest.count;
                                 // ipSuggest.price = (userip.price*userip.count + ipSuggest.price)/ipSuggest.count;
                                 // ipSuggest.avgAminities = (userip.avgAminities*userip.count + ipSuggest.avgAminities)/ipSuggest.count;
@@ -400,6 +420,8 @@ exports.logout = function (req, res) {
 };
 
 exports.login = function (req, res, next) {
+    if (req.cookies.id != null)
+        res.redirect('/');
     followUsers(appConst.CLICK_LOGIN, req, res);
     res.render("login", { errors: null, title: 'Login' });
 };
@@ -411,8 +433,9 @@ exports.loginsuccess = function (req, res, next) {
     res.redirect('/');
 };
 
-
 exports.register = function (req, res, next) {
+    if (req.cookies.id != null)
+        res.redirect('/');
     followUsers(appConst.CLICK_REGISTER, req, res);
     res.render("register", { errors: null, success: false, title: 'Sign Up' });
 };
@@ -482,22 +505,22 @@ exports.checkregister = function (req, res, next) {
 
 
 function get4NumNearest(rooms, att, value) {
-	var temp = [];
-	for(var i = 0; i < rooms.length; i++) {
-		var attvalue = 0;
-		if(att == 'size')
-			attvalue = rooms[i].size;
-		if(att == 'price') 
-			attvalue = rooms[i].price;
-		if(att == 'avgAminities') 
-			attvalue = rooms[i].avgAminities;	
-		temp[i] = Math.abs(attvalue - value);
-	}
-	var result = getIndicesOfMin(temp, 4);
-	var finalresult = [];
-	for(var i = 0; i < result.length; i++)
-		finalresult[i] = rooms[result[i]];
-	return finalresult;
+    var temp = [];
+    for (var i = 0; i < rooms.length; i++) {
+        var attvalue = 0;
+        if (att == 'size')
+            attvalue = rooms[i].size;
+        if (att == 'price')
+            attvalue = rooms[i].price;
+        if (att == 'avgAminities')
+            attvalue = rooms[i].avgAminities;
+        temp[i] = Math.abs(attvalue - value);
+    }
+    var result = getIndicesOfMin(temp, 4);
+    var finalresult = [];
+    for (var i = 0; i < result.length; i++)
+        finalresult[i] = rooms[result[i]];
+    return finalresult;
 }
 
 function getIndicesOfMin(inp, count) {
@@ -505,18 +528,18 @@ function getIndicesOfMin(inp, count) {
     for (var i = 0; i < inp.length; i++) {
         outp.push(i); // add index to output array
         if (outp.length > count) {
-            outp.sort(function(a, b) { return inp[a] - inp[b]; }); // descending sort the output array
+            outp.sort(function (a, b) { return inp[a] - inp[b]; }); // descending sort the output array
             outp.pop(); // remove the last index (index of smallest element in output array)
         }
     }
     return outp;
 }
 
-Array.prototype.unique = function() {
+Array.prototype.unique = function () {
     var a = this.concat();
-    for(var i=0; i<a.length; ++i) {
-        for(var j=i+1; j<a.length; ++j) {
-            if(a[i] === a[j])
+    for (var i = 0; i < a.length; ++i) {
+        for (var j = i + 1; j < a.length; ++j) {
+            if (a[i] === a[j])
                 a.splice(j--, 1);
         }
     }
