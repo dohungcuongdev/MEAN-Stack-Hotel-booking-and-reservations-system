@@ -10,7 +10,7 @@ import { InMemoryDataService } from '../../service/in-memory-data.service';
 import { FollowUsersService } from '../../service/follow-users.service';
 import { AuthenticationService } from '../../service/authentication.service';
 import * as AppConst from '../../constant/app.const';
-import * as swal from 'sweetalert';
+declare var swal: any;
 
 import 'rxjs/add/operator/catch'; //http catch error
 
