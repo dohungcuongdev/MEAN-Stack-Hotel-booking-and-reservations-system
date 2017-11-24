@@ -39,17 +39,17 @@
 
   <div class="text-center">
     <ul class="pagination">
-      <li *ngIf="pageclicked > 1"><a (click)="clickpreviouspage()">«</a></li>
+      <li *ngIf="pageclicked > 1"><a class="tr-p" (click)="clickpreviouspage()">«</a></li>
       <li *ngIf="pageclicked <= 1" class="disabled"><a>«</a></li>
       <ng-container *ngFor="let page of pages; let i = index">
-        <li *ngIf="i+1 === pageclicked" class="active"><a (click)="clickpage(i+1)">{{i+1}} <span class="sr-only">(current)</span></a>
+        <li *ngIf="i+1 === pageclicked" class="active"><a class="tr-p" (click)="clickpage(i+1)">{{i+1}} <span class="sr-only">(current)</span></a>
         </li>
 
         <li *ngIf="i+1 != pageclicked">
-          <a (click)="clickpage(i+1)">{{i+1}}</a>
+          <a class="tr-p" (click)="clickpage(i+1)">{{i+1}}</a>
         </li>
       </ng-container>
-      <li *ngIf="pageclicked < pages.length"><a (click)="clicknextpage()">»</a></li>
+      <li *ngIf="pageclicked < pages.length"><a class="tr-p" (click)="clicknextpage()">»</a></li>
       <li *ngIf="pageclicked >= pages.length" class="disabled"><a>»</a></li>
     </ul>
   </div>

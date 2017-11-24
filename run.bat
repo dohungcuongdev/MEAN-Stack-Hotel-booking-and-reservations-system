@@ -1,1 +1,1 @@
-npm install --loglevel=error & npm start --loglevel=error
+npm start
