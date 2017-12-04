@@ -50,7 +50,7 @@ export class FollowUsersService extends ApiService<FollowUsers> {
             this.cookie.put("start_access", Date.now() + "")
         }
 
-        this.addFollowUsers(new FollowUsers(this.data.user._id, this.data.user.username, url, duration)).subscribe(
+        this.addFollowUsers(new FollowUsers(this.data.user.username, url, duration)).subscribe(
             response => {
                 if (response) {
                     console.log(response);

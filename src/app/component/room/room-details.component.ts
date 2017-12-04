@@ -155,10 +155,7 @@ export class RoomDetailComponent implements OnInit {
     let details = "Booked Room " + this.data.room.name
     let note = "Check in: " + checkindate + " & Check out: " + checkoutdate
     let content = AppConst.BOOKED + this.data.room.name + AppConst.PAYMENT + this.data.room.price
-    let fullname = this.data.user.name
-    let email = username
-    let phone = this.data.user.phone
-    let activity = new Activity(name, username, click, details, note, content, "Not Yet", fullname, email, phone)
+    let activity = new Activity(name, username, click, details, note, content, "Not Yet")
     this.activityservice.addActivity(activity).subscribe(
       responsse => {
         if (responsse) {
@@ -195,10 +192,7 @@ export class RoomDetailComponent implements OnInit {
     let details = AppConst.CLICK_CANCEL + this.data.room.name
     let note = AppConst.NO_RES
     let content = AppConst.CLICK_CANCEL_ROOM + this.data.room.name + AppConst.CANCEL_CONT
-    let fullname = this.data.user.name
-    let email = username
-    let phone = this.data.user.phone
-    let activity = new Activity(name, username, click, details, note, content, "Not Yet", fullname, email, phone)
+    let activity = new Activity(name, username, click, details, note, content, "Not Yet")
     this.activityservice.addActivity(activity).subscribe(
       response => {
         if (response) {
@@ -222,10 +216,7 @@ export class RoomDetailComponent implements OnInit {
     let note = "Rating room " + this.data.room.name + " with " + this.star + " ★"
     if (mes == null || mes == '')
       mes = 'no content'
-    let fullname = this.data.user.name
-    let email = username
-    let phone = this.data.user.phone
-    let activity = new Activity(name, username, click, details, note, mes, "Not Yet", fullname, email, phone)
+    let activity = new Activity(name, username, click, details, note, mes, "Not Yet")
 
     if (this.data.room.star == null) {
       this.data.room.star = this.star

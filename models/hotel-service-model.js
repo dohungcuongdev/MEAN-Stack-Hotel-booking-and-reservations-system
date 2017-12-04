@@ -19,10 +19,10 @@ var hotelServiceSchema = new Schema(
         note: String
     },
     {
-        collection: 'hotel-services'
+        collection: 'restaurant'
     }
 );
-var hotel_service = module.exports = mongoose.model('hotel-services', hotelServiceSchema);
+var hotel_service = module.exports = mongoose.model('restaurant', hotelServiceSchema);
 
 //function get hotel_service by servicename
 module.exports.findServiceByName = function (servicename, callbackAction) {

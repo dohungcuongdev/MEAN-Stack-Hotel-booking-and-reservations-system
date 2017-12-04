@@ -9,7 +9,6 @@ var followUserSchema = new Schema(
     {
         user_ip_address: String,
         external_ip_address: String,
-        user_id: String,
         username: String,
         page_access: String,
         duration: Number,

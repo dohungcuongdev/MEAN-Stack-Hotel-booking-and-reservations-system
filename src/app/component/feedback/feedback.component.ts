@@ -45,10 +45,7 @@ export class FeedBackComponent implements OnInit {
     let note = AppConst.RATING + this.star + AppConst.STAR
     if (mes == null || mes == '')
       mes = AppConst.NO_CONT
-    let fullname = this.data.user.name
-    let email = username
-    let phone = this.data.user.phone
-    let activity = new Activity(name, username, click, details, note, mes, AppConst.NOT_RES_YET, fullname, email, phone)
+    let activity = new Activity(name, username, click, details, note, mes, AppConst.NOT_RES_YET)
     this.activityservice.addActivity(activity).subscribe(
       responsse => {
         if (responsse) {

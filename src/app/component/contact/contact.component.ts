@@ -21,11 +21,11 @@ export class ContactComponent {
       swal(AppConst.ERR_TITLE, AppConst.NOT_ENOUGH_INFOR, AppConst.ERR)
     } else {
       let name = AppConst.SEND_CONTACT
-      let username = AppConst.GUEST + email
+      let username = AppConst.GUEST + "name: " + fullname + ", email: " + email + ", phone: " + phone
       let click = AppConst.CONTACT
       let details = AppConst.MES_SENT
       let note = AppConst.NO_RES
-      let activity = new Activity(name, username, click, details, note, mes, AppConst.NOT_RES_YET, fullname, email, phone)
+      let activity = new Activity(name, username, click, details, note, mes, AppConst.NOT_RES_YET)
       this.activityservice.addActivity(activity).subscribe(
         responsse => {
           if (responsse) {

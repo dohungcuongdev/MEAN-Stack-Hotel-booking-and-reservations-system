@@ -9,9 +9,6 @@ var activitySchema = new Schema(
     {
         username: String,
         name: String,
-        fullname: String,
-        email: String,
-        phone: String,
         click: String,
         details: String,
         note: String,
