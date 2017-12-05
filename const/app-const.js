@@ -47,3 +47,5 @@ exports.CLICK_LOGIN = 'click page /login';
 exports.CLICK_LOGOUT = 'click page /logout';
 exports.INVALID_USERNAME = "Invalid Username";
 exports.WRONG_PW = "Wrond password!!";
+
+exports.DEFAULT_IP = "2.31.255.255";

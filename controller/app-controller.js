@@ -237,84 +237,89 @@ exports.deleteFollowUser = function (request, response) {
 
 exports.postFollowUser = function (request, response) {
     var follow_users = new followUserModel(request.body);
-    var ip_address = getIpAddress();
     getIP((err, external_ip) => {
         if (err) {
-            console.log(err)
+            //console.log(err);
+            saveFollowUserData(request, response, follow_users, appConst.DEFAULT_IP);
         } else {
-            var geo = geoip.lookup(external_ip);
-            console.log(geo);
-            follow_users['user_ip_address'] = ip_address;
-            follow_users['external_ip_address'] = external_ip;
-            follow_users['country'] = geo.country;
-            follow_users['city'] = geo.city;
-            follow_users.save(function (err, resource) {
-                if (err) {
-                    response.send(err).status(501);
-                } else {
-                    response.json(resource).status(201);
-                }
-            });
-
-            var roomname = '';
-
-            if (follow_users.page_access.includes('room-details')) {
-                roomname = follow_users.page_access.substring(26, 29);
-            }
-
-            if (follow_users.page_access.includes('click image in rooms')) {
-                roomname = follow_users.page_access.substring(22, 25);
-            }
-
-            if (follow_users.page_access.includes('book room')) {
-                roomname = follow_users.page_access.substring(10, 13);
-            }
-
-            if (follow_users.page_access.includes('send feedback for room')) {
-                roomname = follow_users.page_access.substring(23, 26);
-            }
-
-            if (roomname != '') {
-                roomModel.findRoomByRoomName(roomname, function (err, room) {
-                    if (err) {
-                        console.log(err);
-                    } else {
-                        ipSuggestModel.findByUserIP(ip_address, function (err, userip) {
-                            if (err) {
-                                console.log(err);
-                            }
-                            var ipSuggest = new ipSuggestModel(
-                                {
-                                    ip: ip_address,
-                                    size: room.size,
-                                    price: room.price,
-                                    avgAminities: room.avgAminities,
-                                    count: 1,
-                                });
-
-                            //console.log(room);
-
-                            if (userip) {
-                                //console.log("update");
-                                ipSuggest.count = userip.count + 1;
-                                ipSuggest.size = (userip.size + ipSuggest.size) * 1.0 / 2;
-                                ipSuggest.price = (userip.size + ipSuggest.size) * 1.0 / 2;
-                                ipSuggest.avgAminities = (userip.size + ipSuggest.size) * 1.0 / 2;
-                                // ipSuggest.size = (userip.size*userip.count + ipSuggest.size)/ipSuggest.count;
-                                // ipSuggest.price = (userip.price*userip.count + ipSuggest.price)/ipSuggest.count;
-                                // ipSuggest.avgAminities = (userip.avgAminities*userip.count + ipSuggest.avgAminities)/ipSuggest.count;
-                                ipSuggestModel.update(userip._id, ipSuggest);
-                            } else {
-                                //console.log("insert");
-                                ipSuggestModel.add(ipSuggest);
-                            }
-                        });
-                    }
-                });
-            }
+            saveFollowUserData(request, response, follow_users, external_ip);
         }
     });
 };
+
+function saveFollowUserData(request, response, follow_users, external_ip) {
+    var ip_address = getIpAddress();
+    var geo = geoip.lookup(external_ip);
+    console.log(geo);
+    follow_users['user_ip_address'] = ip_address;
+    follow_users['external_ip_address'] = external_ip;
+    follow_users['country'] = geo.country;
+    follow_users['city'] = geo.city;
+    follow_users.save(function (err, resource) {
+        if (err) {
+            response.send(err).status(501);
+        } else {
+            response.json(resource).status(201);
+        }
+    });
+
+    var roomname = '';
+
+    if (follow_users.page_access.includes('room-details')) {
+        roomname = follow_users.page_access.substring(26, 29);
+    }
+
+    if (follow_users.page_access.includes('click image in rooms')) {
+        roomname = follow_users.page_access.substring(22, 25);
+    }
+
+    if (follow_users.page_access.includes('book room')) {
+        roomname = follow_users.page_access.substring(10, 13);
+    }
+
+    if (follow_users.page_access.includes('send feedback for room')) {
+        roomname = follow_users.page_access.substring(23, 26);
+    }
+
+    if (roomname != '') {
+        roomModel.findRoomByRoomName(roomname, function (err, room) {
+            if (err) {
+                console.log(err);
+            } else {
+                ipSuggestModel.findByUserIP(ip_address, function (err, userip) {
+                    if (err) {
+                        console.log(err);
+                    }
+                    var ipSuggest = new ipSuggestModel(
+                        {
+                            ip: ip_address,
+                            size: room.size,
+                            price: room.price,
+                            avgAminities: room.avgAminities,
+                            count: 1,
+                        });
+
+                    //console.log(room);
+
+                    if (userip) {
+                        //console.log("update");
+                        ipSuggest.count = userip.count + 1;
+                        ipSuggest.size = (userip.size + ipSuggest.size) * 1.0 / 2;
+                        ipSuggest.price = (userip.size + ipSuggest.size) * 1.0 / 2;
+                        ipSuggest.avgAminities = (userip.size + ipSuggest.size) * 1.0 / 2;
+                        // ipSuggest.size = (userip.size*userip.count + ipSuggest.size)/ipSuggest.count;
+                        // ipSuggest.price = (userip.price*userip.count + ipSuggest.price)/ipSuggest.count;
+                        // ipSuggest.avgAminities = (userip.avgAminities*userip.count + ipSuggest.avgAminities)/ipSuggest.count;
+                        ipSuggestModel.update(userip._id, ipSuggest);
+                    } else {
+                        //console.log("insert");
+                        ipSuggestModel.add(ipSuggest);
+                    }
+                });
+            }
+        });
+    }
+}
 
 exports.getRoomSuggestion = function (request, response) {
     var ip_address = getIpAddress();
@@ -369,28 +374,7 @@ function followUsers(page_access, req, res) {
         res.cookie('start_access', Date.now() + "");
     }
 
-    var ip_address = '';
-    var os = require('os');
-    var ifaces = os.networkInterfaces();
-    Object.keys(ifaces).forEach(function (ifname) {
-        var alias = 0;
-        ifaces[ifname].forEach(function (iface) {
-            if ('IPv4' !== iface.family || iface.internal !== false) {
-                // skip over internal (i.e. 127.0.0.1) and non-ipv4 addresses
-                return;
-            }
-            if (alias >= 1) {
-                // this single interface has multiple ipv4 addresses
-                //console.log(ifname + ':' + alias, iface.address);
-                ip_address = iface.address;
-            } else {
-                // this interface has only one ipv4 adress
-                //console.log(ifname, iface.address);
-                ip_address = iface.address;
-            }
-            ++alias;
-        });
-    });
+    var ip_address = getIpAddress();
 
     getIP(function (err, external_ip) {
         if (err) {
