@@ -28,8 +28,8 @@
 
                 </div>
                 <!-- RoomCarousel-->
-                <div *ngIf="!canEdit" class="caption">Edit Information<a class="tr-p" (click)="editInfo()" class="pull-right"><i class="fa fa-edit"></i></a></div>
-                <div *ngIf="canEdit" class="caption">Save Information<a class="tr-p" (click)="saveInfo(name.value,phone.value,address.value)" class="pull-right"><i class="fa fa-edit"></i></a></div>
+                <div *ngIf="!canEdit" class="caption">Edit Information<a (click)="editInfo()" class="pull-right tr-p"><i class="fa fa-edit"></i></a></div>
+                <div *ngIf="canEdit" class="caption">Save Information<a (click)="saveInfo(name.value,phone.value,address.value)" class="pull-right tr-p"><i class="fa fa-edit"></i></a></div>
             </div>
 
             <div class="col-sm-6">

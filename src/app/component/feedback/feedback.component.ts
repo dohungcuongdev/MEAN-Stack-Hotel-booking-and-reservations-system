@@ -6,7 +6,7 @@ import { AuthenticationService } from '../../service/authentication.service';
 import { Activity } from '../../model/activity';
 import { CookieService } from 'angular2-cookie/core';
 import * as AppConst from '../../constant/app.const';
-import * as swal from 'sweetalert';
+declare var swal: any;
 
 @Component({
   selector: 'contact',
@@ -38,14 +38,9 @@ export class FeedBackComponent implements OnInit {
   }
 
   sendfeedback(mes: string) {
-    let name = AppConst.FEEDBACK
-    let click = AppConst.FEEDBACK
-    let username = this.data.user.username
-    let details = AppConst.FEEDBACK_SENT
-    let note = AppConst.RATING + this.star + AppConst.STAR
     if (mes == null || mes == '')
       mes = AppConst.NO_CONT
-    let activity = new Activity(name, username, click, details, note, mes, AppConst.NOT_RES_YET)
+    let activity = new Activity(AppConst.FEEDBACKNAME, this.data.user.username, AppConst.FEEDBACKCLICK, AppConst.FEEDBACK_SENT, AppConst.RATING + this.star + AppConst.STAR, mes, AppConst.NOT_RES_YET)
     this.activityservice.addActivity(activity).subscribe(
       responsse => {
         if (responsse) {
