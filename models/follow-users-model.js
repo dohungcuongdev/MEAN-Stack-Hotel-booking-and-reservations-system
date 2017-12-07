@@ -12,8 +12,13 @@ var followUserSchema = new Schema(
         username: String,
         page_access: String,
         duration: Number,
+        range: Array,
         country: String,
+        region: String,
         city: String,
+        ll: Array,
+        metro: Number,
+        zip: Number,
         created_at: { type: Date, default: Date.now }
     },
     {

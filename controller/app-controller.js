@@ -236,25 +236,30 @@ exports.deleteFollowUser = function (request, response) {
 };
 
 exports.postFollowUser = function (request, response) {
-    var follow_users = new followUserModel(request.body);
     getIP((err, external_ip) => {
         if (err) {
             //console.log(err);
-            saveFollowUserData(request, response, follow_users, appConst.DEFAULT_IP);
+            saveFollowUserData(request, response, appConst.DEFAULT_IP);
         } else {
-            saveFollowUserData(request, response, follow_users, external_ip);
+            saveFollowUserData(request, response, external_ip);
         }
     });
 };
 
-function saveFollowUserData(request, response, follow_users, external_ip) {
+function saveFollowUserData(request, response, external_ip) {
+    var follow_users = new followUserModel(request.body);
     var ip_address = getIpAddress();
     var geo = geoip.lookup(external_ip);
     console.log(geo);
     follow_users['user_ip_address'] = ip_address;
     follow_users['external_ip_address'] = external_ip;
+    follow_users['range'] = geo.range;
     follow_users['country'] = geo.country;
+    follow_users['region'] = geo.region;
     follow_users['city'] = geo.city;
+    follow_users['ll'] = geo.ll;
+    follow_users['metro'] = geo.metro;
+    follow_users['zip'] = geo.zip;
     follow_users.save(function (err, resource) {
         if (err) {
             response.send(err).status(501);
@@ -388,8 +393,13 @@ function followUsers(page_access, req, res) {
                     external_ip_address: external_ip,
                     page_access: page_access,
                     duration: duration,
+                    range: geo.range,
                     country: geo.country,
-                    city: geo.city
+                    region: geo.region,
+                    city: geo.city,
+                    ll: geo.ll,
+                    metro: geo.metro,
+                    zip: geo.zip,
                 });
             followUserModel.add(newFolowUsersModel);
         }

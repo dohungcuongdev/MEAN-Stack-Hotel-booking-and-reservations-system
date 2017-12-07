@@ -8,8 +8,19 @@ import * as AppConst from '../../constant/app.const';
   styleUrls: ['gallery.component.css']
 })
 export class GalleryComponent {
-  constructor(private followUserService: FollowUsersService) { 
+
+  imagesGallery = []
+
+  constructor(private followUserService: FollowUsersService) {
     this.followUserService.followUsers(AppConst.CLICK_GALLERY);
   }
 
- }
+  ngOnInit() {
+    for(var i = 0; i <= 86; i++) {
+      this.imagesGallery[i] = "images/photos/" + i + ".jpg"
+    }
+  }
+
+
+
+}
