@@ -41,7 +41,7 @@
       </div>
       <div class="col-sm-6 col-md-3 amenitites">
         <h3>Amenities</h3>
-        <ul *ngFor="let amenitie of data.room.amenities.split('.')">
+        <ul *ngFor="let amenitie of data.room.amenities.split(',')">
           <li>{{amenitie}}</li>
         </ul>
       </div>

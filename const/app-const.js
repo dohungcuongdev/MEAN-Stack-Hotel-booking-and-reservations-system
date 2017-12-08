@@ -49,3 +49,6 @@ exports.INVALID_USERNAME = "Invalid Username";
 exports.WRONG_PW = "Wrond password!!";
 
 exports.DEFAULT_IP = "2.31.255.255";
+exports.DEFAULT_ROOM_PRICE = 100
+exports.DEFAULT_ROOM_SIZE = 100
+exports.DEFAULT_ROOM_AMINITY = 150

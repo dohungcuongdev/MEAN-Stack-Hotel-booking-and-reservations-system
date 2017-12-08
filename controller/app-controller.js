@@ -335,13 +335,10 @@ exports.getRoomSuggestion = function (request, response) {
             ipSuggestModel.findByUserIP(ip_address, function (err, ip_suggest) {
                 if (err) {
                     console.log(err);
+                } else if(ip_suggest) {
+                    response.send(getSuggestionRoom(rooms, ip_suggest.price, ip_suggest.size, ip_suggest.avgAminities)).status(200);
                 } else {
-                    var arrP = get4NumNearest(rooms, 'price', ip_suggest.price);
-                    var arrS = get4NumNearest(rooms, 'size', ip_suggest.size);
-                    var arrA = get4NumNearest(rooms, 'avgAminities', ip_suggest.avgAminities);
-
-                    var roomSuggested = arrP.concat(arrS).concat(arrA).unique();
-                    response.send(roomSuggested).status(200);
+                    response.send(getSuggestionRoom(rooms, appConst.DEFAULT_ROOM_PRICE, appConst.DEFAULT_ROOM_SIZE, appConst.DEFAULT_ROOM_AMINITY)).status(200);
                 }
             });
         }
@@ -496,6 +493,13 @@ exports.checkregister = function (req, res, next) {
     }
 
 };
+
+function getSuggestionRoom(rooms, price, size, avgAminities) {
+    var arrP = get4NumNearest(rooms, 'price', price);
+    var arrS = get4NumNearest(rooms, 'size', size);
+    var arrA = get4NumNearest(rooms, 'avgAminities', avgAminities);
+    return arrP.concat(arrS).concat(arrA).unique();
+}
 
 
 function get4NumNearest(rooms, att, value) {
