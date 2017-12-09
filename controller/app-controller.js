@@ -357,6 +357,28 @@ exports.deserializeUser = function (id, done) {
     });
 };
 
+exports.checklogin = function (username, password, done) {
+    userModel.GetUserByUsername(username, function (error, username) {
+        if (error)
+            throw error;
+        if (!username) {
+            followUserBehavior(appConst.LOGIN_FAIL +  appConst.INVALID_USERNAME, 0);
+            return done(null, false, { message: appConst.INVALID_USERNAME });
+        }
+
+        userModel.comparePwd(password, username.password, function (error, isMatch) {
+            if (error)
+                throw error;
+            if (isMatch) {
+                return done(null, username);
+            } else {
+                followUserBehavior(appConst.LOGIN_FAIL +  appConst.WRONG_PW, 0);
+                return done(null, false, { message: appConst.WRONG_PW });
+            }
+        });
+    });
+};
+
 function checkAuthentication(req, res, next) {
     if (req.isAuthenticated()) {
         next();
@@ -365,25 +387,13 @@ function checkAuthentication(req, res, next) {
     }
 }
 
-function followUsers(page_access, req, res) {
-
-    var duration = 0;
-    if (req.cookies['start_access'] == null) {
-        res.cookie('start_access', Date.now() + "");
-        duration = 0;
-    } else {
-        duration = Date.now() - +req.cookies['start_access'];
-        res.cookie('start_access', Date.now() + "");
-    }
-
+function followUserBehavior(page_access, duration) {
     var ip_address = getIpAddress();
-
     getIP(function (err, external_ip) {
         if (err) {
-
+            console.log(err);
         } else {
             var geo = geoip.lookup(external_ip);
-
             var newFolowUsersModel = new followUserModel(
                 {
                     user_ip_address: ip_address,
@@ -401,6 +411,18 @@ function followUsers(page_access, req, res) {
             followUserModel.add(newFolowUsersModel);
         }
     });
+}
+
+function followUsers(page_access, req, res) {
+    var duration = 0;
+    if (req.cookies['start_access'] == null) {
+        res.cookie('start_access', Date.now() + "");
+        duration = 0;
+    } else {
+        duration = Date.now() - +req.cookies['start_access'];
+        res.cookie('start_access', Date.now() + "");
+    }
+    followUserBehavior(page_access, duration);
 }
 
 exports.logout = function (req, res) {

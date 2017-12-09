@@ -43,6 +43,7 @@ exports.PHONE_INVALID = 'Phone number must be digits only';
 exports.INPUT_ADDRESS = 'Please input your address';
 exports.CLICK_REGISTER = 'click page /register';
 exports.LOGIN_SUCCESS = 'login success: ';
+exports.LOGIN_FAIL = 'login failed: ';
 exports.CLICK_LOGIN = 'click page /login';
 exports.CLICK_LOGOUT = 'click page /logout';
 exports.INVALID_USERNAME = "Invalid Username";
