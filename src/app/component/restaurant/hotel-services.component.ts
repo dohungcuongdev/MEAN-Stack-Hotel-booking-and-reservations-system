@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { HotelService } from '../../model/hotel-service';
 import { RestaurantService } from '../../service/restaurant.service';
 import { ActivatedRoute } from '@angular/router'; //get routes parameter
@@ -36,7 +36,4 @@ export class HotelServicesComponent {
       }
     )
   }
-
-  ngOnInit(): void { }
-
 }

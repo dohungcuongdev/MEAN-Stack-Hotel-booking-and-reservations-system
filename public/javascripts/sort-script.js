@@ -1,4 +1,17 @@
 
+
+autoChange();
+
+function getColor() {
+    return "#"+((1<<24)*Math.random()|0).toString(16);
+}
+
+function autoChange() {
+    var color = getColor();
+    $('#suggestRoom').css({"color":color});
+    setTimeout(autoChange, 2000); 
+}
+
 function sortAlpha(n, myTable) {
     var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
     table = document.getElementById(myTable);

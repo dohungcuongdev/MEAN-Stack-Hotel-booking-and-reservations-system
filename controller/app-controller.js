@@ -335,7 +335,7 @@ exports.getRoomSuggestion = function (request, response) {
             ipSuggestModel.findByUserIP(ip_address, function (err, ip_suggest) {
                 if (err) {
                     console.log(err);
-                } else if(ip_suggest) {
+                } else if (ip_suggest) {
                     response.send(getSuggestionRoom(rooms, ip_suggest.price, ip_suggest.size, ip_suggest.avgAminities)).status(200);
                 } else {
                     response.send(getSuggestionRoom(rooms, appConst.DEFAULT_ROOM_PRICE, appConst.DEFAULT_ROOM_SIZE, appConst.DEFAULT_ROOM_AMINITY)).status(200);
@@ -344,8 +344,6 @@ exports.getRoomSuggestion = function (request, response) {
         }
     });
 };
-
-
 
 exports.serializeUser = function (username, done) {
     done(null, username.id);
@@ -362,7 +360,7 @@ exports.checklogin = function (username, password, done) {
         if (error)
             throw error;
         if (!username) {
-            followUserBehavior(appConst.LOGIN_FAIL +  appConst.INVALID_USERNAME, 0);
+            followUserBehavior(appConst.LOGIN_FAIL + appConst.INVALID_USERNAME, 0);
             return done(null, false, { message: appConst.INVALID_USERNAME });
         }
 
@@ -372,7 +370,7 @@ exports.checklogin = function (username, password, done) {
             if (isMatch) {
                 return done(null, username);
             } else {
-                followUserBehavior(appConst.LOGIN_FAIL +  appConst.WRONG_PW, 0);
+                followUserBehavior(appConst.LOGIN_FAIL + appConst.WRONG_PW, 0);
                 return done(null, false, { message: appConst.WRONG_PW });
             }
         });
@@ -387,7 +385,7 @@ function checkAuthentication(req, res, next) {
     }
 }
 
-function followUserBehavior(page_access, duration) {
+function followUserBehavior(page_access, duration, username) {
     var ip_address = getIpAddress();
     getIP(function (err, external_ip) {
         if (err) {
@@ -399,6 +397,7 @@ function followUserBehavior(page_access, duration) {
                     user_ip_address: ip_address,
                     external_ip_address: external_ip,
                     page_access: page_access,
+                    username: username,
                     duration: duration,
                     range: geo.range,
                     country: geo.country,
@@ -422,12 +421,13 @@ function followUsers(page_access, req, res) {
         duration = Date.now() - +req.cookies['start_access'];
         res.cookie('start_access', Date.now() + "");
     }
-    followUserBehavior(page_access, duration);
+    followUserBehavior(page_access, duration, req.cookies['username']);
 }
 
 exports.logout = function (req, res) {
     followUsers(appConst.CLICK_LOGOUT, req, res);
     res.clearCookie("id");
+    res.clearCookie("username");
     req.logout();
     res.redirect('/');
 };
@@ -442,9 +442,70 @@ exports.login = function (req, res, next) {
 exports.loginsuccess = function (req, res, next) {
     followUsers(appConst.LOGIN_SUCCESS + req.user.username, req, res);
     var id = req.user._id + "";
+    var username = req.user.username;
     res.cookie('id', id, { maxAge: 60 * 60 * 24 * 7 * 1000 }); // 1 week
+    res.cookie('username', username, { maxAge: 60 * 60 * 24 * 7 * 1000 }); // 1 week
     res.redirect('/');
 };
+
+exports.changepass = function (req, res, next) {
+    if (req.cookies.id == null)
+        res.redirect('/login');
+    followUsers(appConst.CLICK_ChANGE_PW, req, res);
+    res.render('changepass', { errors: null, success: false,title: 'Change Password' });
+};
+
+exports.checkPassword = function (req, res, next) {
+    var username = req.cookies.username;
+    var current_password = req.body.current_password;
+    var new_password = req.body.new_password;
+    req.checkBody('current_password', appConst.INPUT_PASSWORD).notEmpty();
+    req.checkBody('new_password', appConst.INVALID_PASSWORD).notEmpty().len(8, 30);
+    req.checkBody('password_confirmation', appConst.CONFIRM_PW).equals(new_password);
+    var errors = req.validationErrors();
+    if (errors) {
+        followUsers(appConst.SIGNUP_INVALID, req, res);
+        res.render("changepass", { errors: errors, success: false, title: "Change Password" });
+    } else {
+        console.log(current_password);
+        console.log(new_password);
+        userModel.GetUserByUsername(username, function (error, user) {
+            if (user) {
+                userModel.comparePwd(current_password, user.password, function (error, isMatch) {
+                    if (isMatch) {
+                        userModel.comparePwd(new_password, user.password, function (error, isMatch) {
+                            if (isMatch) {
+                                errors = [{ param: 'current_password', msg: appConst.PW_NOT_CHANGE, value: '' }];
+                                followUsers(appConst.CHANGE_PW_FAIL + appConst.PW_NOT_CHANGE, req, res);
+                                res.render("changepass", { errors: errors, success: false, title: "Change Password" });
+                            } else {
+                                userModel.updatePassword(username, new_password);
+                                var newActivity = new activityModel(
+                                    {
+                                        username: username,
+                                        name: 'Change password',
+                                        click: 'change password',
+                                        details: appConst.CHANGE_PW_DETAIL,
+                                        note: appConst.CHANGE_PW_NOTE,
+                                        content: appConst.CHANGE_PW_CONTENT,
+                                        response: appConst.NO_RES
+                                    });
+                                activityModel.addActivity(newActivity);
+                                followUsers(appConst.CHANGE_PW_SUCCESS, req, res);
+                                res.render("changepass", { errors: false, success: true, title: "Change Password" });
+                            }
+                        });
+                    } else {
+                        errors = [{ param: 'current_password', msg: appConst.WRONG_PW, value: '' }];
+                        followUsers(appConst.CHANGE_PW_FAIL + appConst.WRONG_PW, req, res);
+                        res.render("changepass", { errors: errors, success: false, title: "Change Password" });
+                    }
+                })
+            }
+        }
+        )
+    }
+}
 
 exports.register = function (req, res, next) {
     if (req.cookies.id != null)
@@ -453,11 +514,11 @@ exports.register = function (req, res, next) {
     res.render("register", { errors: null, success: false, title: 'Sign Up' });
 };
 
-
 exports.checkregister = function (req, res, next) {
     //use express-validator
     req.checkBody('username', appConst.INPUT_USERNAME).notEmpty();
-    req.checkBody('password', appConst.INPUT_PASSWORD).notEmpty();
+    req.checkBody('username', appConst.INPUT_EMAIL).isEmail();
+    req.checkBody('password', appConst.INVALID_PASSWORD).notEmpty().len(8, 30);
     req.checkBody('password_confirmation', appConst.CONFIRM_PW).equals(req.body.password);
     req.checkBody('name', appConst.INPUT_NAME).notEmpty();
     req.checkBody('phone', appConst.INPUT_PHONE).notEmpty();
@@ -475,11 +536,7 @@ exports.checkregister = function (req, res, next) {
                 console.log(error);
             }
             if (user) {
-                errors = [{
-                    param: 'username',
-                    msg: appConst.EMAIL_TAKEN,
-                    value: ''
-                }];
+                errors = [{ param: 'username', msg: appConst.EMAIL_TAKEN, value: '' }];
                 followUsers(appConst.ACCOUNT_USED + username, req, res);
                 res.render("register", { errors: errors, success: false, title: "Sign Up" });
             } else {
@@ -498,9 +555,6 @@ exports.checkregister = function (req, res, next) {
                     {
                         username: req.body.username,
                         name: 'Sign up',
-                        fullname: req.body.name,
-                        email: req.body.username,
-                        phone: req.body.phone,
                         click: 'register',
                         details: appConst.SIGNUP_DETAIL + req.body.username,
                         note: appConst.ACCOUNT_INIT,

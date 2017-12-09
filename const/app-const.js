@@ -22,7 +22,6 @@ exports.RESTAURANT_API = '/api/restaurant';
 exports.ACTIVITY_API = '/api/activity';
 exports.FOLLOW_USER_API = '/api/follow-users';
 
-
 exports.SIGNUP_SUCESS = 'sign up successfully: ';
 exports.TKS_SIGNUP = 'Thank you for join us! You are able to use premium feature!'
 exports.ACCOUNT_INIT = 'You are having $500 in your account';
@@ -33,22 +32,31 @@ exports.ACCOUNT_USED = 'sign up failed: exist account: ';
 exports.EMAIL_TAKEN = 'This username is already taken';
 exports.SIGNUP_ERR = 'sign up failed: cannot check users';
 exports.SIGNUP_INVALID = 'sign up failed: validation form not accepted';
+exports.CHANGE_PW_FAIL = 'Change password failed: ';
+exports.CHANGE_PW_SUCCESS = 'Change password successfully';
+exports.CHANGE_PW_DETAIL = 'You have change your password';
+exports.CHANGE_PW_NOTE = 'Please remeber your new password';
+exports.CHANGE_PW_CONTENT = 'Password Changed Successfully';
 
 exports.INPUT_USERNAME = 'Please input your username';
 exports.INPUT_PASSWORD = 'Please input your password';
+exports.INVALID_PASSWORD = 'Password must be from 8-30 character';
+exports.INPUT_EMAIL = 'Username must be your email';
+exports.INPUT_NEW_PASSWORD = 'Please input the new password';
 exports.CONFIRM_PW = 'Confirm must be the same with password';
+exports.PW_NOT_CHANGE = 'Your new password is the same as old password';
 exports.INPUT_NAME = 'Please input your full name';
 exports.INPUT_PHONE = 'Please input your phone number';
 exports.PHONE_INVALID = 'Phone number must be digits only';
 exports.INPUT_ADDRESS = 'Please input your address';
 exports.CLICK_REGISTER = 'click page /register';
+exports.CLICK_ChANGE_PW = "click page /change-password";
 exports.LOGIN_SUCCESS = 'login success: ';
 exports.LOGIN_FAIL = 'login failed: ';
 exports.CLICK_LOGIN = 'click page /login';
 exports.CLICK_LOGOUT = 'click page /logout';
 exports.INVALID_USERNAME = "Invalid Username";
 exports.WRONG_PW = "Wrond password!!";
-
 exports.DEFAULT_IP = "2.31.255.255";
 exports.DEFAULT_ROOM_PRICE = 100
 exports.DEFAULT_ROOM_SIZE = 100

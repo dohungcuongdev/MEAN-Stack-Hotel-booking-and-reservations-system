@@ -1,22 +1,9 @@
-<!-- top 
-  <form class="navbar-form navbar-left newsletter" role="search">
-        <div class="form-group">
-          <input type="text" class="form-control" placeholder="Enter Your Email Id Here">
-        </div>
-        <button type="submit" class="btn btn-inverse">Subscribe</button>
-    </form>
- top -->
-
-<!-- header -->
-
-
 <div class="login-header" *ngIf="auth.authenticated == true">
   <div class="account-logout">
     <button [routerLink]="['', 'profile']" style="margin-top: 5px" class="button5">Hello, {{data.user.username}}</button>
     <button class="button5" (click)="logout()">Log out</button>
   </div>
 </div>
-
 <nav class="navbar  navbar-default" role="navigation">
   <div class="container">
     <!-- Brand and toggle get grouped for better mobile display -->
@@ -29,19 +16,18 @@
       </button>
       <a class="navbar-brand"><img src="images/logo.png" alt="holiday crown"></a>
     </div>
-
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse navbar-right" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav">
         <li><a [routerLink]="['', 'home']">Home </a></li>
+        <li *ngIf="auth.authenticated == true"><a [routerLink]="['', 'profile']">Profile </a></li>
         <li><a [routerLink]="['', 'rooms-tariff']">Rooms & Tariff</a></li>
         <li><a [routerLink]="['', 'restaurant']">Restaurant</a></li>
         <li><a [routerLink]="['', 'introduction']">Introduction</a></li>
         <li><a [routerLink]="['', 'gallery']">Gallery</a></li>
         <li><a [routerLink]="['', 'contact']">Contact</a></li>
-        <li class="tr-p" *ngIf="auth.authenticated == false"><a (click)="login()">Login </a></li>
-        <li *ngIf="auth.authenticated == true"><a [routerLink]="['', 'profile']">Profile </a></li>
         <li *ngIf="auth.authenticated == true"><a [routerLink]="['', 'feedback']">Feedback </a></li>
+        <li class="tr-p" *ngIf="auth.authenticated == false"><a (click)="login()">Login </a></li>
       </ul>
     </div>
     <!-- Wnavbar-collapse -->

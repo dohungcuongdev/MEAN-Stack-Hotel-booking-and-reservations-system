@@ -50,3 +50,18 @@ module.exports.GetUserByID = function (id, callback) {
     User.findById(id,callback);
 };
 
+module.exports.updatePassword = function (username, newpassword) {
+    bcrypt.genSalt(10, function (err, salt) {// user bcryptJS to encrypt the password
+        bcrypt.hash(newpassword, salt, function (err, hash_newpassword) {
+            var myquery = { username: username };
+            var newvalues = { password: hash_newpassword };
+            User.updateOne(myquery, newvalues, function(err, res) {
+                if (err) throw err;
+                console.log("password updated");
+            });
+        });
+    });
+};
+
+//db.getCollection('customers').update( { "username": { $eq: "cuongvip1295@gmail.com" } }, { $set: { "password": "123" } }, { multi: true } )
+

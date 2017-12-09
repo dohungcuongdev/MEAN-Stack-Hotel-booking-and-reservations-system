@@ -1,5 +1,3 @@
-
-
 h2 {
     color:#FF4500;
 }
@@ -53,10 +51,6 @@ h3 {
     margin-bottom: 20px;
 }
 
-br{
-    display: none;
-}
-
 .btn {
     border: none;
     padding: 14px 28px;
@@ -100,8 +94,15 @@ br{
     width:150px;
 }
 
+/* iPad */
+@media only screen and (max-width: 1024px) {
 
+    #suggestRoom, #input-item, #search-item {
+        display: none;
+    }
+} /* responsive */
 
+/* mobile */
 @media only screen and (max-width: 605px) { 
    .space {
         margin-top:20px;
@@ -110,7 +111,7 @@ br{
         font-size: 16px;
     }
 
-    br {
-        display: block;
+    #suggestRoom, #btn-all-item, #btn-food, #btn-drink, #btn-fruit, #btn-ice-cream{
+        display: none;
     }
 } /* responsive */

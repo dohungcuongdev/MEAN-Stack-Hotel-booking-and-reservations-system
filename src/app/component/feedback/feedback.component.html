@@ -1,34 +1,28 @@
+<br>
+<a randomColor id="suggestRoom" style="margin-left: 85%" onclick="document.documentElement.scrollTop = 0; document.body.scrollTop = 0;"
+	[routerLink]="['', 'room-suggestion']"><b>Rooms you should like</b></a>
 <div class="container">
-
 	<h1 *ngIf="auth.authenticated == true" class="title">Feedback</h1>
 	<h4 style="margin-top: 20px" *ngIf="auth.authenticated == false">Please login to use this feature!</h4>
-
-
 	<!-- form -->
 	<div class="contact">
-
-
-
 		<div class="row">
-
 			<div class="col-sm-12">
 				<div class="carousel-inner">
 					<div style="margin-left: 60px" class="item active"><img src="images/HotelFeedback.jpg" class="img-responsive" alt="slide"></div>
 				</div>
-
-
 				<div class="col-sm-6 col-sm-offset-3" *ngIf="auth.authenticated == true">
 					<div class="spacer">
 						<h4>Would you please vote for our service and write a feedback to us?</h4>
 						<form role="form">
-							<span class="star-cb-group">
-      <input type="radio" id="rating-5" name="rating" (click)="rating(5)"/><label for="rating-5">5</label>
-      <input type="radio" id="rating-4" name="rating" (click)="rating(4)"/><label for="rating-4">4</label>
-      <input type="radio" id="rating-3" name="rating" (click)="rating(3)" checked="checked"/><label for="rating-3">3</label>
-      <input type="radio" id="rating-2" name="rating" (click)="rating(2)" /><label for="rating-2">2</label>
-      <input type="radio" id="rating-1" name="rating" (click)="rating(1)"/><label for="rating-1">1</label>
-      <!--<input type="radio" id="rating-0" name="rating" value="0" #r0 class="star-cb-clear" /><label for="rating-0">0</label>-->
-    </span>
+								<span class="star-cb-group">
+								<input type="radio" id="rating-5" name="rating" (click)="rating(5)"/><label for="rating-5">5</label>
+								<input type="radio" id="rating-4" name="rating" (click)="rating(4)"/><label for="rating-4">4</label>
+								<input type="radio" id="rating-3" name="rating" (click)="rating(3)" checked="checked"/><label for="rating-3">3</label>
+								<input type="radio" id="rating-2" name="rating" (click)="rating(2)" /><label for="rating-2">2</label>
+								<input type="radio" id="rating-1" name="rating" (click)="rating(1)"/><label for="rating-1">1</label>
+								<!--<input type="radio" id="rating-0" name="rating" value="0" #r0 class="star-cb-clear" /><label for="rating-0">0</label>-->
+							</span>
 							<script>
 								var logID = 'log',
 									log = $('<div id="' + logID + '"></div>');
@@ -41,21 +35,12 @@
 							<div class="form-group">
 								<textarea type="text" class="form-control" placeholder="Message" #mes rows="4"></textarea>
 							</div>
-
 							<button type="submit" (click)="sendfeedback(mes.value)" class="btn btn-default">Send</button>
 						</form>
 					</div>
-
-
 				</div>
-
-
-
-
-
 			</div>
 		</div>
 	</div>
 	<!-- form -->
-
 </div>

@@ -16,5 +16,7 @@ router.post('/login', passport.authenticate('local', { successRedirect: '/logins
 router.get('/loginsuccess', ctrl.loginsuccess);
 router.get('/register', ctrl.register);
 router.post('/register', ctrl.checkregister);
+router.get('/change-password', ctrl.changepass);
+router.post('/change-password', ctrl.checkPassword);
 
 module.exports = router;

@@ -3,11 +3,9 @@ import { Component, OnInit, OnChanges } from '@angular/core';
 
 @Component({
   selector: 'app-root',
-  templateUrl: 'app.component.html',
-  styleUrls: ['app.component.css']
+  templateUrl: 'app.component.html'
 })
 export class AppComponent {
-
   constructor(private auth: AuthenticationService) {
     //called first time before the ngOnInit()
     this.auth.checkAuthentication()

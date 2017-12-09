@@ -67,3 +67,17 @@
 h1 {
     color:#FF4500;
 }
+
+/* iPad */
+@media only screen and (max-width: 800px) {
+    #suggestRoom {
+        display: none;
+    }
+} /* responsive */
+
+/* mobile */
+@media only screen and (max-width: 605px) {
+    #suggestRoom {
+        display: none;
+    }
+} /* responsive */

@@ -1,88 +1,79 @@
-<div class="spacer services wowload fadeInUp">
-    <div class="container" style="margin-top: -90px;">
-        <h1 class="title">Your Profile</h1>
-        <h4 *ngIf="auth.authenticated == false">Please login to use this feature!</h4>
-        <div class="row" *ngIf="auth.authenticated == true">
-            <!--<div class="col-sm-1"></div>-->
-            <div class="col-sm-6">
-                <!-- RoomCarousel -->
-                <div class="carousel-inner" style="margin-top: -14px">
-                    <table>
-                        <tr>
-                            <td><strong>User Name</strong></td>
-                            <td><input type="text" [value]="data.user.username" placeholder="User Name" readonly></td>
-                        </tr>
-                        <tr>
-                            <td><strong>Full Name</strong></td>
-                            <td><input type="text" [value]="data.user.name" placeholder="Full Name" #name [readonly]="!canEdit"></td>
-                        </tr>
-                        <tr>
-                            <td><strong>Phone</strong></td>
-                            <td><input type="text" [value]="data.user.phone" placeholder="Phone Number" #phone [readonly]="!canEdit"></td>
-                        </tr>
-                        <tr>
-                            <td><strong>Address</strong></td>
-                            <td><input type="text" [value]="data.user.address" placeholder="Address" #address [readonly]="!canEdit"></td>
-                        </tr>
-                    </table>
+<div class="container">
+    <h1 class="title">Your Profile</h1>
+    <h4 *ngIf="auth.authenticated == false">Please login to use this feature!</h4>
+    <div class="row" *ngIf="auth.authenticated == true">
+        <!--<div class="col-sm-1"></div>-->
+        <div class="col-sm-6">
+            <div class="carousel-inner" style="margin-top: -14px">
+                <table>
+                    <tr>
+                        <td><strong>User Name</strong></td>
+                        <td><input type="text" [value]="data.user.username" placeholder="User Name" readonly></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Full Name</strong></td>
+                        <td><input type="text" [value]="data.user.name" placeholder="Full Name" #name [readonly]="!canEdit"></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Phone</strong></td>
+                        <td><input type="text" [value]="data.user.phone" placeholder="Phone Number" #phone [readonly]="!canEdit"></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Address</strong></td>
+                        <td><input type="text" [value]="data.user.address" placeholder="Address" #address [readonly]="!canEdit"></td>
+                    </tr>
+                </table>
 
-                </div>
-                <!-- RoomCarousel-->
-                <div *ngIf="!canEdit" class="caption">Edit Information<a (click)="editInfo()" class="pull-right tr-p"><i class="fa fa-edit"></i></a></div>
-                <div *ngIf="canEdit" class="caption">Save Information<a (click)="saveInfo(name.value,phone.value,address.value)" class="pull-right tr-p"><i class="fa fa-edit"></i></a></div>
             </div>
+            <div *ngIf="!canEdit" class="caption">Edit Information<a (click)="editInfo()" class="pull-right tr-p"><i class="fa fa-edit"></i></a></div>
+            <div *ngIf="canEdit" class="caption">Save Information<a (click)="saveInfo(name.value,phone.value,address.value)" class="pull-right tr-p"><i class="fa fa-edit"></i></a></div>
+        </div>
+        <div class="col-sm-6">
+            <div class="carousel-inner" style="margin-top: -14px">
 
-            <div class="col-sm-6">
-                <!-- RoomCarousel -->
-                <div class="carousel-inner" style="margin-top: -14px">
-
-                    <h5><strong>Your account balance</strong>: ${{data.user.balance}}.00</h5>
-                    <table>
-                        <tr>
-                            <td><strong>Type</strong></td>
-                            <td><input type="text" value="Premium Account" readonly></td>
-                        </tr>
-                        <tr>
-                            <td><strong>Pin</strong></td>
-                            <td><input type="password" value="123456789101112" readonly></td>
-                        </tr>
-                        <tr>
-                            <td><strong>Seri</strong></td>
-                            <td><input type="password" value="123456789101112" readonly></td>
-                        </tr>
-                    </table>
-
-                </div>
-                <div class="right">
-                    <p>Change your password right now?</p>
-                    <button class="btn btn-orange">Change Password</button>
-                </div>
+                <h5><strong>Your account balance</strong>: ${{data.user.balance}}.00</h5>
+                <table>
+                    <tr>
+                        <td><strong>Type</strong></td>
+                        <td><input type="text" value="Premium Account" readonly></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Pin</strong></td>
+                        <td><input type="password" value="123456789101112" readonly></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Seri</strong></td>
+                        <td><input type="password" value="123456789101112" readonly></td>
+                    </tr>
+                </table>
             </div>
-            <div class="col-sm-12">
-                <!-- RoomCarousel -->
-                <br><br><br>
-                <div class="carousel-inner">
-                    <h3>Your Activity</h3>
-                    <table class="activity" border="1" id="activity-table">
-                        <tr>
-                            <th class="tr-p" onclick="sortDate(0,'activity-table')">Time</th>
-                            <th class="tr-p" onclick="sortAlpha(1,'activity-table')">Activity</th>
-                            <th class="tr-p" onclick="sortAlpha(2,'activity-table')">Details</th>
-                            <th class="tr-p" onclick="sortAlpha(3,'activity-table')">Notes</th>
-                            <th class="tr-p" onclick="sortAlpha(4,'activity-table')">Response</th>
-                            <th>Content</th>
-                        </tr>
-                        <tr *ngFor="let act of listactivity">
-                            <td>{{act.created_at | convertdate}}</td>
-                            <td>{{act.name}}</td>
-                            <td><a class="tr-p" (click)="clickdetail(act.click)">{{act.details}}</a></td>
-                            <td>{{act.note}}</td>
-                            <td>{{act.response}}</td>
-                            <td><a class="tr-p" (click)="viewcontent(act.content)">View content</a></td>
-                        </tr>
-                    </table>
-
-                </div>
+            <div class="right">
+                <p>Change your password right now?</p>
+                <button onclick="location.href = 'http://localhost:3000/change-password'" class="btn btn-orange">Change Password</button>
+            </div>
+        </div>
+        <div class="col-sm-12">
+            <br><br><br>
+            <div class="carousel-inner">
+                <h3>Your Activity</h3>
+                <table class="activity" border="1" id="activity-table">
+                    <tr>
+                        <th class="tr-p" onclick="sortDate(0,'activity-table')">Time</th>
+                        <th class="tr-p" onclick="sortAlpha(1,'activity-table')">Activity</th>
+                        <th class="tr-p" onclick="sortAlpha(2,'activity-table')">Details</th>
+                        <th class="tr-p" onclick="sortAlpha(3,'activity-table')">Notes</th>
+                        <th class="tr-p" onclick="sortAlpha(4,'activity-table')">Response</th>
+                        <th>Content</th>
+                    </tr>
+                    <tr *ngFor="let act of listactivity">
+                        <td>{{act.created_at | convertdate}}</td>
+                        <td>{{act.name}}</td>
+                        <td><a class="tr-p" (click)="clickdetail(act.click)">{{act.details}}</a></td>
+                        <td>{{act.note}}</td>
+                        <td>{{act.response}}</td>
+                        <td><a class="tr-p" (click)="viewcontent(act.content)">View content</a></td>
+                    </tr>
+                </table>
             </div>
         </div>
     </div>

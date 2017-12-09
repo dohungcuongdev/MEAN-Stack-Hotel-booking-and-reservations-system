@@ -1,4 +1,3 @@
-
 h1 {
     color:blue;
 }
@@ -11,7 +10,6 @@ h1 {
     height: 10.97em;
     line-height: 3em;
 }
-
 
 .type-price span{
     display: block;
@@ -36,4 +34,16 @@ img-responsive,.thumbnail>img,.thumbnail a>img,.carousel-inner>.item>img,.carous
     background-size: cover;
 }
 
+/* iPad */
+@media only screen and (max-width: 800px) {
+    #suggestRoom {
+        display: none;
+    }
+} /* responsive */
 
+/* mobile */
+@media only screen and (max-width: 605px) {
+    #suggestRoom {
+        display: none;
+    }
+} /* responsive */

@@ -11,8 +11,7 @@ import * as AppConst from '../../constant/app.const';
 
 @Component({
   selector: 'home',
-  templateUrl: 'home.component.html',
-  styleUrls: ['home.component.css']
+  templateUrl: 'home.component.html'
 })
 export class HomeComponent implements OnInit {
 
@@ -22,9 +21,9 @@ export class HomeComponent implements OnInit {
     private userservice: UserService,
     private data: InMemoryDataService,
     private cookie: CookieService,
-    private followUserService: FollowUsersService) { 
-      this.followUserService.followUsers(AppConst.CLICK_HOMEPAGE);
-    }
+    private followUserService: FollowUsersService) {
+    this.followUserService.followUsers(AppConst.CLICK_HOMEPAGE);
+  }
 
   ngOnInit(): void {
     let id = this.cookie.get("id")

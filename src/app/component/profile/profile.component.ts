@@ -16,7 +16,6 @@ declare var swal: any;
   styleUrls: ['profile.component.css']
 })
 
-
 export class ProfileComponent implements OnInit, OnChanges {
 
   canEdit = false
@@ -30,8 +29,8 @@ export class ProfileComponent implements OnInit, OnChanges {
     private data: InMemoryDataService,
     private cookie: CookieService,
     private followUserService: FollowUsersService) {
-      this.followUserService.followUsers(AppConst.CLICK_PROFILE);
-    }
+    this.followUserService.followUsers(AppConst.CLICK_PROFILE);
+  }
 
   private initialize() {
     if (this.cookie.get("id") == null) {
@@ -50,7 +49,6 @@ export class ProfileComponent implements OnInit, OnChanges {
     });
   }
 
-
   ngOnInit(): void {
     this.initialize()
   }
@@ -58,7 +56,6 @@ export class ProfileComponent implements OnInit, OnChanges {
   ngOnChanges() {
     this.initialize()
   }
-
 
   clickdetail(s: string) {
     document.documentElement.scrollTop = 0
@@ -95,10 +92,6 @@ export class ProfileComponent implements OnInit, OnChanges {
         }, err => this.showErr(err)
       )
     }
-
-  }
-
-  changepassword(currentpass: string, newpass: string, confirmpass: string) {
 
   }
 

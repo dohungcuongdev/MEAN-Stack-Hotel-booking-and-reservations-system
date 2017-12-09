@@ -14,7 +14,6 @@ declare var swal: any;
   styleUrls: ['top-room.component.css']
 })
 
-
 export class TopRoomComponent implements OnInit {
 
   listrooms = []
@@ -34,7 +33,6 @@ export class TopRoomComponent implements OnInit {
     return value;
   }
 
-
   ngOnInit(): void {
     this.roomservice.getAllRooms().subscribe((listrooms: Room[]) => {
       this.listrooms = listrooms
@@ -42,7 +40,7 @@ export class TopRoomComponent implements OnInit {
         listrooms[i].star = this.check(listrooms[i].star);
         listrooms[i].numvote = this.check(listrooms[i].numvote);
         listrooms[i].imgwithURL = AppConst.roomImgUrl + this.listrooms[i].img;
-        listrooms[i].average_star = (listrooms[i].numvote == 0) ? 0: listrooms[i].star / listrooms[i].numvote
+        listrooms[i].average_star = (listrooms[i].numvote == 0) ? 0 : listrooms[i].star / listrooms[i].numvote
       }
     })
   }

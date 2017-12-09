@@ -45,7 +45,8 @@ import { OrderByPipe } from "./pipe/orderby.pipe";
 import { ToArrayPipe } from "./pipe/toarray";
 
 //directive
-import { IntroDirective } from "./directive/introduction-directive"
+import { IntroDirective } from "./directive/introduction-directive";
+import { RandomColorDirective } from "./directive/random-color-directive"
 
 @NgModule({
   declarations: [
@@ -70,7 +71,8 @@ import { IntroDirective } from "./directive/introduction-directive"
     ConvertDatePipe,
     OrderByPipe,
     ToArrayPipe,
-    IntroDirective //directive
+    IntroDirective, //directive
+    RandomColorDirective
   ],
   imports: [
     BrowserModule,

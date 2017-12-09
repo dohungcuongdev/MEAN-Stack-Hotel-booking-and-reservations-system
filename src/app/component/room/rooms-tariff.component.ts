@@ -27,7 +27,7 @@ export class RoomsTariffComponent implements OnInit {
     private roomservice: RoomService,
     private data: InMemoryDataService,
     private followUserService: FollowUsersService
-  ) { 
+  ) {
     this.followUserService.followUsers(AppConst.CLICK_ROOMS);
   }
 

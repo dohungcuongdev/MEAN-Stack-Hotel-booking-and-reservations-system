@@ -1,3 +1,5 @@
+<br>
+<a randomColor id="suggestRoom" style="margin-left: 85%" onclick="document.documentElement.scrollTop = 0; document.body.scrollTop = 0;" [routerLink]="['', 'room-suggestion']"><b>Rooms you should like</b></a>
 <div class="container">
   <h1 class="title">Room {{data.room.name}}</h1>
   <!-- RoomDetails -->
@@ -11,7 +13,6 @@
     <a class="right carousel-control" href="#RoomDetails" role="button" data-slide="next"><i class="fa fa-angle-right"></i></a>
   </div>
   <!-- RoomCarousel-->
-
   <div *ngIf="data.room.name !== 'not found'" class="room-features spacer">
     <div class="row">
       <div class="col-sm-12 col-md-5">
@@ -95,11 +96,8 @@
         <br><br><br>
       </div>
     </div>
-
   </div>
 </div>
-
-
 <!-- reservation-information -->
 <div class="container">
   <div id="information" class="spacer reserve-info ">

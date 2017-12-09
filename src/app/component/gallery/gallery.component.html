@@ -1,7 +1,6 @@
-
-
+<br>
+<a randomColor id="suggestRoom" style="margin-left: 85%" onclick="document.documentElement.scrollTop = 0; document.body.scrollTop = 0;" [routerLink]="['', 'room-suggestion']"><b>Rooms you should like</b></a>
 <div class="container">
-
        <h1 class="title">Gallery</h1>
        <div class="row gallery">
               <div *ngFor="let img of imagesGallery" class="col-sm-4 wowload fadeInUp"><a [href]="img" title="Gallery" class="gallery-image" data-gallery><img [src]="img" class="img-responsive" style="width:360px; height: 225px"></a></div>

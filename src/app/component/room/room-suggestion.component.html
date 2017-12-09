@@ -1,25 +1,19 @@
 <div class="container">
-
   <h2>Recommendation Rooms</h2>
-
-
   <!-- form -->
-
   <div class="row">
     <div class="toolbar">
-      <button (click)="search('all')" class="btn btn-type">All Rooms</button>
-      <button (click)="search('available')" class="btn btn-type">Available</button>
-      <button (click)="search('deluxe')" class="btn btn-type">Deluxe</button>
-      <button (click)="search('family')" class="btn btn-type">Family</button>
-      <button (click)="search('single')" class="btn btn-type">Single</button>
-      <button (click)="search('couple')" class="btn btn-type">Couple</button>
-      <br><input class="space" type="text" placeholder="Search for rooms" #searchbox [(ngModel)]='searchboxvalue' />
-      <button (click)="searchInput(searchbox.value)" class="btn search"></button>
+      <button id="btn-all-room" (click)="search('all')" class="btn btn-type">All Rooms</button>
+      <button id="btn-available" (click)="search('available')" class="btn btn-type">Available</button>
+      <button id="btn-type-d" (click)="search('deluxe')" class="btn btn-type">Deluxe</button>
+      <button id="btn-type-f" (click)="search('family')" class="btn btn-type">Family</button>
+      <button id="btn-type-s" (click)="search('single')" class="btn btn-type">Single</button>
+      <button id="btn-type-c" (click)="search('couple')" class="btn btn-type">Couple</button>
+      <input id="input-room" class="space" type="text" placeholder="Search for rooms" #searchbox [(ngModel)]='searchboxvalue' />
+      <button id="search-room" (click)="searchInput(searchbox.value)" class="btn search"></button>
     </div>
   </div>
   <h3 [class]="searchselected + '-room'">{{searchselected | capitalize }} Room</h3>
-
-
   <div class="row">
     <div class="col-sm-6 wowload fadeInUp" *ngFor="let room of rooms_page">
       <div class="rooms">
@@ -36,7 +30,6 @@
       </div>
     </div>
   </div>
-
   <div class="text-center">
     <ul class="pagination">
       <li *ngIf="pageclicked > 1"><a class="tr-p" (click)="clickpreviouspage()">«</a></li>
@@ -44,7 +37,6 @@
       <ng-container *ngFor="let page of pages; let i = index">
         <li *ngIf="i+1 === pageclicked" class="active"><a class="tr-p" (click)="clickpage(i+1)">{{i+1}} <span class="sr-only">(current)</span></a>
         </li>
-
         <li *ngIf="i+1 != pageclicked">
           <a class="tr-p" (click)="clickpage(i+1)">{{i+1}}</a>
         </li>
@@ -53,6 +45,4 @@
       <li *ngIf="pageclicked >= pages.length" class="disabled"><a>»</a></li>
     </ul>
   </div>
-
-
 </div>

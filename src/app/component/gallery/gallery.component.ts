@@ -20,7 +20,4 @@ export class GalleryComponent {
       this.imagesGallery[i] = "images/photos/" + i + ".jpg"
     }
   }
-
-
-
 }

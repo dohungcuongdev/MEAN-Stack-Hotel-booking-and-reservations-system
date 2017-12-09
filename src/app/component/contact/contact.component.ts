@@ -14,7 +14,7 @@ declare var swal: any;
 export class ContactComponent {
   constructor(private activityservice: ActivityService, private followUserService: FollowUsersService) {
     this.followUserService.followUsers(AppConst.CLICK_CONTACT);
-   }
+  }
 
   sendContact(fullname: string, email: string, phone: string, mes: string) {
     if (fullname !== '' && email !== '' && phone !== '' && mes !== '') {
@@ -34,5 +34,4 @@ export class ContactComponent {
     swal(AppConst.ERR_TITLE, AppConst.ERROR, AppConst.ERR)
     console.log(err)
   }
-
 }

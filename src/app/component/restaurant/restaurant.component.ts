@@ -15,7 +15,6 @@ import 'rxjs/add/operator/catch'; //http catch error
 })
 export class RestaurantComponent implements OnInit {
 
-
   numpage: number
   pages = []
   services_page = []
@@ -32,7 +31,6 @@ export class RestaurantComponent implements OnInit {
   ) { 
     this.followUserService.followUsers(AppConst.CLICK_RESTAURANT);
   }
-
 
   public ngOnInit(): void {
     //get list all services
