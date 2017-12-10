@@ -1,10 +1,7 @@
-
-
 var bcrypt = require('bcryptjs');
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 mongoose.Promise = global.Promise;
-
 
 var ipSuggestSchema = new Schema(
     {
@@ -26,18 +23,15 @@ module.exports.findByUserIP = function (ip, callbackAction) {
     ipSuggest.findOne(query, callbackAction)
 };
 
-
 module.exports.add = function (newIPSuggest) {
     newIPSuggest.save();
 };
 
 module.exports.update = function (id, newIPSuggest) {
     ipSuggest.findOne({ '_id': id }, function (err, ipSuggested) {
-
 			if(err || ipSuggested == null){
 				console.log(err);
 			}else{
-
                 ipSuggested.remove({ _id: id }, function (err, resource) {
                     if (err) {
                         console.log(err);
@@ -56,4 +50,3 @@ module.exports.update = function (id, newIPSuggest) {
 			}
 		});
 };
-

@@ -1,5 +1,3 @@
-
-
 var bcrypt = require('bcryptjs');
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
@@ -31,7 +29,6 @@ module.exports.findByUserIP = function (user_ip_address, callbackAction) {
     var query = { user_ip_address: user_ip_address };
     follow_users.find(query, callbackAction)
 };
-
 
 module.exports.add = function (newFolowUsersModel) {
     newFolowUsersModel.save();

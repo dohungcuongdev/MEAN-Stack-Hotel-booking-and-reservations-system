@@ -19,7 +19,6 @@ var userSchema = new Schema(
 );
 var User = module.exports = mongoose.model('User', userSchema);
 
-
 //function add new user
 module.exports.addUser = function (newuser) {
     bcrypt.genSalt(10, function (err, salt) {// user bcryptJS to encrypt the password
@@ -62,6 +61,4 @@ module.exports.updatePassword = function (username, newpassword) {
         });
     });
 };
-
-//db.getCollection('customers').update( { "username": { $eq: "cuongvip1295@gmail.com" } }, { $set: { "password": "123" } }, { multi: true } )
 

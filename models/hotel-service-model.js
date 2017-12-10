@@ -1,10 +1,7 @@
-
-
 var bcrypt = require('bcryptjs');
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 mongoose.Promise = global.Promise;
-
 
 var hotelServiceSchema = new Schema(
     {
@@ -29,4 +26,3 @@ module.exports.findServiceByName = function (servicename, callbackAction) {
     var query = {name: servicename};
     hotel_service.findOne(query, callbackAction)
 };
-

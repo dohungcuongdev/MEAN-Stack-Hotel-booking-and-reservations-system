@@ -1,5 +1,3 @@
-
-
 var bcrypt = require('bcryptjs');
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
@@ -36,4 +34,3 @@ module.exports.findFeedbackRoom = function (room_id, callbackAction) {
 module.exports.addActivity = function (newActivity) {
     newActivity.save();
 };
-

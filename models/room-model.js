@@ -1,10 +1,7 @@
-
-
 var bcrypt = require('bcryptjs');
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 mongoose.Promise = global.Promise;
-
 
 var roomSchema = new Schema(
     {
@@ -36,4 +33,3 @@ module.exports.findRoomByRoomName = function (roomname, callbackAction) {
     var query = {name: roomname};
     room.findOne(query, callbackAction)
 };
-
