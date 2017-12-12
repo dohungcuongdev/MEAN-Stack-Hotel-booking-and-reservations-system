@@ -12,7 +12,7 @@
       <button id="btn-drink" (click)="search('drink')" class="btn btn-type">Drink</button>
       <button id="btn-fruit" (click)="search('fruit')" class="btn btn-type">Fruit</button>
       <button id="btn-ice-cream" (click)="search('ice-cream')" class="btn btn-type">Ice-cream</button>
-      <input id="input-item" class="space" type="text" placeholder="Search for services" #searchbox [(ngModel)]='searchboxvalue' />
+      <input id="input-item" (keyup.enter)="searchInput(searchbox.value)" class="space" type="text" placeholder="Search for services" #searchbox [(ngModel)]='searchboxvalue' />
       <button id="search-item" (click)="searchInput(searchbox.value)" class="btn search"></button>
     </div>
   </div>

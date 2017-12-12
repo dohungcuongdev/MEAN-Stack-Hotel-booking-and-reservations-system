@@ -108,7 +108,7 @@ h3 {
 /* iPad */
 @media only screen and (max-width: 1024px) {
 
-    #suggestRoom, #input-room, #search-room {
+    #suggestRoom, #input-item, #search-item {
         display: none;
     }
 } /* responsive */

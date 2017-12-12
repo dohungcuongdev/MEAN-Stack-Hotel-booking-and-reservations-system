@@ -9,8 +9,8 @@
       <button id="btn-type-f" (click)="search('family')" class="btn btn-type">Family</button>
       <button id="btn-type-s" (click)="search('single')" class="btn btn-type">Single</button>
       <button id="btn-type-c" (click)="search('couple')" class="btn btn-type">Couple</button>
-      <input id="input-room" class="space" type="text" placeholder="Search for rooms" #searchbox [(ngModel)]='searchboxvalue' />
-      <button id="search-room" (click)="searchInput(searchbox.value)" class="btn search"></button>
+      <input id="input-item" (keyup.enter)="searchInput(searchbox.value)" class="space" type="text" placeholder="Search for rooms" #searchbox [(ngModel)]='searchboxvalue' />
+      <button id="search-item" (click)="searchInput(searchbox.value)" class="btn search"></button>
     </div>
   </div>
   <h3 [class]="searchselected + '-room'">{{searchselected | capitalize }} Room</h3>
