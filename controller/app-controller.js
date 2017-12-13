@@ -18,37 +18,16 @@ var appConst = require('../const/app-const');
 // var testUsername = "cuongpro1295@gmail.com";
 
 var nodemailer = require('nodemailer');
+var emailExistence = require('email-existence');
 
-var transporter = nodemailer.createTransport({ service: appConst.MAIL_SERVICE, auth: { user: appConst.MAIL_USER, pass: appConst.MAIL_AUTH } });
-
-function sendEmailByMailOptions(mailOptions) {
-    transporter.sendMail(mailOptions, function (error, info) {
-        if (error) {
-            return appConst.MAIL_ERR;
-        } else {
-            return appConst.MAIL_SENT;
-        }
-    });
-}
-
-function sendEmail(from, to, subject, content) {
-    var mailOptions = { from: from, to: to, subject: subject, text: content };
-    return sendEmailByMailOptions(mailOptions);
-}
-
-function send2Email(from, to1, to2, subject, content) {
-    var mailOptions = { from: from, to: to1 + ', ' + to2, subject: subject, text: content };
-    return sendEmailByMailOptions(mailOptions);
-}
+var transporter = nodemailer.createTransport({ service: appConst.MAIL_SERVICE, tls: { rejectUnauthorized: false }, auth: { user: appConst.MAIL_USER, pass: appConst.MAIL_AUTH } });
 
 function sendHTMLEmail(from, to, subject, content) {
-    var mailOptions = { from: from, to: to, subject: subject, html: content };
-    return sendEmailByMailOptions(mailOptions);
+    transporter.sendMail(getMailOption(from, to, subject, content));
 }
 
-function send2HTMLEmail(from, to1, to2, subject, content) {
-    var mailOptions = { from: from, to: to1 + ', ' + to2, subject: subject, html: content };
-    sendEmailByMailOptions(mailOptions);
+function getMailOption(from, to, subject, content) {
+    return { from: from, to: to, subject: subject, html: content };
 }
 
 function getApi(response, err, resource) {
@@ -213,13 +192,11 @@ exports.postActivity = function (request, response) {
     var activity = new activityModel(request.body);
     //activity.username=testUsername;
     if (activity.username.includes('A guest'))
-        activity.username = username.replace("a guest with name: ", "").split(",")[1].replace(" email: ", "")
-    if (sendHTMLEmail(appConst.MAIL_USER, activity.username, activity.name, getMailContent(activity.name, activity.created_at)) == appConst.MAIL_SENT)
-        activity.save(function (err, resource) {
-            postApi(response, err, resource);
-        });
-    else
-        response.send(appConst.MAIL_ERR).status(501);
+        activity.username = activity.username.replace("a guest with name: ", "").split(",")[1].replace(" email: ", "");
+    sendHTMLEmail(appConst.MAIL_USER, activity.username, activity.name, getMailContent(activity.name, activity.created_at));
+    activity.save(function (err, resource) {
+        postApi(response, err, resource);
+    });
 };
 
 function getMailContent(subject, time) {
@@ -320,6 +297,11 @@ exports.logout = function (req, res) {
 };
 
 exports.login = function (req, res, next) {
+    emailExistence.check('qnguyen68@csc.com', function (err, email_exist) {
+        console.log('email_exist: ' + email_exist);
+    });
+
+
     if (req.cookies.id != null)
         res.redirect('/');
     followUsers(appConst.CLICK_LOGIN, req, res);
@@ -419,18 +401,13 @@ exports.checkregister = function (req, res, next) {
                 followUsers(appConst.ACCOUNT_USED + username, req, res);
                 res.render("register", { errors: errors, success: false, title: subject });
             } else {
-                if (sendHTMLEmail(appConst.MAIL_USER, username, subject, getMailContent(subject, new Date())) == appConst.MAIL_SENT) {
-                    var newUser = new userModel({ username: req.body.username, password: req.body.password, name: req.body.name, phone: req.body.phone, address: req.body.address, balance: appConst.BALANCE_INIT });
-                    userModel.addUser(newUser);
-                    var newActivity = new activityModel({ username: req.body.username, name: subject, click: 'register', details: appConst.SIGNUP_DETAIL + req.body.username, note: appConst.ACCOUNT_INIT, content: appConst.TKS_SIGNUP, response: appConst.NO_RES });
-                    activityModel.addActivity(newActivity);
-                    followUsers(appConst.SIGNUP_SUCESS + username, req, res);
-                    res.render("register", { errors: false, success: true, title: subject });
-                } else {
-                    errors = [{ param: 'username', msg: appConst.MAIL_ERR + ': ' + username, value: '' }];
-                    followUsers(appConst.SIGN_UP_FAIL + appConst.MAIL_ERR + ': ' + username, req, res);
-                    res.render("register", { errors: errors, success: false, title: subject });
-                }
+                sendHTMLEmail(appConst.MAIL_USER, username, subject, getMailContent(subject, new Date()));
+                var newUser = new userModel({ username: req.body.username, password: req.body.password, name: req.body.name, phone: req.body.phone, address: req.body.address, balance: appConst.BALANCE_INIT });
+                userModel.addUser(newUser);
+                var newActivity = new activityModel({ username: req.body.username, name: subject, click: 'register', details: appConst.SIGNUP_DETAIL + req.body.username, note: appConst.ACCOUNT_INIT, content: appConst.TKS_SIGNUP, response: appConst.NO_RES });
+                activityModel.addActivity(newActivity);
+                followUsers(appConst.SIGNUP_SUCESS + username, req, res);
+                res.render("register", { errors: false, success: true, title: subject });
             }
         })
     }

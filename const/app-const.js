@@ -5,9 +5,7 @@ var DB_PORT = "27017";
 
 exports.MAIL_SERVICE = 'gmail';
 exports.MAIL_USER = 'cuongvip1295@gmail.com';
-exports.MAIL_AUTH = 'ititu13170';
-exports.MAIL_ERR = 'The email is not available';
-exports.MAIL_SENT = 'A email was send to your email address, please check carefully';
+exports.MAIL_AUTH = 'ititiu13170';
 exports.HEADER_MAIL = 'test header mail';
 exports.FOOTER_MAIL = 'test footer mail';
 

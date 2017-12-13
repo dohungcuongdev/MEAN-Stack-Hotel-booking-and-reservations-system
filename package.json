@@ -32,6 +32,7 @@
     "cors": "^2.8.1",
     "debug": "~2.6.3",
     "ejs": "^2.5.6",
+    "email-existence": "^0.1.5",
     "express": "^4.15.0",
     "express-session": "^1.15.2",
     "express-validator": "^3.2.0",

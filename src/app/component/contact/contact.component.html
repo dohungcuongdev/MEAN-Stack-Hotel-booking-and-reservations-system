@@ -15,16 +15,16 @@
 						<h4>Write to us</h4>
 						<form role="form">
 							<div class="form-group">
-								<input type="text" class="form-control" #name placeholder="Name" required>
+								<input type="text" class="form-control" #name placeholder="Name">
 							</div>
 							<div class="form-group">
-								<input type="email" class="form-control" #email placeholder="Enter email" required>
+								<input type="email" class="form-control" #email placeholder="Enter email">
 							</div>
 							<div class="form-group">
-								<input type="number" class="form-control" #phone placeholder="Phone" onkeypress='return event.charCode >= 48 && event.charCode <= 57' required>
+								<input type="number" class="form-control" #phone placeholder="Phone" onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
 							</div>
 							<div class="form-group">
-								<textarea type="text" class="form-control" #mes placeholder="Message" rows="4" required></textarea>
+								<textarea type="text" class="form-control" #mes placeholder="Message" rows="4"></textarea>
 							</div>
 							<button type="submit" (click)="sendContact(name.value, email.value, phone.value, mes.value)" class="btn btn-default">Send</button>
 						</form>
