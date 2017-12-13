@@ -3,6 +3,14 @@ var DATABASE = "HotelBookingReservationsSystem";
 var DB_HOST = "localhost";
 var DB_PORT = "27017";
 
+exports.MAIL_SERVICE = 'gmail';
+exports.MAIL_USER = 'cuongvip1295@gmail.com';
+exports.MAIL_AUTH = 'ititu13170';
+exports.MAIL_ERR = 'The email is not available';
+exports.MAIL_SENT = 'A email was send to your email address, please check carefully';
+exports.HEADER_MAIL = 'test header mail';
+exports.FOOTER_MAIL = 'test footer mail';
+
 exports.DB_CONNECTION = "mongodb://" + DB_HOST + ":" + DB_PORT + "/" + DATABASE;
 exports.DB_CONNECT_SUCCESS = 'connection succesful';
 exports.SERCRET = 'dohungcuong';
@@ -29,6 +37,7 @@ exports.BALANCE_INIT = 500;
 exports.SIGNUP_DETAIL = 'You have signed up with email ';
 exports.NO_RES = "Not Yet";
 exports.ACCOUNT_USED = 'sign up failed: exist account: ';
+exports.SIGN_UP_FAIL = 'sign up failed: ';
 exports.EMAIL_TAKEN = 'This username is already taken';
 exports.SIGNUP_ERR = 'sign up failed: cannot check users';
 exports.SIGNUP_INVALID = 'sign up failed: validation form not accepted';

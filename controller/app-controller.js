@@ -13,9 +13,43 @@ var cookie = require('cookie');
 //const
 var appConst = require('../const/app-const');
 
-var testIPAddress = "192.168.49.1";
-var testEXIP = "183.90.116.93";
-var testUsername = "cuongpro1295@gmail.com";
+// var testIPAddress = "192.168.49.1";
+// var testEXIP = "183.90.116.93";
+// var testUsername = "cuongpro1295@gmail.com";
+
+var nodemailer = require('nodemailer');
+
+var transporter = nodemailer.createTransport({ service: appConst.MAIL_SERVICE, auth: { user: appConst.MAIL_USER, pass: appConst.MAIL_AUTH } });
+
+function sendEmailByMailOptions(mailOptions) {
+    transporter.sendMail(mailOptions, function (error, info) {
+        if (error) {
+            return appConst.MAIL_ERR;
+        } else {
+            return appConst.MAIL_SENT;
+        }
+    });
+}
+
+function sendEmail(from, to, subject, content) {
+    var mailOptions = { from: from, to: to, subject: subject, text: content };
+    return sendEmailByMailOptions(mailOptions);
+}
+
+function send2Email(from, to1, to2, subject, content) {
+    var mailOptions = { from: from, to: to1 + ', ' + to2, subject: subject, text: content };
+    return sendEmailByMailOptions(mailOptions);
+}
+
+function sendHTMLEmail(from, to, subject, content) {
+    var mailOptions = { from: from, to: to, subject: subject, html: content };
+    return sendEmailByMailOptions(mailOptions);
+}
+
+function send2HTMLEmail(from, to1, to2, subject, content) {
+    var mailOptions = { from: from, to: to1 + ', ' + to2, subject: subject, html: content };
+    sendEmailByMailOptions(mailOptions);
+}
 
 function getApi(response, err, resource) {
     if (err) {
@@ -178,10 +212,28 @@ exports.getRoomSuggestion = function (request, response) {
 exports.postActivity = function (request, response) {
     var activity = new activityModel(request.body);
     //activity.username=testUsername;
-    activity.save(function (err, resource) {
-        postApi(response, err, resource);
-    });
+    if (activity.username.includes('A guest'))
+        activity.username = username.replace("a guest with name: ", "").split(",")[1].replace(" email: ", "")
+    if (sendHTMLEmail(appConst.MAIL_USER, activity.username, activity.name, getMailContent(activity.name, activity.created_at)) == appConst.MAIL_SENT)
+        activity.save(function (err, resource) {
+            postApi(response, err, resource);
+        });
+    else
+        response.send(appConst.MAIL_ERR).status(501);
 };
+
+function getMailContent(subject, time) {
+    switch (subject) {
+        case 'Sign up': return appConst.HEADER_MAIL + 'You have created a new account at ' + time + appConst.FOOTER_MAIL; break;
+        case 'Change password': return appConst.HEADER_MAIL + 'You have changed your password at ' + time + appConst.FOOTER_MAIL; break;
+        case 'Book Room': return appConst.HEADER_MAIL + 'You have booked a room at ' + time + appConst.FOOTER_MAIL; break;
+        case 'Cancel Room': return appConst.HEADER_MAIL + 'You have canceled a room at ' + time + appConst.FOOTER_MAIL; break;
+        case 'Feedback Room': return appConst.HEADER_MAIL + 'You have send feedback for a room at ' + time + appConst.FOOTER_MAIL; break;
+        case 'Feedback': return appConst.HEADER_MAIL + 'You have send feedback at ' + time + appConst.FOOTER_MAIL; break;
+        case 'Send Contact': return appConst.HEADER_MAIL + 'You have send a contact message to us at ' + time + appConst.FOOTER_MAIL; break;
+        case 'Reservation': return appConst.HEADER_MAIL + 'You have send a reservation request at ' + time + appConst.FOOTER_MAIL; break;
+    }
+}
 
 exports.postFollowUser = function (request, response) {
     getIP((err, external_ip) => {
@@ -249,9 +301,9 @@ exports.checklogin = function (username, password, done) {
         userModel.comparePwd(password, username.password, function (error, isMatch) {
             if (error)
                 throw error;
-            if (isMatch) {
+            if (isMatch)
                 return done(null, username);
-            } else {
+            else {
                 followUserBehavior(appConst.LOGIN_FAIL + appConst.WRONG_PW, 0);
                 return done(null, false, { message: appConst.WRONG_PW });
             }
@@ -290,6 +342,12 @@ exports.changepass = function (req, res, next) {
     res.render('changepass', { errors: null, success: false, title: 'Change Password' });
 };
 
+function renderChangePWError(err, res) {
+    errors = [{ param: 'current_password', msg: err, value: '' }];
+    followUsers(appConst.CHANGE_PW_FAIL + err, req, res);
+    res.render("changepass", { errors: errors, success: false, title: subject });
+}
+
 exports.checkPassword = function (req, res, next) {
     var username = req.cookies.username;
     var current_password = req.body.current_password;
@@ -298,47 +356,32 @@ exports.checkPassword = function (req, res, next) {
     req.checkBody('new_password', appConst.INVALID_PASSWORD).notEmpty().len(8, 30);
     req.checkBody('password_confirmation', appConst.CONFIRM_PW).equals(new_password);
     var errors = req.validationErrors();
+    var subject = 'Change password';
     if (errors) {
         followUsers(appConst.SIGNUP_INVALID, req, res);
         res.render("changepass", { errors: errors, success: false, title: "Change Password" });
     } else {
-        console.log(current_password);
-        console.log(new_password);
         userModel.GetUserByUsername(username, function (error, user) {
             if (user) {
                 userModel.comparePwd(current_password, user.password, function (error, isMatch) {
                     if (isMatch) {
                         userModel.comparePwd(new_password, user.password, function (error, isMatch) {
-                            if (isMatch) {
-                                errors = [{ param: 'current_password', msg: appConst.PW_NOT_CHANGE, value: '' }];
-                                followUsers(appConst.CHANGE_PW_FAIL + appConst.PW_NOT_CHANGE, req, res);
-                                res.render("changepass", { errors: errors, success: false, title: "Change Password" });
-                            } else {
+                            if (isMatch)
+                                renderChangePWError(appConst.PW_NOT_CHANGE, res);
+                            else {
                                 userModel.updatePassword(username, new_password);
-                                var newActivity = new activityModel(
-                                    {
-                                        username: username,
-                                        name: 'Change password',
-                                        click: 'change password',
-                                        details: appConst.CHANGE_PW_DETAIL,
-                                        note: appConst.CHANGE_PW_NOTE,
-                                        content: appConst.CHANGE_PW_CONTENT,
-                                        response: appConst.NO_RES
-                                    });
+                                var newActivity = new activityModel({ username: username, name: subject, click: 'change password', details: appConst.CHANGE_PW_DETAIL, note: appConst.CHANGE_PW_NOTE, content: appConst.CHANGE_PW_CONTENT, response: appConst.NO_RES });
                                 activityModel.addActivity(newActivity);
+                                sendHTMLEmail(appConst.MAIL_USER, username, subject, getMailContent(subject, newActivity.created_at));
                                 followUsers(appConst.CHANGE_PW_SUCCESS, req, res);
-                                res.render("changepass", { errors: false, success: true, title: "Change Password" });
+                                res.render("changepass", { errors: false, success: true, title: subject });
                             }
                         });
-                    } else {
-                        errors = [{ param: 'current_password', msg: appConst.WRONG_PW, value: '' }];
-                        followUsers(appConst.CHANGE_PW_FAIL + appConst.WRONG_PW, req, res);
-                        res.render("changepass", { errors: errors, success: false, title: "Change Password" });
-                    }
+                    } else
+                        renderChangePWError(appConst.WRONG_PW, res);
                 })
             }
-        }
-        )
+        })
     }
 }
 
@@ -360,123 +403,100 @@ exports.checkregister = function (req, res, next) {
     req.checkBody('phone', appConst.PHONE_INVALID).isInt();
     req.checkBody('address', appConst.INPUT_ADDRESS).notEmpty();
     var errors = req.validationErrors();
+    var subject = "Sign Up";
     if (errors) {
         followUsers(appConst.SIGNUP_INVALID, req, res);
-        res.render("register", { errors: errors, success: false, title: "Sign Up" });
+        res.render("register", { errors: errors, success: false, title: subject });
     } else {
         var username = req.body.username;
         userModel.GetUserByUsername(username, function (error, user) {
             if (error) {
                 followUsers(appConst.SIGNUP_ERR, req, res);
-                console.log(error);
+                res.render("register", { errors: errors, success: false, title: subject });
             }
             if (user) {
                 errors = [{ param: 'username', msg: appConst.EMAIL_TAKEN, value: '' }];
                 followUsers(appConst.ACCOUNT_USED + username, req, res);
-                res.render("register", { errors: errors, success: false, title: "Sign Up" });
+                res.render("register", { errors: errors, success: false, title: subject });
             } else {
-                var newUser = new userModel(
-                    {
-                        username: req.body.username,
-                        password: req.body.password,
-                        name: req.body.name,
-                        phone: req.body.phone,
-                        address: req.body.address,
-                        balance: appConst.BALANCE_INIT
-                    });
-                userModel.addUser(newUser);
-
-                var newActivity = new activityModel(
-                    {
-                        username: req.body.username,
-                        name: 'Sign up',
-                        click: 'register',
-                        details: appConst.SIGNUP_DETAIL + req.body.username,
-                        note: appConst.ACCOUNT_INIT,
-                        content: appConst.TKS_SIGNUP,
-                        response: appConst.NO_RES
-                    });
-                activityModel.addActivity(newActivity);
-                followUsers(appConst.SIGNUP_SUCESS + username, req, res);
-                res.render("register", { errors: false, success: true, title: "Sign Up" });
+                if (sendHTMLEmail(appConst.MAIL_USER, username, subject, getMailContent(subject, new Date())) == appConst.MAIL_SENT) {
+                    var newUser = new userModel({ username: req.body.username, password: req.body.password, name: req.body.name, phone: req.body.phone, address: req.body.address, balance: appConst.BALANCE_INIT });
+                    userModel.addUser(newUser);
+                    var newActivity = new activityModel({ username: req.body.username, name: subject, click: 'register', details: appConst.SIGNUP_DETAIL + req.body.username, note: appConst.ACCOUNT_INIT, content: appConst.TKS_SIGNUP, response: appConst.NO_RES });
+                    activityModel.addActivity(newActivity);
+                    followUsers(appConst.SIGNUP_SUCESS + username, req, res);
+                    res.render("register", { errors: false, success: true, title: subject });
+                } else {
+                    errors = [{ param: 'username', msg: appConst.MAIL_ERR + ': ' + username, value: '' }];
+                    followUsers(appConst.SIGN_UP_FAIL + appConst.MAIL_ERR + ': ' + username, req, res);
+                    res.render("register", { errors: errors, success: false, title: subject });
+                }
             }
         })
     }
-
 };
 
-function testIP(request, response) {
-    var follow_users = new followUserModel(request.body);
-    follow_users.username = testUsername;
-    saveFollowUserByIP(follow_users, testIPAddress, testEXIP, response);
+// function testIP(request, response) {
+//     var follow_users = new followUserModel(request.body);
+//     follow_users.username = testUsername;
+//     saveFollowUserByIP(follow_users, testIPAddress, testEXIP, response);
+// }
+
+// function testIP2(page_access, duration, username, ip_address, external_ip) {
+//     var geo = geoip.lookup(external_ip);
+//     var newFolowUsersModel = new followUserModel(
+//         {
+//             user_ip_address: ip_address,
+//             external_ip_address: external_ip,
+//             page_access: page_access,
+//             username: username,
+//             duration: duration,
+//             range: geo.range,
+//             country: geo.country,
+//             region: geo.region,
+//             city: geo.city,
+//             ll: geo.ll,
+//             metro: geo.metro,
+//             zip: geo.zip,
+//         });
+//     followUserModel.add(newFolowUsersModel);
+// }
+
+function getRoomNameCustomerClicked(follow_users) {
+    if (follow_users.page_access.includes('room-details'))
+        return follow_users.page_access.substring(26, 29);
+    if (follow_users.page_access.includes('click image in rooms'))
+        return follow_users.page_access.substring(22, 25);
+    if (follow_users.page_access.includes('book room'))
+        return follow_users.page_access.substring(10, 13);
+    if (follow_users.page_access.includes('send feedback for room'))
+        return follow_users.page_access.substring(23, 26);
+    return '';
 }
 
-function testIP2(page_access, duration, username, ip_address, external_ip) {
-    var geo = geoip.lookup(external_ip);
-    var newFolowUsersModel = new followUserModel(
-        {
-            user_ip_address: ip_address,
-            external_ip_address: external_ip,
-            page_access: page_access,
-            username: username,
-            duration: duration,
-            range: geo.range,
-            country: geo.country,
-            region: geo.region,
-            city: geo.city,
-            ll: geo.ll,
-            metro: geo.metro,
-            zip: geo.zip,
-        });
-    followUserModel.add(newFolowUsersModel);
+function updateNewIpSuggest(ipSuggestModel, ipSuggest, userip) {
+    ipSuggest.count = userip.count + 1;
+    ipSuggest.size = (userip.size + ipSuggest.size) * 1.0 / 2;
+    ipSuggest.price = (userip.size + ipSuggest.size) * 1.0 / 2;
+    ipSuggest.avgAminities = (userip.size + ipSuggest.size) * 1.0 / 2;
+    ipSuggestModel.update(userip._id, ipSuggest);
 }
 
 function updateRecommemdationRoom(follow_users, ip_address) {
-    var roomname = '';
-
-    if (follow_users.page_access.includes('room-details')) {
-        roomname = follow_users.page_access.substring(26, 29);
-    }
-
-    if (follow_users.page_access.includes('click image in rooms')) {
-        roomname = follow_users.page_access.substring(22, 25);
-    }
-
-    if (follow_users.page_access.includes('book room')) {
-        roomname = follow_users.page_access.substring(10, 13);
-    }
-
-    if (follow_users.page_access.includes('send feedback for room')) {
-        roomname = follow_users.page_access.substring(23, 26);
-    }
-
+    var roomname = getRoomNameCustomerClicked(follow_users);
     if (roomname != '') {
         roomModel.findRoomByRoomName(roomname, function (err, room) {
-            if (err) {
+            if (err)
                 console.log(err);
-            } else if (typeof room.size != 'undefined') {
-                console.log(room);
+            else if (typeof room.size != 'undefined') {
                 ipSuggestModel.findByUserIP(ip_address, function (err, userip) {
-                    if (err) {
+                    if (err)
                         console.log(err);
-                    }
-                    var ipSuggest = new ipSuggestModel(
-                        {
-                            ip: ip_address,
-                            size: room.size,
-                            price: room.price,
-                            avgAminities: room.avgAminities,
-                            count: 1,
-                        });
-                    if (userip) {
-                        ipSuggest.count = userip.count + 1;
-                        ipSuggest.size = (userip.size + ipSuggest.size) * 1.0 / 2;
-                        ipSuggest.price = (userip.size + ipSuggest.size) * 1.0 / 2;
-                        ipSuggest.avgAminities = (userip.size + ipSuggest.size) * 1.0 / 2;
-                        ipSuggestModel.update(userip._id, ipSuggest);
-                    } else {
+                    var ipSuggest = new ipSuggestModel({ ip: ip_address, size: room.size, price: room.price, avgAminities: room.avgAminities, count: 1, });
+                    if (userip)
+                        updateNewIpSuggest(ipSuggestModel, ipSuggest, userip);
+                    else
                         ipSuggestModel.add(ipSuggest);
-                    }
                 });
             }
         });
@@ -508,26 +528,12 @@ function saveFollowUserByIP(follow_users, ip_address, external_ip, response) {
 function followUserBehavior(page_access, duration, username) {
     var ip_address = getIpAddress();
     getIP(function (err, external_ip) {
-        if (err) {
+        if (err)
             console.log(err);
-        } else {
+        else {
             var geo = geoip.lookup(external_ip);
-            var newFolowUsersModel = new followUserModel(
-                {
-                    user_ip_address: ip_address,
-                    external_ip_address: external_ip,
-                    page_access: page_access,
-                    username: username,
-                    duration: duration,
-                    range: geo.range,
-                    country: geo.country,
-                    region: geo.region,
-                    city: geo.city,
-                    ll: geo.ll,
-                    metro: geo.metro,
-                    zip: geo.zip,
-                });
-            followUserModel.add(newFolowUsersModel);
+            var newFU = new followUserModel({ user_ip_address: ip_address, external_ip_address: external_ip, page_access: page_access, username: username, duration: duration, range: geo.range, country: geo.country, region: geo.region, city: geo.city, ll: geo.ll, metro: geo.metro, zip: geo.zip });
+            followUserModel.add(newFU);
         }
     });
 }
@@ -547,28 +553,17 @@ function followUsers(page_access, req, res) {
 
 function getIpAddress() {
     var ip_address = '';
-
     var os = require('os');
     var ifaces = os.networkInterfaces();
-
     Object.keys(ifaces).forEach(function (ifname) {
         var alias = 0;
-
         ifaces[ifname].forEach(function (iface) {
-            if ('IPv4' !== iface.family || iface.internal !== false) {
-                // skip over internal (i.e. 127.0.0.1) and non-ipv4 addresses
+            if ('IPv4' !== iface.family || iface.internal !== false)
                 return;
-            }
-
-            if (alias >= 1) {
-                // this single interface has multiple ipv4 addresses
-                //console.log(ifname + ':' + alias, iface.address);
+            if (alias >= 1)
                 ip_address = iface.address;
-            } else {
-                // this interface has only one ipv4 adress
-                //console.log(ifname, iface.address);
+            else
                 ip_address = iface.address;
-            }
             ++alias;
         });
     });
