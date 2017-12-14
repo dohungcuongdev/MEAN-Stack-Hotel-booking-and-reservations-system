@@ -76,15 +76,12 @@ app.use(expressValidator({
     }
 }));
 
-
 app.use(logger(appConst.LOGGER));
-
 
 app.use(cookieParser());
 app.use(session({ secret: appConst.SERCRET, resave: true, saveUninitialized: true }))
 app.use(passport.initialize());
 app.use(passport.session());
-
 
 app.use(flash());
 app.use(function (req, res, next) {
@@ -93,9 +90,6 @@ app.use(function (req, res, next) {
     res.locals.error = req.flash('error');
     next();
 })
-
-
-
 
 // body bodyParser
 app.use(bodyParser.json());
