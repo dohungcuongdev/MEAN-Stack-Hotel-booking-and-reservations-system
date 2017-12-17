@@ -1,7 +1,7 @@
 
 export class FollowUsers {
     
-    _id: string
+    id: string
     username: string
     page_access: string
     duration: number

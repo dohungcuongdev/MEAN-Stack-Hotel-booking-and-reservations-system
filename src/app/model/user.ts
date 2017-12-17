@@ -11,7 +11,7 @@ export class User {
         this.balance = balance
     }
 
-    _id: string
+    id: string
     username: string
     name: string
     phone: string

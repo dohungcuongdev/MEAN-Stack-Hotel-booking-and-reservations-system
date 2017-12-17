@@ -11,7 +11,7 @@ export class RestaurantService extends ApiService<HotelService> {
     
     constructor(injector: Injector, public _http: Http) {
         super(injector)
-        this.apiUrl += AppConst.RESTAURANT_API;
+        this.apiUrl = AppConst.RESTAURANT_API_URL;
     }
 
     getAllService(): Observable<HotelService[]> {
@@ -23,6 +23,6 @@ export class RestaurantService extends ApiService<HotelService> {
     }
 
     editHotelService(hotel_service: HotelService): Observable<Response> {
-        return this.edit(hotel_service._id, hotel_service)
+        return this.edit(hotel_service.id, hotel_service)
     }
 }

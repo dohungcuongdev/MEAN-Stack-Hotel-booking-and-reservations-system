@@ -5,7 +5,6 @@ mongoose.Promise = global.Promise;
 
 var hotelServiceSchema = new Schema(
     {
-        id: String,
         name: String,
         type: String,
         price: Number,
@@ -20,9 +19,3 @@ var hotelServiceSchema = new Schema(
     }
 );
 var hotel_service = module.exports = mongoose.model('restaurant', hotelServiceSchema);
-
-//function get hotel_service by servicename
-module.exports.findServiceByName = function (servicename, callbackAction) {
-    var query = {name: servicename};
-    hotel_service.findOne(query, callbackAction)
-};

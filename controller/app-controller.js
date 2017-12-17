@@ -1,7 +1,6 @@
 var activityModel = require('../models/activity-model');
 var userModel = require('../models/user-model.js');
 var roomModel = require('../models/room-model.js');
-var serviceModel = require('../models/hotel-service-model');
 var followUserModel = require('../models/follow-users-model');
 var ipSuggestModel = require('../models/ip-suggest-model');
 
@@ -13,21 +12,14 @@ var cookie = require('cookie');
 //const
 var appConst = require('../const/app-const');
 
-// var testIPAddress = "192.168.49.1";
-// var testEXIP = "183.90.116.93";
-// var testUsername = "cuongpro1295@gmail.com";
+var httpRequest = require("request");
 
+//mail
 var nodemailer = require('nodemailer');
-var emailExistence = require('email-existence');
-
 var transporter = nodemailer.createTransport({ service: appConst.MAIL_SERVICE, tls: { rejectUnauthorized: false }, auth: { user: appConst.MAIL_USER, pass: appConst.MAIL_AUTH } });
 
 function sendHTMLEmail(from, to, subject, content) {
-    transporter.sendMail(getMailOption(from, to, subject, content));
-}
-
-function getMailOption(from, to, subject, content) {
-    return { from: from, to: to, subject: subject, html: content };
+    transporter.sendMail({ from: from, to: to, subject: subject, html: content });
 }
 
 function getApi(response, err, resource) {
@@ -62,25 +54,23 @@ function deleteApi(response, err, resource) {
 }
 
 exports.getActivityByUserName = function (request, response) {
-    if (request.cookies.id == null)
-        response.send(null).status(404);
-    else {
-        var username = request.params.username;
-        activityModel.findActivityByUserName(username, function (err, res) {
-            getApi(response, err, res);
-        });
-    }
+    var username = request.params.username;
+    activityModel.findActivityByUserName(username, function (err, res) {
+        getApi(response, err, res);
+    });
+};
+
+exports.getNotResponseActivity = function (request, response) {
+    activityModel.findNotResponseActivity({}, function (err, res) {
+        getApi(response, err, res);
+    });
 };
 
 exports.getActivityByID = function (request, response) {
-    if (request.cookies.id == null)
-        response.send(null).status(404);
-    else {
-        var id = request.params.id;
-        activityModel.findById(id, function (err, res) {
-            getApi(response, err, res);
-        });
-    }
+    var id = request.params.id;
+    activityModel.findById(id, function (err, res) {
+        getApi(response, err, res);
+    });
 };
 
 exports.getActivityFeedBackRoom = function (request, response) {
@@ -92,24 +82,7 @@ exports.getActivityFeedBackRoom = function (request, response) {
 
 
 exports.getActivity = function (request, response) {
-    if (request.cookies.id == null)
-        response.send(null).status(404);
-    else {
-        activityModel.find({}, function (err, res) {
-            getApi(response, err, res);
-        });
-    }
-};
-
-exports.getSerivceByID = function (request, response) {
-    var id = request.params.id;
-    serviceModel.findById(id, function (err, res) {
-        getApi(response, err, res);
-    });
-};
-
-exports.getService = function (request, response) {
-    serviceModel.find({}, function (err, res) {
+    activityModel.find({}, function (err, res) {
         getApi(response, err, res);
     });
 };
@@ -117,6 +90,12 @@ exports.getService = function (request, response) {
 exports.getFollowUserByUserIP = function (request, response) {
     var userIP = request.params.userIP;
     followUserModel.findByUserIP(userIP, function (err, res) {
+        getApi(response, err, res);
+    });
+};
+
+exports.getExternalIP = function (request, response) {
+    followUserModel.findExternalIP(request.params.externalIP, function (err, res) {
         getApi(response, err, res);
     });
 };
@@ -135,62 +114,27 @@ exports.getFollowUser = function (request, response) {
 };
 
 exports.getUser = function (request, response) {
-    if (request.cookies.id == null)
-        response.send(null).status(404);
-    else {
-        userModel.find({}, function (err, res) {
-            getApi(response, err, res);
-        });
-    }
+    userModel.find({}, function (err, res) {
+        getApi(response, err, res);
+    });
 };
 
 exports.getUserByID = function (request, response) {
-    if (request.cookies.id == null)
-        response.send(null).status(404);
-    else {
-        var id = request.params.id;
-        userModel.GetUserByID(id, function (err, res) {
-            getApi(response, err, res);
-        });
-    }
-};
-
-exports.getRoomByID = function (request, response) {
     var id = request.params.id;
-    roomModel.findById(id, function (err, res) {
+    userModel.GetUserByID(id, function (err, res) {
         getApi(response, err, res);
     });
 };
 
-
-exports.getRoom = function (request, response) {
-    roomModel.find({}, function (err, res) {
+exports.GetUserByUsername = function (request, response) {
+    var username = request.params.username;
+    userModel.GetUserByUsername(username, function (err, res) {
         getApi(response, err, res);
-    });
-};
-
-exports.getRoomSuggestion = function (request, response) {
-    var ip_address = getIpAddress();
-    roomModel.find({}, function (err, rooms) {
-        if (err) {
-            response.send(err).status(404);
-        } else {
-            ipSuggestModel.findByUserIP(ip_address, function (err, ip_suggest) {
-                if (err) {
-                    console.log(err);
-                } else if (ip_suggest) {
-                    response.send(getSuggestionRoom(rooms, ip_suggest.price, ip_suggest.size, ip_suggest.avgAminities)).status(200);
-                } else {
-                    response.send(getSuggestionRoom(rooms, appConst.DEFAULT_ROOM_PRICE, appConst.DEFAULT_ROOM_SIZE, appConst.DEFAULT_ROOM_AMINITY)).status(200);
-                }
-            });
-        }
     });
 };
 
 exports.postActivity = function (request, response) {
     var activity = new activityModel(request.body);
-    //activity.username=testUsername;
     if (activity.username.includes('A guest'))
         activity.username = activity.username.replace("a guest with name: ", "").split(",")[1].replace(" email: ", "");
     sendHTMLEmail(appConst.MAIL_USER, activity.username, activity.name, getMailContent(activity.name, activity.created_at));
@@ -215,11 +159,10 @@ function getMailContent(subject, time) {
 exports.postFollowUser = function (request, response) {
     getIP((err, external_ip) => {
         if (err) {
-            //console.log(err);
-            saveFollowUserData(request, response, appConst.DEFAULT_IP);
+            console.log(err);
+            //saveFollowUserData(request, response, appConst.DEFAULT_IP);
         } else {
             saveFollowUserData(request, response, external_ip);
-            //testIP(request, response);
         }
     });
 };
@@ -230,16 +173,8 @@ exports.putUser = function (req, response, next) {
     });
 };
 
-exports.putRoom = function (req, response, next) {
-    roomModel.findByIdAndUpdate(req.params.id, req.body, function (err, res) {
-        putApi(response, err, res);
-    });
-};
-
-exports.putService = function (req, response, next) {
-    serviceModel.findByIdAndUpdate(req.params.id, req.body, function (err, res) {
-        putApi(response, err, res);
-    });
+exports.putActivity = function (req, response) {
+    activityModel.updateResponse("5a267446b7c4db242c6fa8da", "Seen");
 };
 
 exports.deleteActivity = function (request, response) {
@@ -297,11 +232,6 @@ exports.logout = function (req, res) {
 };
 
 exports.login = function (req, res, next) {
-    emailExistence.check('qnguyen68@csc.com', function (err, email_exist) {
-        console.log('email_exist: ' + email_exist);
-    });
-
-
     if (req.cookies.id != null)
         res.redirect('/');
     followUsers(appConst.CLICK_LOGIN, req, res);
@@ -413,31 +343,7 @@ exports.checkregister = function (req, res, next) {
     }
 };
 
-// function testIP(request, response) {
-//     var follow_users = new followUserModel(request.body);
-//     follow_users.username = testUsername;
-//     saveFollowUserByIP(follow_users, testIPAddress, testEXIP, response);
-// }
 
-// function testIP2(page_access, duration, username, ip_address, external_ip) {
-//     var geo = geoip.lookup(external_ip);
-//     var newFolowUsersModel = new followUserModel(
-//         {
-//             user_ip_address: ip_address,
-//             external_ip_address: external_ip,
-//             page_access: page_access,
-//             username: username,
-//             duration: duration,
-//             range: geo.range,
-//             country: geo.country,
-//             region: geo.region,
-//             city: geo.city,
-//             ll: geo.ll,
-//             metro: geo.metro,
-//             zip: geo.zip,
-//         });
-//     followUserModel.add(newFolowUsersModel);
-// }
 
 function getRoomNameCustomerClicked(follow_users) {
     if (follow_users.page_access.includes('room-details'))
@@ -459,13 +365,29 @@ function updateNewIpSuggest(ipSuggestModel, ipSuggest, userip) {
     ipSuggestModel.update(userip._id, ipSuggest);
 }
 
+exports.getRoomSuggestion = function (request, response) {
+    var ip_address = getIpAddress();
+    httpRequest({ url: appConst.ROOM_API_URL, json: true }, function (error, res, rooms) {
+        if (!error && res.statusCode === 200) {
+            ipSuggestModel.findByUserIP(ip_address, function (err, ip_suggest) {
+                if (err) {
+                    console.log(err);
+                } else if (ip_suggest) {
+                    response.send(getSuggestionRoom(rooms, ip_suggest.price, ip_suggest.size, ip_suggest.avgAminities)).status(200);
+                } else {
+                    response.send(getSuggestionRoom(rooms, appConst.DEFAULT_ROOM_PRICE, appConst.DEFAULT_ROOM_SIZE, appConst.DEFAULT_ROOM_AMINITY)).status(200);
+                }
+            });
+        }
+    })
+};
+
 function updateRecommemdationRoom(follow_users, ip_address) {
     var roomname = getRoomNameCustomerClicked(follow_users);
     if (roomname != '') {
-        roomModel.findRoomByRoomName(roomname, function (err, room) {
-            if (err)
-                console.log(err);
-            else if (typeof room.size != 'undefined') {
+        httpRequest({ url: appConst.ROOM_NAME_API_URL+roomname, json: true }, function (error, res, room) {
+            console.log(room);
+            if (!error && res.statusCode === 200) {
                 ipSuggestModel.findByUserIP(ip_address, function (err, userip) {
                     if (err)
                         console.log(err);
@@ -476,12 +398,8 @@ function updateRecommemdationRoom(follow_users, ip_address) {
                         ipSuggestModel.add(ipSuggest);
                 });
             }
-        });
+        })
     }
-}
-
-function saveFollowUserData(request, response, external_ip) {
-    saveFollowUserByIP(new followUserModel(request.body), getIpAddress(), external_ip, response)
 }
 
 function saveFollowUserByIP(follow_users, ip_address, external_ip, response) {
@@ -500,6 +418,10 @@ function saveFollowUserByIP(follow_users, ip_address, external_ip, response) {
         postApi(response, err, resource);
     });
     updateRecommemdationRoom(follow_users, ip_address);
+}
+
+function saveFollowUserData(request, response, external_ip) {
+    saveFollowUserByIP(new followUserModel(request.body), getIpAddress(), external_ip, response)
 }
 
 function followUserBehavior(page_access, duration, username) {
@@ -525,7 +447,6 @@ function followUsers(page_access, req, res) {
         res.cookie('start_access', Date.now() + "");
     }
     followUserBehavior(page_access, duration, req.cookies['username']);
-    //testIP2(page_access, duration, testUsername, testIPAddress, testEXIP);
 }
 
 function getIpAddress() {

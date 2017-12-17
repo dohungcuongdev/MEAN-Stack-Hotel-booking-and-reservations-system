@@ -13,7 +13,7 @@ export class FollowUsersService extends ApiService<FollowUsers> {
 
     constructor(injector: Injector, public _http: Http, private data: InMemoryDataService, private cookie: CookieService) {
         super(injector)
-        this.apiUrl += AppConst.FOLLOWUSER_API;
+        this.apiUrl = AppConst.FOLLOWUSER_API_URL;
     }
 
     getAll(): Observable<FollowUsers[]> {
@@ -37,7 +37,7 @@ export class FollowUsersService extends ApiService<FollowUsers> {
     }
 
     edit_follow_users(follow_users: FollowUsers): Observable<Response> {
-        return this.edit(follow_users._id, follow_users)
+        return this.edit(follow_users.id, follow_users)
     }
 
     followUsers(url: string) {

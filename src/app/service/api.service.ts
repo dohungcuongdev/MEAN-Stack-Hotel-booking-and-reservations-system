@@ -7,7 +7,7 @@ import * as AppConst from '../constant/app.const';  //use constant
 
 export default class ApiService<T> { // no need to import from app module
 
-    protected apiUrl = AppConst.apiURL
+    protected apiUrl: string
     protected http: Http
 
 

@@ -33,3 +33,7 @@ module.exports.findRoomByRoomName = function (roomname, callbackAction) {
     var query = {name: roomname};
     room.findOne(query, callbackAction)
 };
+
+module.exports.find = function (callbackAction) {
+    room.findOne(query, callbackAction)
+};

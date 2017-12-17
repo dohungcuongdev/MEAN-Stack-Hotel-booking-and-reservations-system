@@ -11,7 +11,7 @@ export class UserService extends ApiService<User> {
     
     constructor(injector: Injector, public _http: Http) {
         super(injector)
-        this.apiUrl += AppConst.USER_API;
+        this.apiUrl = AppConst.USER_API_URL;
     }
 
     getUser(id: string): Observable<User> {
@@ -19,6 +19,6 @@ export class UserService extends ApiService<User> {
     }
 
     editUser(user: User): Observable<Response> {
-        return this.edit(user._id, user)
+        return this.edit(user.id, user)
     }
 }

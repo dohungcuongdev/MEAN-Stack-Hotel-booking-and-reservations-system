@@ -33,7 +33,7 @@ export class RoomsSuggestionComponent implements OnInit {
 
   public ngOnInit(): void {
     //get list all rooms
-    this.roomservice.getAllRoomsFromURL(AppConst.apiURL + AppConst.SUGGEST_ROOM_API).subscribe((listrooms: Room[]) => {
+    this.roomservice.getAllRoomsFromURL(AppConst.EXPRESS_API_URL + AppConst.SUGGEST_ROOM_API).subscribe((listrooms: Room[]) => {
       this.listrooms = listrooms
       this.addImgURLRooms()
       this.initializeNumPage()
@@ -44,8 +44,8 @@ export class RoomsSuggestionComponent implements OnInit {
 
   private addImgURLRooms(): void {
     for (var i = 0; i < this.listrooms.length; i++) {
-      this.listrooms[i].imgwithURL = AppConst.roomImgUrl + this.listrooms[i].img
-      this.listrooms[i].imgwithURL2 = AppConst.roomImgUrl + this.listrooms[i].img2
+      this.listrooms[i].imgwithURL = AppConst.ROOM_IMG_URL + this.listrooms[i].img
+      this.listrooms[i].imgwithURL2 = AppConst.ROOM_IMG_URL + this.listrooms[i].img2
     }
   }
 

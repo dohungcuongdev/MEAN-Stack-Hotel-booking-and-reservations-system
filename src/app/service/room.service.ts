@@ -11,7 +11,7 @@ export class RoomService extends ApiService<Room> {
 
     constructor(injector: Injector, public _http: Http) {
         super(injector)
-        this.apiUrl += AppConst.ROOM_API;
+        this.apiUrl = AppConst.ROOM_API_URL;
     }
 
     getAllRooms(): Observable<Room[]> {
@@ -23,7 +23,7 @@ export class RoomService extends ApiService<Room> {
     }
 
     editRoom(room: Room): Observable<Response> {
-        return this.edit(room._id, room)
+        return this.edit(room.id, room)
     }
 
     getAllRoomsFromURL(specialURL): Observable<Room[]> {

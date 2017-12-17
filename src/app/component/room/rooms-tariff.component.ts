@@ -44,8 +44,8 @@ export class RoomsTariffComponent implements OnInit {
 
   private addImgURLRooms(): void {
     for (var i = 0; i < this.listrooms.length; i++) {
-      this.listrooms[i].imgwithURL = AppConst.roomImgUrl + this.listrooms[i].img
-      this.listrooms[i].imgwithURL2 = AppConst.roomImgUrl + this.listrooms[i].img2
+      this.listrooms[i].imgwithURL = AppConst.ROOM_IMG_URL + this.listrooms[i].img
+      this.listrooms[i].imgwithURL2 = AppConst.ROOM_IMG_URL + this.listrooms[i].img2
     }
   }
 

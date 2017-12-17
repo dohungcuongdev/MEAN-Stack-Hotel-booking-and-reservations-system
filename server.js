@@ -19,8 +19,6 @@ var index = require('./routes/index');
 
 //api
 var userapi = require('./routes/user-api');
-var roomapi = require('./routes/room-api');
-var hotel_service_api = require('./routes/hotel-service-api');
 var activity_api = require('./routes/activity-api');
 var follow_users_api = require('./routes/follow-users-api');
 
@@ -97,8 +95,6 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 // route 
 app.use('/', index);
-app.use(appConst.ROOM_API, roomapi);
-app.use(appConst.RESTAURANT_API, hotel_service_api);
 app.use(appConst.USER_API, userapi);
 app.use(appConst.ACTIVITY_API, activity_api);
 app.use(appConst.FOLLOW_USER_API, follow_users_api);

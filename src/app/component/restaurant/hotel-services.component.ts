@@ -13,15 +13,15 @@ import * as AppConst from '../../constant/app.const';
 })
 export class HotelServicesComponent {
 
-  hotel_service_id = null
+  hotel_serviceid = null
 
   constructor(
     private route: ActivatedRoute,
     private restaurantservice: RestaurantService,
     private data: InMemoryDataService,
     private followUserService: FollowUsersService) {
-    this.hotel_service_id = this.route.snapshot.params['id']
-    this.restaurantservice.getHotelService(this.hotel_service_id).subscribe((hotelservice: HotelService) => {
+    this.hotel_serviceid = this.route.snapshot.params['id']
+    this.restaurantservice.getHotelService(this.hotel_serviceid).subscribe((hotelservice: HotelService) => {
       if (hotelservice === null) {
         this.data.resetHotelservice()
       } else {

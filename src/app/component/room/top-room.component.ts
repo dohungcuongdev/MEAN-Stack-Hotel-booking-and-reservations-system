@@ -39,7 +39,7 @@ export class TopRoomComponent implements OnInit {
       for (var i = 0; i < listrooms.length; i++) {
         listrooms[i].star = this.check(listrooms[i].star);
         listrooms[i].numvote = this.check(listrooms[i].numvote);
-        listrooms[i].imgwithURL = AppConst.roomImgUrl + this.listrooms[i].img;
+        listrooms[i].imgwithURL = AppConst.ROOM_IMG_URL + this.listrooms[i].img;
         listrooms[i].average_star = (listrooms[i].numvote == 0) ? 0 : listrooms[i].star / listrooms[i].numvote
       }
     })

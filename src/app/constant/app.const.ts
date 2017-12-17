@@ -1,21 +1,31 @@
 
 'use strict';
 
-export const adminServerURL = "http://localhost:8080/Hotel-booking-and-reservations-system-admin/resources/"
-export const apiURL = 'http://localhost:3000/api/'
+export const SPRING_SERVER_URL = "http://localhost:8080/Hotel-booking-and-reservations-system-admin/"
+export const SPRING_RESOURCE_URL = SPRING_SERVER_URL + "resources/"
+export const SPRING_API_URL = SPRING_SERVER_URL + "api/"
+
+export const EXPRESS_SERVER_URL = 'http://localhost:3000/'
+export const EXPRESS_API_URL = EXPRESS_SERVER_URL + 'api/'
+
 export const USER_API = 'users/'
 export const ACTIVITY_API = 'activity/'
 export const FOLLOWUSER_API = 'follow-users/'
 export const RESTAURANT_API = 'restaurant/'
 export const ROOM_API = 'rooms/'
+
+export const USER_API_URL = EXPRESS_API_URL + USER_API
+export const ACTIVITY_API_URL = EXPRESS_API_URL + ACTIVITY_API
+export const FOLLOWUSER_API_URL = EXPRESS_API_URL + FOLLOWUSER_API
+export const RESTAURANT_API_URL = SPRING_API_URL + RESTAURANT_API
+export const ROOM_API_URL = SPRING_API_URL + ROOM_API
 export const SUGGEST_ROOM_API = "follow-users/room/suggest-room"
-export const USER_IP_FULL_API = apiURL + FOLLOWUSER_API + "userIP/"
+export const USER_IP_FULL_API = EXPRESS_API_URL + FOLLOWUSER_API + "userIP/"
 
-
-export const ImgUrl = "images/"
-export const photoUrl = ImgUrl + "photos/"
-export const roomImgUrl = adminServerURL + "img/rooms/"
-export const restaurantImgUrl = adminServerURL + "img/restaurant/"
+export const IMG_URL = "images/"
+export const PHOTO_URL = IMG_URL + "photos/"
+export const ROOM_IMG_URL = SPRING_RESOURCE_URL + "img/rooms/"
+export const RESTAURANT_IMG_URL = SPRING_RESOURCE_URL + "img/restaurant/"
 
 export const LOGIN_RES = "Please login!"
 export const LOGIN_TO_USE = "Please login to use this feature"
@@ -24,7 +34,7 @@ export const NOT_ENOUGH_INFOR = "Please input all necessary information!"
 export const EDIT_INFOR_SUCCESS = 'Edit information successfully!'
 export const CLICK_PROFILE = 'click link /profile'
 export const CLICK_HOTEL_SERVICE = 'click link /hotel-services: '
-export const CLICK_RESTAURANT = 'click link /hotel-services: '
+export const CLICK_RESTAURANT = 'click link /restaurant'
 export const SEARCH_RESTAURANT = 'search in restaurant: '
 export const FILTER_RESTAURANT = 'filter in restaurant: '
 export const CLICK_IMG_RESTAURANT = 'click image in restaurant: '

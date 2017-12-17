@@ -51,8 +51,8 @@ export class RestaurantComponent implements OnInit {
 
   private addImgURLServices(): void {
     for (var i = 0; i < this.listservice.length; i++) {
-      this.listservice[i].imgwithURL = AppConst.restaurantImgUrl + this.listservice[i].img
-      this.listservice[i].imgwithURL2 = AppConst.restaurantImgUrl + this.listservice[i].img2
+      this.listservice[i].imgwithURL = AppConst.RESTAURANT_IMG_URL + this.listservice[i].img
+      this.listservice[i].imgwithURL2 = AppConst.RESTAURANT_IMG_URL + this.listservice[i].img2
     }
   }
 

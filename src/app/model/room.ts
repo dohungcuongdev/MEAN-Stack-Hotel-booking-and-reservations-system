@@ -19,7 +19,7 @@ export class Room {
         this.star = star
     }
 
-    _id: string
+    id: string
     name: string
     size: number
     price: number

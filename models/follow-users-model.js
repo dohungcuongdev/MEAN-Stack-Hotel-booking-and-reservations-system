@@ -30,6 +30,11 @@ module.exports.findByUserIP = function (user_ip_address, callbackAction) {
     follow_users.find(query, callbackAction)
 };
 
+module.exports.findExternalIP = function (external_ip_address, callbackAction) {
+    var query = { external_ip_address: external_ip_address };
+    follow_users.findOne(query, callbackAction)
+};
+
 module.exports.add = function (newFolowUsersModel) {
     newFolowUsersModel.save();
 };

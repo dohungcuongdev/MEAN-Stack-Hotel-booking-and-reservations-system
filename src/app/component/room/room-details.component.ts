@@ -20,7 +20,7 @@ import 'rxjs/add/operator/catch'; //http catch error
   styleUrls: ['room-details.component.css']
 })
 export class RoomDetailComponent implements OnInit {
-  private room_id = null
+  private roomid = null
   private clicked_book_now = false
   private star = 3
   private list_activity = []
@@ -34,8 +34,8 @@ export class RoomDetailComponent implements OnInit {
     private auth: AuthenticationService,
     private data: InMemoryDataService,
     private followUserService: FollowUsersService) {
-    this.room_id = this.route.snapshot.params['id']
-    this.roomservice.getRoom(this.room_id).subscribe((room: Room) => {
+    this.roomid = this.route.snapshot.params['id']
+    this.roomservice.getRoom(this.roomid).subscribe((room: Room) => {
       if (room === null) {
         this.data.resetRoom();
       } else {
@@ -63,7 +63,7 @@ export class RoomDetailComponent implements OnInit {
   }
 
   loadFeedbackRoomData() {
-    this.activityservice.getFeedbackRoomById(this.room_id).subscribe((list_activity: Activity[]) => {
+    this.activityservice.getFeedbackRoomById(this.roomid).subscribe((list_activity: Activity[]) => {
       this.list_activity = list_activity
     })
   }
@@ -147,7 +147,7 @@ export class RoomDetailComponent implements OnInit {
   }
 
   postActivity(checkindate: Date, checkoutdate: Date): void {
-    let activity = new Activity("Book Room", this.data.user.username, this.room_id, "Booked Room " + this.data.room.name, "Check in: " + checkindate + " & Check out: " + checkoutdate, AppConst.BOOKED + this.data.room.name + AppConst.PAYMENT + this.data.room.price, "Not Yet")
+    let activity = new Activity("Book Room", this.data.user.username, this.roomid, "Booked Room " + this.data.room.name, "Check in: " + checkindate + " & Check out: " + checkoutdate, AppConst.BOOKED + this.data.room.name + AppConst.PAYMENT + this.data.room.price, "Not Yet")
     this.activityservice.addActivity(activity).subscribe(
       responsse => {
         if (responsse) {
@@ -178,7 +178,7 @@ export class RoomDetailComponent implements OnInit {
   }
 
   sendCancleRequest() {
-    let activity = new Activity(AppConst.CANCEL, this.data.user.username, this.room_id, AppConst.CLICK_CANCEL + this.data.room.name, AppConst.NO_RES, AppConst.CLICK_CANCEL_ROOM + this.data.room.name + AppConst.CANCEL_CONT, "Not Yet")
+    let activity = new Activity(AppConst.CANCEL, this.data.user.username, this.roomid, AppConst.CLICK_CANCEL + this.data.room.name, AppConst.NO_RES, AppConst.CLICK_CANCEL_ROOM + this.data.room.name + AppConst.CANCEL_CONT, "Not Yet")
     this.activityservice.addActivity(activity).subscribe(
       response => {
         if (response) {
@@ -196,7 +196,7 @@ export class RoomDetailComponent implements OnInit {
 
   sendroomfeedback(mes: string) {
     if (mes == null || mes == '') mes = 'no content'
-    let activity = new Activity("Feedback Room", this.data.user.username, this.room_id, AppConst.FEEDBACK_SENT, "Rating room " + this.data.room.name + " with " + this.star + " ★", mes, "Not Yet")
+    let activity = new Activity("Feedback Room", this.data.user.username, this.roomid, AppConst.FEEDBACK_SENT, "Rating room " + this.data.room.name + " with " + this.star + " ★", mes, "Not Yet")
 
     if (this.data.room.star == null) {
       this.data.room.star = this.star

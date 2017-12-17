@@ -12,7 +12,7 @@ export class Activity {
         this.response = response
     }
 
-    _id: string
+    id: string
     username: string
     name: string
     click: string

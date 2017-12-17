@@ -11,7 +11,7 @@ export class ActivityService extends ApiService<Activity> {
 
     constructor(injector: Injector, public _http: Http) {
         super(injector)
-        this.apiUrl += AppConst.ACTIVITY_API;
+        this.apiUrl = AppConst.ACTIVITY_API_URL;
     }
 
     getAllActivity(): Observable<Activity[]> {
@@ -26,8 +26,8 @@ export class ActivityService extends ApiService<Activity> {
         return this.getAllby(username, this.apiUrl + "username/")
     }
 
-    getFeedbackRoomById(room_id: string): Observable<Activity[]> {
-        return this.getAllby(room_id, this.apiUrl + "feedback-room/")
+    getFeedbackRoomById(roomid: string): Observable<Activity[]> {
+        return this.getAllby(roomid, this.apiUrl + "feedback-room/")
     }
 
     addActivity(activity: Activity): Observable<Response> {
@@ -39,6 +39,6 @@ export class ActivityService extends ApiService<Activity> {
     }
 
     editActivity(activity: Activity): Observable<Response> {
-        return this.edit(activity._id, activity)
+        return this.edit(activity.id, activity)
     }
 }

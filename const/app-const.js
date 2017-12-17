@@ -3,6 +3,17 @@ var DATABASE = "HotelBookingReservationsSystem";
 var DB_HOST = "localhost";
 var DB_PORT = "27017";
 
+var SPRING_SERVER_URL = "http://localhost:8080/Hotel-booking-and-reservations-system-admin/"
+var SPRING_API_URL = SPRING_SERVER_URL + "api/"
+
+var RESTAURANT_API = 'restaurant/'
+var ROOM_API = 'rooms/'
+var ROOM_NAME_API = 'rooms/roomname/'
+
+exports.RESTAURANT_API_URL = SPRING_API_URL + RESTAURANT_API
+exports.ROOM_API_URL = SPRING_API_URL + ROOM_API
+exports.ROOM_NAME_API_URL = SPRING_API_URL + ROOM_NAME_API
+
 exports.MAIL_SERVICE = 'gmail';
 exports.MAIL_USER = 'cuongvip1295@gmail.com';
 exports.MAIL_AUTH = 'ititiu13170';
