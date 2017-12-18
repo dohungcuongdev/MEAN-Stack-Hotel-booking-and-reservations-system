@@ -18,7 +18,7 @@ export class UserService extends ApiService<User> {
         return this.get(id)
     }
 
-    editUser(user: User): Observable<Response> {
-        return this.edit(user.id, user)
+    editUser(user): Observable<Response> {
+        return this.edit(user._id, user)
     }
 }

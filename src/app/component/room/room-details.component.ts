@@ -112,9 +112,11 @@ export class RoomDetailComponent implements OnInit {
   }
 
   computeBalance(checkindate: Date, checkoutdate: Date) {
-    if (this.data.user.balance >= this.data.room.price) {
-      this.data.user.balance = this.data.user.balance - this.data.room.price
-      this.userservice.editUser(this.data.user).subscribe(
+    var user = this.data.user;
+    var moneySpent = this.data.room.price
+    if (user.balance >= moneySpent) {
+      user.balance = user.balance - moneySpent
+      this.userservice.editUser(user).subscribe(
         responsse => {
           if (responsse) {
             this.checkBooking(checkindate, checkoutdate)

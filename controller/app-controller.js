@@ -38,13 +38,6 @@ function postApi(response, err, resource) {
     }
 }
 
-function putApi(response, err, resource) {
-    if (err) return next(err);
-    else {
-        response.json(resource);
-    }
-}
-
 function deleteApi(response, err, resource) {
     if (err) {
         return response.send(err);
@@ -66,11 +59,25 @@ exports.getNotResponseActivity = function (request, response) {
     });
 };
 
-exports.getActivityByID = function (request, response) {
+function getActivityByID(request, response) {
     var id = request.params.id;
     activityModel.findById(id, function (err, res) {
         getApi(response, err, res);
     });
+}
+
+exports.getActivityByID = function (request, response) {
+    getActivityByID(request, response);
+};
+
+exports.seenAndGetNotification = function (request, response) {
+    activityModel.updateResponse(request.params.id, "Seen");
+    getActivityByID(request, response);
+};
+
+exports.replyAndGetNotification = function (request, response) {
+    activityModel.updateResponse(request.params.id, "Email sent");
+    getActivityByID(request, response);
 };
 
 exports.getActivityFeedBackRoom = function (request, response) {
@@ -169,12 +176,11 @@ exports.postFollowUser = function (request, response) {
 
 exports.putUser = function (req, response, next) {
     userModel.findByIdAndUpdate(req.params.id, req.body, function (err, res) {
-        putApi(response, err, res);
+        if (err) return next(err);
+        else {
+            response.json(res);
+        }
     });
-};
-
-exports.putActivity = function (req, response) {
-    activityModel.updateResponse("5a267446b7c4db242c6fa8da", "Seen");
 };
 
 exports.deleteActivity = function (request, response) {
@@ -343,8 +349,6 @@ exports.checkregister = function (req, res, next) {
     }
 };
 
-
-
 function getRoomNameCustomerClicked(follow_users) {
     if (follow_users.page_access.includes('room-details'))
         return follow_users.page_access.substring(26, 29);
@@ -385,8 +389,7 @@ exports.getRoomSuggestion = function (request, response) {
 function updateRecommemdationRoom(follow_users, ip_address) {
     var roomname = getRoomNameCustomerClicked(follow_users);
     if (roomname != '') {
-        httpRequest({ url: appConst.ROOM_NAME_API_URL+roomname, json: true }, function (error, res, room) {
-            console.log(room);
+        httpRequest({ url: appConst.ROOM_NAME_API_URL + roomname, json: true }, function (error, res, room) {
             if (!error && res.statusCode === 200) {
                 ipSuggestModel.findByUserIP(ip_address, function (err, userip) {
                     if (err)
@@ -523,4 +526,18 @@ Array.prototype.unique = function () {
         }
     }
     return a;
+}
+
+var ACTIVITY_RESPONSE_STATUS = ['Not Yet', 'Seen', 'Email sent'];
+
+function activityIsAbleToUpdate(activity) {
+    return activity.username != null && activity.name != null && activity.click != null && activity.details != null && activity.note != null && activity.content != null && ACTIVITY_RESPONSE_STATUS.includes(activity.response);
+}
+
+function followUserIsAbleToUpdate(followUser) {
+
+}
+
+function ipSuggestIsAbleToUpdate(ipSuggest) {
+
 }

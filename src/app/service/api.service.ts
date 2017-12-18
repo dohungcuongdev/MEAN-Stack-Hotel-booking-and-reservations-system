@@ -42,7 +42,6 @@ export default class ApiService<T> { // no need to import from app module
     }
 
     protected edit(id, obj): Observable<Response> {
-        console.log(obj)
         return this.http.put(this.apiUrl + id, obj).map(response => response.json())
     }
 

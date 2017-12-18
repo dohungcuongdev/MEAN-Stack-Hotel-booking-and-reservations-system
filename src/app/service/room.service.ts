@@ -23,7 +23,7 @@ export class RoomService extends ApiService<Room> {
     }
 
     editRoom(room: Room): Observable<Response> {
-        return this.edit(room.id, room)
+        return this.edit(room.name, room)
     }
 
     getAllRoomsFromURL(specialURL): Observable<Room[]> {
