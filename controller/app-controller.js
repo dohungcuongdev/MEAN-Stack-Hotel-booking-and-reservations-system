@@ -1,6 +1,5 @@
 var activityModel = require('../models/activity-model');
 var userModel = require('../models/user-model.js');
-var roomModel = require('../models/room-model.js');
 var followUserModel = require('../models/follow-users-model');
 var ipSuggestModel = require('../models/ip-suggest-model');
 
@@ -89,7 +88,7 @@ exports.getActivityFeedBackRoom = function (request, response) {
 
 
 exports.getActivity = function (request, response) {
-    activityModel.find({}, function (err, res) {
+    activityModel.findAll(function (err, res) {
         getApi(response, err, res);
     });
 };
@@ -115,7 +114,7 @@ exports.getFollowUserByID = function (request, response) {
 };
 
 exports.getFollowUser = function (request, response) {
-    followUserModel.find({}, function (err, res) {
+    followUserModel.findAll(function (err, res) {
         getApi(response, err, res);
     });
 };
@@ -417,6 +416,8 @@ function saveFollowUserByIP(follow_users, ip_address, external_ip, response) {
     follow_users['ll'] = geo.ll;
     follow_users['metro'] = geo.metro;
     follow_users['zip'] = geo.zip;
+    if(follow_users.username == null || follow_users.username == '')
+        follow_users.username = "guest";
     follow_users.save(function (err, resource) {
         postApi(response, err, resource);
     });

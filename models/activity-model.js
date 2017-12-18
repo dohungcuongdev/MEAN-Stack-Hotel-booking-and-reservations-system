@@ -21,21 +21,25 @@ var activitySchema = new Schema(
 );
 var activity = module.exports = mongoose.model('activity', activitySchema);
 
+module.exports.findAll = function (callbackAction) {
+    activity.find({}, callbackAction).sort({"created_at": -1});
+};
+
 //function get activity by username
 module.exports.findActivityByUserName = function (username, callbackAction) {
     var query = { username: username };
-    activity.find(query, callbackAction)
+    activity.find(query, callbackAction).sort({"created_at": -1});
 };
 
 // find activity that haven't been responsed yet
 module.exports.findNotResponseActivity = function (username, callbackAction) {
     var query = { response: "Not Yet" };
-    activity.find(query, callbackAction)
+    activity.find(query, callbackAction).sort({"created_at": -1});
 };
 
 module.exports.findFeedbackRoom = function (roomid, callbackAction) {
     var query = { name: 'Feedback Room', click: roomid };
-    activity.find(query, callbackAction)
+    activity.find(query, callbackAction).sort({"created_at": -1});
 };
 
 module.exports.addActivity = function (newActivity) {
