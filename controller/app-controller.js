@@ -106,6 +106,30 @@ exports.getExternalIP = function (request, response) {
     });
 };
 
+exports.getExternalIPStatistics = function (request, response) {
+    followUserModel.findExternalIPStatistics(function (err, res) {
+        getApi(response, err, res);
+    });
+};
+
+exports.getIPStatistics = function (request, response) {
+    followUserModel.findIPStatistics(function (err, res) {
+        getApi(response, err, res);
+    });
+};
+
+exports.getUsernameStatistics = function (request, response) {
+    followUserModel.findgetUsernameStatistics(function (err, res) {
+        getApi(response, err, res);
+    });
+};
+
+exports.getCountryChartData = function (request, response) {
+    followUserModel.findCountryChartData(function (err, res) {
+        getApi(response, err, res);
+    });
+};
+
 exports.getFollowUserByID = function (request, response) {
     var id = request.params.id;
     followUserModel.findById(id, function (err, res) {

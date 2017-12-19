@@ -26,17 +26,37 @@ var followUserSchema = new Schema(
 var follow_users = module.exports = mongoose.model('follow_users', followUserSchema);
 
 module.exports.findAll = function (callbackAction) {
-    follow_users.find({}, callbackAction).sort({"created_at": -1});
+    follow_users.find({}, callbackAction).sort({ "created_at": -1 });
 };
 
 module.exports.findByUserIP = function (user_ip_address, callbackAction) {
     var query = { user_ip_address: user_ip_address };
-    follow_users.find(query, callbackAction).sort({"created_at": -1});
+    follow_users.find(query, callbackAction).sort({ "created_at": -1 });
 };
 
 module.exports.findExternalIP = function (external_ip_address, callbackAction) {
     var query = { external_ip_address: external_ip_address };
-    follow_users.findOne(query, callbackAction).sort({"created_at": -1});
+    follow_users.findOne(query, callbackAction).sort({ "created_at": -1 });
+};
+
+module.exports.findCountryChartData = function (callbackAction) {
+    var query = [{ "$group": { _id: "$country", count: { $sum: 1 } } }];
+    follow_users.aggregate(query, callbackAction);
+};
+
+module.exports.findExternalIPStatistics = function (callbackAction) {
+    var query = [ { "$group": { _id: "$external_ip_address", count: { $sum: 1 } } }];
+    follow_users.aggregate(query, callbackAction);
+};
+
+module.exports.findIPStatistics = function (callbackAction) {
+    var query = [ { "$group": { _id: "$user_ip_address", count: { $sum: 1 } } }];
+    follow_users.aggregate(query, callbackAction);
+};
+
+module.exports.findgetUsernameStatistics = function (callbackAction) {
+    var query = [ { "$group": { _id: "$username", count: { $sum: 1 } } }];
+    follow_users.aggregate(query, callbackAction);
 };
 
 module.exports.add = function (newFolowUsersModel) {
