@@ -22,7 +22,7 @@ export class HomeComponent implements OnInit {
     private data: InMemoryDataService,
     private cookie: CookieService,
     private followUserService: FollowUsersService) {
-    this.followUserService.followUsers(AppConst.CLICK_HOMEPAGE);
+    this.followUserService.followUsers(AppConst.CLICK_HOMEPAGE)
   }
 
   ngOnInit(): void {

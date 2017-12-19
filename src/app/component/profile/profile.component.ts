@@ -1,14 +1,14 @@
 import { Component, OnInit, OnChanges } from '@angular/core';
 import { Router } from '@angular/router';
+import { Activity } from '../../model/activity';
 import { AuthenticationService } from '../../service/authentication.service';
 import { ActivityService } from '../../service/activity.service';
 import { InMemoryDataService } from '../../service/in-memory-data.service';
 import { FollowUsersService } from '../../service/follow-users.service';
-import { Activity } from '../../model/activity';
 import { UserService } from '../../service/user.service';
 import { CookieService } from 'angular2-cookie/core';
+import { ValidationService } from '../../service/validation.service';
 import * as AppConst from '../../constant/app.const';
-declare var swal: any;
 
 @Component({
   selector: 'profile',
@@ -28,8 +28,9 @@ export class ProfileComponent implements OnInit, OnChanges {
     private userservice: UserService,
     private data: InMemoryDataService,
     private cookie: CookieService,
-    private followUserService: FollowUsersService) {
-    this.followUserService.followUsers(AppConst.CLICK_PROFILE);
+    private followUserService: FollowUsersService,
+    private validationService: ValidationService) {
+    this.followUserService.followUsers(AppConst.CLICK_PROFILE)
   }
 
   private initialize() {
@@ -45,7 +46,7 @@ export class ProfileComponent implements OnInit, OnChanges {
     this.activityservice.getAllActivityByUserName(username).subscribe((listactivity: Activity[]) => {
       this.listactivity = listactivity
     }, error => {
-      console.log(error);
+      console.log(error)
     });
   }
 
@@ -69,8 +70,9 @@ export class ProfileComponent implements OnInit, OnChanges {
   }
 
   viewcontent(content: string) {
-    swal(content)
+    this.validationService.swAlert(content);
   }
+
   editInfo() {
     this.canEdit = true
   }
@@ -78,7 +80,7 @@ export class ProfileComponent implements OnInit, OnChanges {
   saveInfo(name: string, phone: string, address: string) {
     this.canEdit = false
     if (name === null || name === '' || phone === null || phone === '' || address === null || address === '')
-      swal(AppConst.ERR_TITLE, AppConst.NOT_ENOUGH_INFOR, AppConst.ERR)
+      this.validationService.swAlertNotEnoughInput()
     else {
       let user = this.data.user
       user.name = name
@@ -87,16 +89,10 @@ export class ProfileComponent implements OnInit, OnChanges {
       this.userservice.editUser(user).subscribe(
         responsse => {
           if (responsse) {
-            swal(AppConst.CONGRATS, AppConst.EDIT_INFOR_SUCCESS, AppConst.SUCCESS)
+            this.validationService.swAlertEditSuccess()
           }
-        }, err => this.showErr(err)
+        }, err => this.validationService.swAlertUsualErr(err)
       )
     }
-
-  }
-
-  showErr(err: string) {
-    swal(AppConst.ERR_TITLE, AppConst.ERROR, AppConst.ERR)
-    console.log(err)
   }
 }

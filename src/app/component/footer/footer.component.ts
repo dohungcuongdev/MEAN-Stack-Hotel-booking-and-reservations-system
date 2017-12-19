@@ -7,5 +7,5 @@ import * as AppConst from '../../constant/app.const';
 })
 
 export class FooterComponent {
-  footercontent = AppConst.FOOTER;
+  footercontent = AppConst.FOOTER
 }

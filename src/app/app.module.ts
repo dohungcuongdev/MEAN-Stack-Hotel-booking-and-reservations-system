@@ -32,7 +32,8 @@ import { RoomService } from './service/room.service';
 import { RestaurantService } from './service/restaurant.service';
 import { FollowUsersService } from './service/follow-users.service';
 import { AuthenticationService } from './service/authentication.service';
-import { InMemoryDataService } from './service/in-memory-data.service'
+import { InMemoryDataService } from './service/in-memory-data.service';
+import { ValidationService } from './service/validation.service'
 
 //routes
 import { AppRoutes } from './router-link/app.routes';
@@ -88,7 +89,8 @@ import { RandomColorDirective } from "./directive/random-color-directive"
     RoomService,
     RestaurantService,
     AuthenticationService,
-    InMemoryDataService
+    InMemoryDataService,
+    ValidationService
   ],
   bootstrap: [AppComponent]
 })

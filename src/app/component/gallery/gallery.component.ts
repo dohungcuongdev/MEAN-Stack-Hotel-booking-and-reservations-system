@@ -12,7 +12,7 @@ export class GalleryComponent {
   imagesGallery = []
 
   constructor(private followUserService: FollowUsersService) {
-    this.followUserService.followUsers(AppConst.CLICK_GALLERY);
+    this.followUserService.followUsers(AppConst.CLICK_GALLERY)
   }
 
   ngOnInit() {

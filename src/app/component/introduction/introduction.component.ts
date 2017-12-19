@@ -10,7 +10,7 @@ import * as AppConst from '../../constant/app.const';
 
 export class IntroductionComponent {
   constructor(private followUserService: FollowUsersService) {
-    this.followUserService.followUsers(AppConst.CLICK_INTRO);
+    this.followUserService.followUsers(AppConst.CLICK_INTRO)
   }
   hotelIntro = AppConst.HOTEL_INTRO
   roomIntro = AppConst.ROOM_INTRO

@@ -1,4 +1,3 @@
-
 import { User } from '../model/user';
 import { HotelService } from '../model/hotel-service';
 import { Room } from '../model/room';

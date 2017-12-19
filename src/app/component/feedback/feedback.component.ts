@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
+import { CookieService } from 'angular2-cookie/core';
+import { Activity } from '../../model/activity';
 import { ActivityService } from '../../service/activity.service';
 import { InMemoryDataService } from '../../service/in-memory-data.service';
 import { FollowUsersService } from '../../service/follow-users.service';
 import { AuthenticationService } from '../../service/authentication.service';
-import { Activity } from '../../model/activity';
-import { CookieService } from 'angular2-cookie/core';
+import { ValidationService } from '../../service/validation.service';
 import * as AppConst from '../../constant/app.const';
-declare var swal: any;
 
 @Component({
   selector: 'contact',
@@ -22,9 +22,9 @@ export class FeedBackComponent implements OnInit {
     private auth: AuthenticationService,
     private followUserService: FollowUsersService,
     private data: InMemoryDataService,
-    private cookie: CookieService
-  ) { 
-    this.followUserService.followUsers(AppConst.CLICK_FEED_BACK);
+    private cookie: CookieService,
+    private validationService: ValidationService) { 
+    this.followUserService.followUsers(AppConst.CLICK_FEED_BACK)
   }
 
   ngOnInit(): void {
@@ -45,11 +45,11 @@ export class FeedBackComponent implements OnInit {
       responsse => {
         if (responsse) {
           //this.roomservice.LoadData();
-          this.followUserService.followUsers(AppConst.FEEDBACK_HOTEL);
-          swal(AppConst.TKS_FB, AppConst.FB_SENT_SUCCESS, AppConst.SUCCESS)
+          this.followUserService.followUsers(AppConst.FEEDBACK_HOTEL)
+          this.validationService.swAlertFeedbackSent()
         }
       },
-      err => console.log(err)
-    );
+      err => this.validationService.swAlertUsualErr(err)
+    )
   }
 }

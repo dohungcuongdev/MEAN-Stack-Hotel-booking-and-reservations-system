@@ -15,13 +15,13 @@
 						<h4>Write to us</h4>
 						<form role="form">
 							<div class="form-group">
-								<input type="text" class="form-control" #name placeholder="Name">
+								<input type="text" class="form-control" #name placeholder="Name" [value]="auth.data.user.name" [readonly]="auth.data.user.name != null">
 							</div>
 							<div class="form-group">
-								<input type="email" class="form-control" #email placeholder="Enter email">
+								<input type="text" class="form-control" #email placeholder="Enter email" [value]="auth.data.user.username" [readonly]="auth.data.user.name != null">
 							</div>
 							<div class="form-group">
-								<input type="number" class="form-control" #phone placeholder="Phone" onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
+								<input type="text" class="form-control" #phone placeholder="Phone" onkeypress='return event.charCode >= 48 && event.charCode <= 57' [value]="auth.data.user.phone" [readonly]="auth.data.user.name != null">
 							</div>
 							<div class="form-group">
 								<textarea type="text" class="form-control" #mes placeholder="Message" rows="4"></textarea>

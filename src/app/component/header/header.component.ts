@@ -20,9 +20,8 @@ export class HeaderComponent {
     private cookie: CookieService) { }
 
   login() {
-    if (this.auth.authenticated == false) {
+    if (this.auth.authenticated == false)
       location.href = '/login'
-    }
     else
       location.href = '/'
   }

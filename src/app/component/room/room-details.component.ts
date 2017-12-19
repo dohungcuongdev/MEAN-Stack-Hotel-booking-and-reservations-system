@@ -1,14 +1,15 @@
 import { Component, OnInit } from '@angular/core';
-import { Room } from '../../model/room';
-import { Activity } from '../../model/activity';
 import { ActivatedRoute } from '@angular/router'; //get routes parameter
 import { Router } from '@angular/router';
+import { Room } from '../../model/room';
+import { Activity } from '../../model/activity';
 import { RoomService } from '../../service/room.service';
 import { ActivityService } from '../../service/activity.service';
 import { UserService } from '../../service/user.service';
 import { InMemoryDataService } from '../../service/in-memory-data.service';
 import { FollowUsersService } from '../../service/follow-users.service';
 import { AuthenticationService } from '../../service/authentication.service';
+import { ValidationService } from '../../service/validation.service';
 import * as AppConst from '../../constant/app.const';
 declare var swal: any;
 
@@ -33,21 +34,22 @@ export class RoomDetailComponent implements OnInit {
     private activityservice: ActivityService,
     private auth: AuthenticationService,
     private data: InMemoryDataService,
-    private followUserService: FollowUsersService) {
+    private followUserService: FollowUsersService,
+    private validationService: ValidationService) {
     this.roomid = this.route.snapshot.params['id']
     this.roomservice.getRoom(this.roomid).subscribe((room: Room) => {
       if (room === null) {
-        this.data.resetRoom();
+        this.data.resetRoom()
       } else {
         this.data.room = room
         this.calculateRating()
         this.data.addImgURLRoom()
-        this.followUserService.followUsers(AppConst.CLICK_ROOM_DETAIL + this.data.room.name);
+        this.followUserService.followUsers(AppConst.CLICK_ROOM_DETAIL + this.data.room.name)
       }
     },
       err => {
         console.log(err)
-        this.data.resetRoom();
+        this.data.resetRoom()
       }
     )
     this.loadFeedbackRoomData()
@@ -81,8 +83,8 @@ export class RoomDetailComponent implements OnInit {
     if (this.auth.authenticated == false) {
       this.auth.pleaselogin()
     } else {
-      swal(AppConst.INPUT_CHECKIN_CHECKOUT)
-      this.clicked_book_now = true;
+      this.validationService.swAlertInputToBookNow()
+      this.clicked_book_now = true
     }
   }
 
@@ -90,25 +92,19 @@ export class RoomDetailComponent implements OnInit {
     this.clicked_book_now = true;
     if (checkindate == null || checkoutdate == null || checkindate.toString() == '' || checkoutdate.toString() == '') {
       this.followUserService.followUsers('book room ' + this.data.room.name + AppConst.NOT_INPUT_CI_CO);
-      swal("Oops...", AppConst.NO_CHECKIN_CHECKOUT, "error")
+      this.validationService.swAlertNoCheckDate()
     } else {
       if (new Date().getTime() > new Date(checkindate).getTime()) {
         this.followUserService.followUsers('book room ' + this.data.room.name + AppConst.NOT_TODAY);
-        swal("Oops...", AppConst.UP_TO_DATE, "error")
+        this.validationService.swAlertBookUpToDate()
       }
       else if (checkindate > checkoutdate) {
         this.followUserService.followUsers('book room ' + this.data.room.name + AppConst.CI_BEFORE_CI);
-        swal("Oops...", AppConst.OUT_OF_DATE, "error")
+        this.validationService.swAlertBookOutOfDate()
       } else {
         this.computeBalance(checkindate, checkoutdate)
       }
     }
-  }
-
-  showErr(err: string) {
-    this.followUserService.followUsers('book room ' + this.data.room.name + ' failed: error');
-    swal("Oops...", AppConst.ERROR, "error")
-    console.log(err)
   }
 
   computeBalance(checkindate: Date, checkoutdate: Date) {
@@ -121,11 +117,11 @@ export class RoomDetailComponent implements OnInit {
           if (responsse) {
             this.checkBooking(checkindate, checkoutdate)
           }
-        }, err => this.showErr(err)
+        }, err => this.validationService.swAlertUsualErr(err)
       )
     } else {
-      this.followUserService.followUsers('book room ' + this.data.room.name + AppConst.NO_MONEY);
-      swal("Oops...", AppConst.CANNOT_PAY, "error")
+      this.followUserService.followUsers('book room ' + this.data.room.name + AppConst.NO_MONEY)
+      this.validationService.swAlertCannotPay()
     }
   }
 
@@ -140,12 +136,12 @@ export class RoomDetailComponent implements OnInit {
         if (responsse) {
           //this.roomservice.LoadData();
           this.postActivity(checkindate, checkoutdate)
+          this.followUserService.followUsers('book room ' + this.data.room.name + ' successfully');
+          this.validationService.swAlertBookSuccess()
         }
       },
-      err => this.showErr(err)
-    );
-    this.followUserService.followUsers('book room ' + this.data.room.name + ' successfully');
-    swal('Congrats!', AppConst.BOOK_SUCCESS, 'success')
+      err => this.validationService.swAlertUsualErr(err)
+    )
   }
 
   postActivity(checkindate: Date, checkoutdate: Date): void {
@@ -156,8 +152,8 @@ export class RoomDetailComponent implements OnInit {
           //this.roomservice.LoadData();
         }
       },
-      err => this.showErr(err)
-    );
+      err => this.validationService.swAlertUsualErr(err)
+    )
   }
 
   cancelRoom() {
@@ -188,8 +184,8 @@ export class RoomDetailComponent implements OnInit {
           this.router.navigate(['/profile'])
         }
       },
-      err => this.showErr(err)
-    );
+      err => this.validationService.swAlertUsualErr(err)
+    )
   }
 
   rating(star: number) {
@@ -216,14 +212,14 @@ export class RoomDetailComponent implements OnInit {
                 this.loadFeedbackRoomData()
                 this.calculateRating()
                 this.followUserService.followUsers(AppConst.SENT_FB_ROOM + this.data.room.name)
-                swal(AppConst.TKS_FB, AppConst.FB_SENT_SUCCESS, 'success')
+                this.validationService.swAlertFeedbackSent()
               }
             },
             err => console.log(err)
           );
         }
       },
-      err => this.showErr(err)
+      err => this.validationService.swAlertUsualErr(err)
     );
   }
 }

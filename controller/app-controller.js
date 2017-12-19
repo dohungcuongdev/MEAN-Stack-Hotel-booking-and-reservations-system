@@ -141,12 +141,16 @@ exports.GetUserByUsername = function (request, response) {
 
 exports.postActivity = function (request, response) {
     var activity = new activityModel(request.body);
-    if (activity.username.includes('A guest'))
-        activity.username = activity.username.replace("a guest with name: ", "").split(",")[1].replace(" email: ", "");
-    sendHTMLEmail(appConst.MAIL_USER, activity.username, activity.name, getMailContent(activity.name, activity.created_at));
-    activity.save(function (err, resource) {
-        postApi(response, err, resource);
-    });
+    if (!activityIsAbleToUpdate(activity)) {
+        response.send(appConst.ERROR_MES).status(501);
+    } else {
+        var usernameAuth = request.cookies.username;
+        if (usernameAuth != null) activity.username = usernameAuth
+        sendHTMLEmail(appConst.MAIL_USER, activity.username, activity.name, getMailContent(activity.name, activity.created_at));
+        activity.save(function (err, resource) {
+            postApi(response, err, resource);
+        });
+    }
 };
 
 function getMailContent(subject, time) {
@@ -416,7 +420,7 @@ function saveFollowUserByIP(follow_users, ip_address, external_ip, response) {
     follow_users['ll'] = geo.ll;
     follow_users['metro'] = geo.metro;
     follow_users['zip'] = geo.zip;
-    if(follow_users.username == null || follow_users.username == '')
+    if (follow_users.username == null || follow_users.username == '')
         follow_users.username = "guest";
     follow_users.save(function (err, resource) {
         postApi(response, err, resource);
@@ -531,14 +535,37 @@ Array.prototype.unique = function () {
 
 var ACTIVITY_RESPONSE_STATUS = ['Not Yet', 'Seen', 'Email sent'];
 
+function checkNotNull(...items) {
+    for (var i = 0; i < items.length; i++)
+        if (items[i] == null || items[i] == '')
+            return false;
+    return true;
+}
+
+function checkIsNaturalNumber(...items) {
+    var pattern = /^(0|([1-9]\d*))$/;
+    for (var i = 0; i < items.length; i++)
+        if (!pattern.test(items[i]))
+            return false;
+    return true;
+}
+
+function checkIsPositiveFloat(...items) {
+    for (var i = 0; i < items.length; i++)
+        if (Number(items[i]) <= 0)
+            return false;
+    return true;
+}
+
 function activityIsAbleToUpdate(activity) {
-    return activity.username != null && activity.name != null && activity.click != null && activity.details != null && activity.note != null && activity.content != null && ACTIVITY_RESPONSE_STATUS.includes(activity.response);
+    return checkNotNull(activity.username, activity.name, activity.click, activity.details, activity.note, activity.content) && ACTIVITY_RESPONSE_STATUS.includes(activity.response);
 }
 
 function followUserIsAbleToUpdate(followUser) {
-
+    return checkIsNaturalNumber(duration) && checkNotNull(followUser.page_access, followUser.username) && ACTIVITY_RESPONSE_STATUS.includes(activity.response);
 }
 
 function ipSuggestIsAbleToUpdate(ipSuggest) {
+    return checkIsPositiveFloat(size, price, avgAminities) && checkIsNaturalNumber(count);
 
 }
