@@ -54,8 +54,13 @@ module.exports.findIPStatistics = function (callbackAction) {
     follow_users.aggregate(query, callbackAction);
 };
 
-module.exports.findgetUsernameStatistics = function (callbackAction) {
+module.exports.findUsernameStatistics = function (callbackAction) {
     var query = [ { "$group": { _id: "$username", count: { $sum: 1 } } }];
+    follow_users.aggregate(query, callbackAction);
+};
+
+module.exports.findPageAccessStatistics = function (callbackAction) {
+    var query = [ {"$group" :{_id:"$page_access", count:{$sum:1}}}];
     follow_users.aggregate(query, callbackAction);
 };
 

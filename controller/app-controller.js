@@ -119,7 +119,13 @@ exports.getIPStatistics = function (request, response) {
 };
 
 exports.getUsernameStatistics = function (request, response) {
-    followUserModel.findgetUsernameStatistics(function (err, res) {
+    followUserModel.findUsernameStatistics(function (err, res) {
+        getApi(response, err, res);
+    });
+};
+
+exports.getPageAccessStatistics = function (request, response) {
+    followUserModel.findPageAccessStatistics(function (err, res) {
         getApi(response, err, res);
     });
 };
