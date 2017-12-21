@@ -46,8 +46,7 @@ function deleteApi(response, err, resource) {
 }
 
 exports.getActivityByUserName = function (request, response) {
-    var username = request.params.username;
-    activityModel.findActivityByUserName(username, function (err, res) {
+    activityModel.findActivityByUserName(request.params.username, function (err, res) {
         getApi(response, err, res);
     });
 };
@@ -59,8 +58,7 @@ exports.getNotResponseActivity = function (request, response) {
 };
 
 function getActivityByID(request, response) {
-    var id = request.params.id;
-    activityModel.findById(id, function (err, res) {
+    activityModel.findById(request.params.id, function (err, res) {
         getApi(response, err, res);
     });
 }
@@ -80,8 +78,7 @@ exports.replyAndGetNotification = function (request, response) {
 };
 
 exports.getActivityFeedBackRoom = function (request, response) {
-    var id = request.params.id;
-    activityModel.findFeedbackRoom(id, function (err, res) {
+    activityModel.findFeedbackRoom(request.params.id, function (err, res) {
         getApi(response, err, res);
     });
 };
@@ -94,8 +91,7 @@ exports.getActivity = function (request, response) {
 };
 
 exports.getFollowUserByUserIP = function (request, response) {
-    var userIP = request.params.userIP;
-    followUserModel.findByUserIP(userIP, function (err, res) {
+    followUserModel.findByUserIP(request.params.userIP, function (err, res) {
         getApi(response, err, res);
     });
 };
@@ -130,6 +126,12 @@ exports.getPageAccessStatistics = function (request, response) {
     });
 };
 
+exports.getPageAccessByIP = function (request, response) {
+    followUserModel.findPageAccessByIP(request.params.userIP, function (err, res) {
+        getApi(response, err, res);
+    });
+};
+
 exports.getCountryChartData = function (request, response) {
     followUserModel.findCountryChartData(function (err, res) {
         getApi(response, err, res);
@@ -137,8 +139,7 @@ exports.getCountryChartData = function (request, response) {
 };
 
 exports.getFollowUserByID = function (request, response) {
-    var id = request.params.id;
-    followUserModel.findById(id, function (err, res) {
+    followUserModel.findById(request.params.id, function (err, res) {
         getApi(response, err, res);
     });
 };
@@ -156,15 +157,13 @@ exports.getUser = function (request, response) {
 };
 
 exports.getUserByID = function (request, response) {
-    var id = request.params.id;
-    userModel.GetUserByID(id, function (err, res) {
+    userModel.GetUserByID(request.params.id, function (err, res) {
         getApi(response, err, res);
     });
 };
 
 exports.GetUserByUsername = function (request, response) {
-    var username = request.params.username;
-    userModel.GetUserByUsername(username, function (err, res) {
+    userModel.GetUserByUsername(request.params.username, function (err, res) {
         getApi(response, err, res);
     });
 };

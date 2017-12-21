@@ -9,6 +9,7 @@ router.get('/statistics/ExternalIP', ctrl.getExternalIPStatistics);
 router.get('/statistics/UserIP', ctrl.getIPStatistics);
 router.get('/statistics/Username', ctrl.getUsernameStatistics);
 router.get('/statistics/PageAccess', ctrl.getPageAccessStatistics);
+router.get('/statistics/PageAccess/:userIP', ctrl.getPageAccessByIP);
 router.get('/:id', ctrl.getFollowUserByID);
 router.get('/', ctrl.getFollowUser);
 router.delete('/:id', ctrl.deleteFollowUser);

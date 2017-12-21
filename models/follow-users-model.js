@@ -64,6 +64,11 @@ module.exports.findPageAccessStatistics = function (callbackAction) {
     follow_users.aggregate(query, callbackAction);
 };
 
+module.exports.findPageAccessByIP = function (user_ip_address, callbackAction) {
+    var query = [{$match: {user_ip_address : user_ip_address}},{"$group" :{_id:"$page_access", count:{$sum:1}}},]
+    follow_users.aggregate(query, callbackAction);
+};
+
 module.exports.add = function (newFolowUsersModel) {
     newFolowUsersModel.save();
 };
