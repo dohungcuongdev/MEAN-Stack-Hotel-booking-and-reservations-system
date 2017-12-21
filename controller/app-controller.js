@@ -132,6 +132,12 @@ exports.getPageAccessByIP = function (request, response) {
     });
 };
 
+exports.getPageAccessByUsername = function (request, response) {
+    followUserModel.findPageAccessByUsername(request.params.username, function (err, res) {
+        getApi(response, err, res);
+    });
+};
+
 exports.getCountryChartData = function (request, response) {
     followUserModel.findCountryChartData(function (err, res) {
         getApi(response, err, res);
