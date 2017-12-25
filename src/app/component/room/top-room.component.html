@@ -27,7 +27,7 @@
                 <td>{{room.numvote}}</td>
                 <td>{{room.average_star | decimal}}</td>
                 <td align="center"><a [href]="room.imgwithURL" (click)="clickImage(room.name)" [title]="'Room ' + room.name" class="gallery-image" data-gallery><img [src]="room.imgwithURL" width="150" height="85"></a></td>
-                <td><a class="tr-p" onclick="document.documentElement.scrollTop = 0; document.body.scrollTop = 0;" [routerLink]="['/room-details', room.id]" >View content</a></td>
+                <td><a class="tr-p" onclick="document.documentElement.scrollTop = 0; document.body.scrollTop = 0;" [routerLink]="['/room-details', room.name]" >View content</a></td>
             </tr>
         </table>
     </div>

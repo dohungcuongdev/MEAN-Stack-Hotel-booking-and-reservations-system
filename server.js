@@ -102,6 +102,7 @@ app.use(appConst.FOLLOW_USER_API, follow_users_api);
 // Initialize the app.
 var server = app.listen(process.env.PORT || appConst.PORT, function () {
     var port = server.address().port;
+    process.setMaxListeners(0);
     console.log(appConst.APP_RUNNING_RESULT, port);
 });
 

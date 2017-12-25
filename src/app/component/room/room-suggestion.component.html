@@ -25,7 +25,7 @@
           <p>No.of Adult: {{room.numpeople}}</p>
           <p class="available-room" *ngIf="room.status === 'available'">This room is available</p>
           <p class="booked-room" *ngIf="room.status === 'booked'">This room is booked</p>
-          <a onclick="document.documentElement.scrollTop = 0; document.body.scrollTop = 0;" [routerLink]="['/room-details', room.id]" class="btn btn-default">Check Details</a>
+          <a onclick="document.documentElement.scrollTop = 0; document.body.scrollTop = 0;" [routerLink]="['/room-details', room.name]" class="btn btn-default">Check Details</a>
         </div>
       </div>
     </div>
