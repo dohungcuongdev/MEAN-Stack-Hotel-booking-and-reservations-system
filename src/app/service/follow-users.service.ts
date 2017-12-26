@@ -40,23 +40,32 @@ export class FollowUsersService extends ApiService<FollowUsers> {
         return this.edit(follow_users.id, follow_users)
     }
 
-    followUsers(url: string) {
-        let duration = 0
-        if (this.cookie.get("start_access") == null) {
-            this.cookie.put("start_access", Date.now() + "")
-            duration = 0
+    followUsers(new_page_access: string) {
+        if (this.cookie.get("page_access") == null || this.cookie.get("time_access") == null) {
+            // if no page access => store new page acess and time access
+            this.cookie.put("page_access", new_page_access, 60 * 60 ); // 1 hour
+            this.cookie.put("time_access", Date.now().toString(), 60 * 60 ); // 1 hour
+            
         } else {
-            duration = Date.now() - +this.cookie.get("start_access");
-            this.cookie.put("start_access", Date.now() + "")
-        }
+            // if access a page before => update this page to db + store 'new page access'
+            
+            // update 'page before' to db
+            var page_access_before = this.cookie.get("page_access")
+            var time_access_before = this.cookie.get("time_access")
+            var new_time_access = Date.now();
+            var duration = new_time_access - +time_access_before; // total time stay in 'before page'
+            this.addFollowUsers(new FollowUsers(this.data.user.username, page_access_before, duration)).subscribe(
+                response => {
+                    if (response) {
+                        console.log(response);
+                    }
+                },
+                err => console.log(err)
+            );
 
-        this.addFollowUsers(new FollowUsers(this.data.user.username, url, duration)).subscribe(
-            response => {
-                if (response) {
-                    console.log(response);
-                }
-            },
-            err => console.log(err)
-        );
+            // store 'new page access'
+            this.cookie.put('page_access', new_page_access, 60 * 60 ); // 1 hour
+            this.cookie.put('time_access', new_time_access.toString(), 60 * 60 ); // 1 hour
+        }
     }
 }

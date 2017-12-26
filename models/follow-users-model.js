@@ -1,5 +1,6 @@
 var bcrypt = require('bcryptjs');
 var mongoose = require('mongoose');
+var appConst = require('../const/app-const');
 var Schema = mongoose.Schema;
 mongoose.Promise = global.Promise;
 
@@ -27,6 +28,20 @@ var follow_users = module.exports = mongoose.model('follow_users', followUserSch
 
 module.exports.findAll = function (callbackAction) {
     follow_users.find({}, callbackAction).sort({ "created_at": -1 });
+};
+
+module.exports.findFollowUserByPage = function (page, callbackAction) {
+    var begin = (page-1)*appConst.NUM_TRACKING_EACH_PAGE;
+    follow_users.find({}, callbackAction).sort({ "created_at": -1 }).skip(begin).limit(appConst.NUM_TRACKING_EACH_PAGE);
+};
+
+module.exports.countClickTracking = function (callbackAction) {
+    follow_users.count({}, callbackAction);
+};
+
+module.exports.findSortedTrackingData = function (field_name, callbackAction) {
+    var query = { field_name: -1 };
+    follow_users.find({}, callbackAction).sort({ field_name: -1 }).skip(0).limit(appConst.NUM_TRACKING_EACH_PAGE);
 };
 
 module.exports.findByUserIP = function (user_ip_address, callbackAction) {

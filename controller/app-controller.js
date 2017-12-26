@@ -96,6 +96,25 @@ exports.getFollowUserByUserIP = function (request, response) {
     });
 };
 
+exports.getFollowUserByPage = function (request, response) {
+    followUserModel.findFollowUserByPage(request.params.page, function (err, res) {
+        getApi(response, err, res);
+    });
+};
+
+exports.getNumPageTracking = function (request, response) {
+    followUserModel.countClickTracking(function (err, totalTracking) {
+        var numPage = {"total_page" : Math.round(totalTracking/appConst.NUM_TRACKING_EACH_PAGE)};
+        getApi(response, err, numPage);
+    });
+};
+
+exports.getSortedTrackingData = function (request, response) {
+    followUserModel.findSortedTrackingData(request.params.field_name, function (err, res) {
+        getApi(response, err, res);
+    });
+};
+
 exports.getExternalIP = function (request, response) {
     followUserModel.findExternalIP(request.params.externalIP, function (err, res) {
         getApi(response, err, res);
@@ -480,16 +499,25 @@ function followUserBehavior(page_access, duration, username) {
     });
 }
 
-function followUsers(page_access, req, res) {
-    var duration = 0;
-    if (req.cookies['start_access'] == null) {
-        res.cookie('start_access', Date.now() + "");
-        duration = 0;
+function followUsers(new_page_access, req, res) {
+    if (req.cookies['page_access'] == null || req.cookies['time_access'] == null) {
+        // if no page access => store new page acess and time access
+        res.cookie('page_access', new_page_access, { maxAge: 60 * 60 }); // 1 hour
+        res.cookie('time_access', Date.now().toString(), { maxAge: 60 * 60 }); // 1 hour
     } else {
-        duration = Date.now() - +req.cookies['start_access'];
-        res.cookie('start_access', Date.now() + "");
+        // if access a page before => update this page to db + store 'new page access'
+
+        // update 'page before' to db
+        var page_access_before = req.cookies['page_access'];
+        var time_access_before = req.cookies['time_access'];
+        var new_time_access = Date.now();
+        var duration = new_time_access - +time_access_before; // total time stay in 'before page'
+        followUserBehavior(page_access_before, duration, req.cookies['username']);
+
+        // store 'new page access'
+        res.cookie('page_access', new_page_access, { maxAge: 60 * 60 }); // 1 hour
+        res.cookie('time_access', new_time_access.toString(), { maxAge: 60 * 60 }); // 1 hour
     }
-    followUserBehavior(page_access, duration, req.cookies['username']);
 }
 
 function getIpAddress() {
