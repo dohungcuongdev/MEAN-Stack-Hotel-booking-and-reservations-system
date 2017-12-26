@@ -427,7 +427,7 @@ exports.getRoomSuggestion = function (request, response) {
 function updateRecommemdationRoom(follow_users, ip_address) {
     var roomname = getRoomNameCustomerClicked(follow_users);
     if (roomname != '') {
-        httpRequest({ url: appConst.ROOM_NAME_API_URL + roomname, json: true }, function (error, res, room) {
+        httpRequest({ url: appConst.ROOM_API_URL + roomname, json: true }, function (error, res, room) {
             if (!error && res.statusCode === 200) {
                 ipSuggestModel.findByUserIP(ip_address, function (err, userip) {
                     if (err)

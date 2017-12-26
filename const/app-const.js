@@ -34,8 +34,6 @@ exports.APP_RUNNING_RESULT = "App now running on port";
 exports.ERROR_MES = 'err_msg';
 exports.SUCCESS_MES = 'success_msg';
 exports.USER_API = '/api/users';
-exports.ROOM_API = '/api/rooms';
-exports.RESTAURANT_API = '/api/restaurant';
 exports.ACTIVITY_API = '/api/activity';
 exports.FOLLOW_USER_API = '/api/follow-users';
 
