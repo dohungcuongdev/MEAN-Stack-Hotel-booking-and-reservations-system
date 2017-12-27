@@ -1,0 +1,116 @@
+
+
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+<body ng-app="myApp" ng-controller="myCtrl">
+
+<ul ng-repeat="x in list_api_GET">
+	<li><a href="{{x}}" target="_blank">{{x}}</a></li>
+</ul>
+</body>
+<script>
+
+var list_api_GET = [
+'http://localhost:3000/api/activity/',
+'http://localhost:3000/api/activity/feedback-room/response/not-yet',
+'http://localhost:3000/api/follow-users/',
+'http://localhost:3000/api/follow-users/count/page',
+'http://localhost:3000/api/follow-users/statistics/ExternalIP',
+'http://localhost:3000/api/follow-users/statistics/UserIP',
+'http://localhost:3000/api/follow-users/statistics/Username',
+'http://localhost:3000/api/follow-users/statistics/PageAccess',
+'http://localhost:3000/api/follow-users/room/suggest-room',
+'http://localhost:3000/api/users/',
+
+'http://localhost:3000/api/follow-users/page/:page',
+'http://localhost:3000/api/follow-users/sort/:field_name',
+'http://localhost:3000/api/follow-users/:fieldname/:sort/:page',
+'http://localhost:3000/api/follow-users/userIP/:userIP',
+'http://localhost:3000/api/follow-users/externalIP/:externalIP',
+'http://localhost:3000/api/follow-users/country/:chart-data',
+'http://localhost:3000/api/follow-users/statistics/PageAccess/userIP/:userIP',
+
+'http://localhost:3000/api/activity/:id',
+'http://localhost:3000/api/activity/feedback-room/:id',
+'http://localhost:3000/api/activity/seen-notification/:id',
+'http://localhost:3000/api/activity/reply-notification/:id',
+'http://localhost:3000/api/follow-users/:id',
+'http://localhost:3000/api/users/:id',
+
+
+'http://localhost:3000/api/activity/username/:username',
+'http://localhost:3000/api/follow-users/statistics/PageAccess/username/:username',
+'http://localhost:3000/api/users/username/:username',
+
+
+'http://localhost:8080/Hotel-booking-and-reservations-system-admin/api/rooms',
+	
+'http://localhost:8080/Hotel-booking-and-reservations-system-admin/api/restaurant',
+	
+'http://localhost:8080/Hotel-booking-and-reservations-system-admin/api/rooms/id/{id}',
+	
+'http://localhost:8080/Hotel-booking-and-reservations-system-admin/api/rooms/{name}',
+	
+'http://localhost:8080/Hotel-booking-and-reservations-system-admin/api/rooms/page/{page}',
+	
+'http://localhost:8080/Hotel-booking-and-reservations-system-admin/api/rooms/all/quantity',
+	
+'http://localhost:8080/Hotel-booking-and-reservations-system-admin/api/restaurant/{id}',
+
+'http://localhost:8080/Hotel-booking-and-reservations-system-admin/api/page-access-chart',
+	
+'http://localhost:8080/Hotel-booking-and-reservations-system-admin/api/page-access-chart/userIP/{userIP}',
+	
+'http://localhost:8080/Hotel-booking-and-reservations-system-admin/api/page-access-chart/username/{username}',
+];
+
+
+
+
+var list_api_POST = [
+'http://localhost:3000/api/activity/',
+'http://localhost:3000/api/follow-users/'
+];
+
+var list_api_DELETE = [
+'http://localhost:3000/api/activity/:id',
+'http://localhost:3000/api/follow-users/:id'
+];
+
+
+
+
+
+
+
+
+var list_api_PUT = [
+'http://localhost:3000/api/activity/:id',
+'http://localhost:3000/api/follow-users/:id',
+'http://localhost:3000/api/users/:id',
+'http://localhost:8080/Hotel-booking-and-reservations-system-admin/api/rooms/{name}'
+];
+
+console.log(list_api_GET);
+console.log(list_api_POST);
+console.log(list_api_PUT);
+console.log(list_api_DELETE);
+
+
+var app = angular.module("myApp", []);
+app.controller("myCtrl", function($scope) {
+  $scope.list_api_GET = list_api_GET;
+  $scope.list_api_POST = list_api_POST;
+  $scope.list_api_PUT = list_api_PUT;
+  $scope.list_api_DELETE = list_api_DELETE;
+});
+
+
+
+
+
+function showAPI(apiURL) {
+	document.getElementById('apiFrame').src = apiURL;
+}
+</script>

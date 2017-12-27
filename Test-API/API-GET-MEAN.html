@@ -1,0 +1,83 @@
+<link href="bootstrap.css" rel="stylesheet" type="text/css">
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+<body ng-app="myApp" ng-controller="myCtrl">
+<div class="row">
+<div class="col-lg-12">
+	<div class="col-lg-6">
+		<div ng-repeat="x in list_api_GET">
+			<p ng-if="indexSelected==$index" style="color:white;background:red;cursor:pointer" id="api{{$index}}" ng-click="highlightLink($index)">localhost:3000/api/{{x}}</p>
+			<p ng-if="indexSelected!=$index" style="cursor:pointer" id="api{{$index}}" ng-click="highlightLink($index, x)">localhost:3000/api/{{x}}</p>
+		</div>
+	</div>
+	<div class="col-lg-6">
+		<iframe ng-src="{{apiURL | trustAsResourceUrl}}" height="400" width="660"></iframe>
+	</div>
+	<p id="error" style="color:red"><p>
+	<input type="text" id="input" value="{{apiURL}}" size="90">
+	<button ng-click="getAPI()">GET API</button>
+</div>
+</div>
+</body>
+<script>
+var list_api_GET = [
+'activity/',
+'activity/response/not-yet',
+'follow-users/',
+'follow-users/count/page',
+'follow-users/statistics/ExternalIP',
+'follow-users/statistics/UserIP',
+'follow-users/statistics/Username',
+'follow-users/statistics/PageAccess',
+'follow-users/room/suggest-room',
+'users/',
+'follow-users/country/chart-data',
+
+'follow-users/page/:page',
+'follow-users/sort/:field_name',
+'follow-users/:fieldname/:sort/:page',
+'follow-users/userIP/:userIP',
+'follow-users/externalIP/:externalIP',
+'follow-users/statistics/PageAccess/userIP/:userIP',
+
+'activity/:id',
+'activity/feedback-room/:id',
+'activity/seen-notification/:id',
+'activity/reply-notification/:id',
+'follow-users/:id',
+'users/:id',
+
+
+'activity/username/:username',
+'follow-users/statistics/PageAccess/username/:username',
+'users/username/:username'
+];
+
+var app = angular.module("myApp", []);
+app.controller("myCtrl", function($scope) {
+  $scope.indexSelected = null;
+  $scope.apiURL = null;
+  $scope.list_api_GET = list_api_GET;
+  $scope.highlightLink = function(index, apiURL) {
+		$scope.indexSelected = index;
+		$scope.apiURL = 'http://localhost:3000/api/' + apiURL;
+		document.getElementById('input').value = $scope.apiURL;
+		if(apiURL.includes(':')) {
+			document.getElementById('error').innerHTML = 'Please input params';
+		}
+		else {
+			document.getElementById('error').innerHTML = '';
+		}
+  }
+  
+  $scope.getAPI = function() {
+	 $scope.apiURL = document.getElementById('input').value;
+  }
+});
+
+app.filter('trustAsResourceUrl', ['$sce', function($sce) {
+    return function(val) {
+        return $sce.trustAsResourceUrl(val);
+    };
+}])
+
+</script>
