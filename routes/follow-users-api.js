@@ -10,7 +10,7 @@ router.get('/sort/:field_name', ctrl.getSortedTrackingData);
 router.get('/:fieldname/:sort/:page', ctrl.getSortedTrackingData2);
 router.get('/userIP/:userIP', ctrl.getFollowUserByUserIP);
 router.get('/externalIP/:externalIP', ctrl.getExternalIP);
-router.get('/country/:chart-data', ctrl.getCountryChartData);
+router.get('/country/chart-data', ctrl.getCountryChartData);
 router.get('/statistics/ExternalIP', ctrl.getExternalIPStatistics);
 router.get('/statistics/UserIP', ctrl.getIPStatistics);
 router.get('/statistics/Username', ctrl.getUsernameStatistics);
