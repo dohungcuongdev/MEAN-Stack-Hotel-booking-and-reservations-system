@@ -7,6 +7,7 @@ router.get('/:id', ctrl.getFollowUserByID);
 router.get('/page/:page', ctrl.getFollowUserByPage);
 router.get('/count/page', ctrl.getNumPageTracking);
 router.get('/sort/:field_name', ctrl.getSortedTrackingData);
+router.get('/:fieldname/:sort/:page', ctrl.getSortedTrackingData2);
 router.get('/userIP/:userIP', ctrl.getFollowUserByUserIP);
 router.get('/externalIP/:externalIP', ctrl.getExternalIP);
 router.get('/country/:chart-data', ctrl.getCountryChartData);

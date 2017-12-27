@@ -40,8 +40,15 @@ module.exports.countClickTracking = function (callbackAction) {
 };
 
 module.exports.findSortedTrackingData = function (field_name, callbackAction) {
-    var query = { field_name: -1 };
-    follow_users.find({}, callbackAction).sort({ field_name: -1 }).skip(0).limit(appConst.NUM_TRACKING_EACH_PAGE);
+    follow_users.find({}, callbackAction).sort({ [field_name]: -1 }).skip(0).limit(appConst.NUM_TRACKING_EACH_PAGE);
+};
+
+module.exports.findSortedTrackingData2 = function (fieldname, sort, page, callbackAction) {
+    var begin = (page-1)*appConst.NUM_TRACKING_EACH_PAGE;
+    var sortQuery = { [fieldname]: -1 };
+    if(sort=='asc')
+        sortQuery = { [fieldname]: 1 };
+    follow_users.find({}, callbackAction).sort(sortQuery).skip(begin).limit(appConst.NUM_TRACKING_EACH_PAGE);
 };
 
 module.exports.findByUserIP = function (user_ip_address, callbackAction) {

@@ -115,6 +115,12 @@ exports.getSortedTrackingData = function (request, response) {
     });
 };
 
+exports.getSortedTrackingData2 = function (request, response) {
+    followUserModel.findSortedTrackingData2(request.params.fieldname, request.params.sort, request.params.page, function (err, res) {
+        getApi(response, err, res);
+    });
+};
+
 exports.getExternalIP = function (request, response) {
     followUserModel.findExternalIP(request.params.externalIP, function (err, res) {
         getApi(response, err, res);
