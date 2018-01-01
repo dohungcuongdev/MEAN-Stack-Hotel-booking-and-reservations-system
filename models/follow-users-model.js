@@ -31,7 +31,7 @@ module.exports.findAll = function (callbackAction) {
 };
 
 module.exports.findFollowUserByPage = function (page, callbackAction) {
-    var begin = (page-1)*appConst.NUM_TRACKING_EACH_PAGE;
+    var begin = (page - 1) * appConst.NUM_TRACKING_EACH_PAGE;
     follow_users.find({}, callbackAction).sort({ "created_at": -1 }).skip(begin).limit(appConst.NUM_TRACKING_EACH_PAGE);
 };
 
@@ -44,11 +44,37 @@ module.exports.findSortedTrackingData = function (field_name, callbackAction) {
 };
 
 module.exports.findSortedTrackingData2 = function (fieldname, sort, page, callbackAction) {
-    var begin = (page-1)*appConst.NUM_TRACKING_EACH_PAGE;
+    var begin = (page - 1) * appConst.NUM_TRACKING_EACH_PAGE;
     var sortQuery = { [fieldname]: -1 };
-    if(sort=='asc')
+    if (sort == 'asc')
         sortQuery = { [fieldname]: 1 };
     follow_users.find({}, callbackAction).sort(sortQuery).skip(begin).limit(appConst.NUM_TRACKING_EACH_PAGE);
+};
+
+var getSearchDateQuery = function(keyword) {
+    var date1 = new Date(keyword).toISOString();
+    var date2 = new Date(new Date(keyword).getTime() + 1 * 17 * 60 * 60 * 1000).toISOString(); //IOS date next day
+    return { created_at: { '$gte': new Date(date1), '$lt': new Date(date2)}};
+}
+
+module.exports.searchTrackingData = function (fieldname, keyword, sort, page, callbackAction) {
+    var begin = (page - 1) * appConst.NUM_TRACKING_EACH_PAGE;
+    var sortQuery = { [fieldname]: -1 };
+    if (sort == 'asc')
+        sortQuery = { [fieldname]: 1 };
+    if (fieldname == 'created_at') {
+        follow_users.find(getSearchDateQuery(keyword), callbackAction).sort(sortQuery).skip(begin).limit(appConst.NUM_TRACKING_EACH_PAGE);
+    } else {
+        var query = { [fieldname]: new RegExp(keyword) };
+        follow_users.find(query, callbackAction).sort(sortQuery).skip(begin).limit(appConst.NUM_TRACKING_EACH_PAGE);
+    }
+};
+
+module.exports.countSearchPage = function (fieldname, keyword, callbackAction) {
+    if (fieldname == 'created_at') {
+        follow_users.count(getSearchDateQuery(keyword), callbackAction);
+    } else 
+        follow_users.count({ [fieldname]: new RegExp(keyword) }, callbackAction);
 };
 
 module.exports.findByUserIP = function (user_ip_address, callbackAction) {
@@ -67,32 +93,32 @@ module.exports.findCountryChartData = function (callbackAction) {
 };
 
 module.exports.findExternalIPStatistics = function (callbackAction) {
-    var query = [ { "$group": { _id: "$external_ip_address", count: { $sum: 1 } } }];
+    var query = [{ "$group": { _id: "$external_ip_address", count: { $sum: 1 } } }];
     follow_users.aggregate(query, callbackAction);
 };
 
 module.exports.findIPStatistics = function (callbackAction) {
-    var query = [ { "$group": { _id: "$user_ip_address", count: { $sum: 1 } } }];
+    var query = [{ "$group": { _id: "$user_ip_address", count: { $sum: 1 } } }];
     follow_users.aggregate(query, callbackAction);
 };
 
 module.exports.findUsernameStatistics = function (callbackAction) {
-    var query = [ { "$group": { _id: "$username", count: { $sum: 1 } } }];
+    var query = [{ "$group": { _id: "$username", count: { $sum: 1 } } }];
     follow_users.aggregate(query, callbackAction);
 };
 
 module.exports.findPageAccessStatistics = function (callbackAction) {
-    var query = [ {"$group" :{_id:"$page_access", count:{$sum:1}}}];
+    var query = [{ "$group": { _id: "$page_access", count: { $sum: 1 } } }];
     follow_users.aggregate(query, callbackAction);
 };
 
 module.exports.findPageAccessByIP = function (user_ip_address, callbackAction) {
-    var query = [{$match: {user_ip_address : user_ip_address}},{"$group" :{_id:"$page_access", count:{$sum:1}}},]
+    var query = [{ $match: { user_ip_address: user_ip_address } }, { "$group": { _id: "$page_access", count: { $sum: 1 } } },]
     follow_users.aggregate(query, callbackAction);
 };
 
 module.exports.findPageAccessByUsername = function (username, callbackAction) {
-    var query = [{$match: {username : username}},{"$group" :{_id:"$page_access", count:{$sum:1}}},]
+    var query = [{ $match: { username: username } }, { "$group": { _id: "$page_access", count: { $sum: 1 } } },]
     follow_users.aggregate(query, callbackAction);
 };
 

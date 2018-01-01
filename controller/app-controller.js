@@ -121,6 +121,19 @@ exports.getSortedTrackingData2 = function (request, response) {
     });
 };
 
+exports.searchTrackingData = function (request, response) {
+    followUserModel.searchTrackingData(request.params.fieldname, request.params.keyword, request.params.sort, request.params.page, function (err, res) {
+        getApi(response, err, res);
+    });
+};
+
+exports.searchTotalPage = function (request, response) {
+    followUserModel.countSearchPage(request.params.fieldname, request.params.keyword, function (err, totalTracking) {
+        var numPage = {"total_page" : Math.round(totalTracking/appConst.NUM_TRACKING_EACH_PAGE)};
+        getApi(response, err, numPage);
+    });
+};
+
 exports.getExternalIP = function (request, response) {
     followUserModel.findExternalIP(request.params.externalIP, function (err, res) {
         getApi(response, err, res);
