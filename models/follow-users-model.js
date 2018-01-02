@@ -11,13 +11,13 @@ var followUserSchema = new Schema(
         username: String,
         page_access: String,
         duration: Number,
-        range: Array,
-        country: String,
-        region: String,
-        city: String,
-        ll: Array,
-        metro: Number,
-        zip: Number,
+        // range: Array,
+        // country: String,
+        // region: String,
+        // city: String,
+        // ll: Array,
+        // metro: Number,
+        // zip: Number,
         created_at: { type: Date, default: Date.now }
     },
     {
@@ -57,24 +57,33 @@ var getSearchDateQuery = function(keyword) {
     return { created_at: { '$gte': new Date(date1), '$lt': new Date(date2)}};
 }
 
+var getSearchDurationQuery = function(keyword) {
+    var duration = parseInt(keyword);
+    return { duration: { '$gte': duration}};
+}
+
 module.exports.searchTrackingData = function (fieldname, keyword, sort, page, callbackAction) {
     var begin = (page - 1) * appConst.NUM_TRACKING_EACH_PAGE;
     var sortQuery = { [fieldname]: -1 };
+    var query = { [fieldname]: new RegExp(keyword) };
     if (sort == 'asc')
         sortQuery = { [fieldname]: 1 };
     if (fieldname == 'created_at') {
-        follow_users.find(getSearchDateQuery(keyword), callbackAction).sort(sortQuery).skip(begin).limit(appConst.NUM_TRACKING_EACH_PAGE);
-    } else {
-        var query = { [fieldname]: new RegExp(keyword) };
-        follow_users.find(query, callbackAction).sort(sortQuery).skip(begin).limit(appConst.NUM_TRACKING_EACH_PAGE);
+        query = getSearchDateQuery(keyword);
+    } else if (fieldname == 'duration') {
+        query = getSearchDurationQuery(keyword);
     }
+    follow_users.find(query, callbackAction).sort(sortQuery).skip(begin).limit(appConst.NUM_TRACKING_EACH_PAGE);
 };
 
 module.exports.countSearchPage = function (fieldname, keyword, callbackAction) {
     if (fieldname == 'created_at') {
-        follow_users.count(getSearchDateQuery(keyword), callbackAction);
-    } else 
-        follow_users.count({ [fieldname]: new RegExp(keyword) }, callbackAction);
+        query = getSearchDateQuery(keyword);
+    } else if (fieldname == 'duration') {
+        query = getSearchDurationQuery(keyword);
+    } else
+        query = { [fieldname]: new RegExp(keyword) };
+    follow_users.count(query, callbackAction);
 };
 
 module.exports.findByUserIP = function (user_ip_address, callbackAction) {

@@ -4,7 +4,7 @@ var followUserModel = require('../models/follow-users-model');
 var ipSuggestModel = require('../models/ip-suggest-model');
 
 const getIP = require('external-ip')();
-var geoip = require('geoip-lite');
+// var geoip = require('geoip-lite');
 var externalip = require('externalip');
 var cookie = require('cookie');
 
@@ -482,17 +482,17 @@ function updateRecommemdationRoom(follow_users, ip_address) {
 }
 
 function saveFollowUserByIP(follow_users, ip_address, external_ip, response) {
-    var geo = geoip.lookup(external_ip);
-    console.log(geo);
+    // var geo = geoip.lookup(external_ip);
+    // console.log(geo);
     follow_users['user_ip_address'] = ip_address;
     follow_users['external_ip_address'] = external_ip;
-    follow_users['range'] = geo.range;
-    follow_users['country'] = geo.country;
-    follow_users['region'] = geo.region;
-    follow_users['city'] = geo.city;
-    follow_users['ll'] = geo.ll;
-    follow_users['metro'] = geo.metro;
-    follow_users['zip'] = geo.zip;
+    // follow_users['range'] = geo.range;
+    // follow_users['country'] = geo.country;
+    // follow_users['region'] = geo.region;
+    // follow_users['city'] = geo.city;
+    // follow_users['ll'] = geo.ll;
+    // follow_users['metro'] = geo.metro;
+    // follow_users['zip'] = geo.zip;
     if (follow_users.username == null || follow_users.username == '')
         follow_users.username = "guest";
     follow_users.save(function (err, resource) {
@@ -511,11 +511,16 @@ function followUserBehavior(page_access, duration, username) {
         if (err)
             console.log(err);
         else {
-            var geo = geoip.lookup(external_ip);
-            var newFU = new followUserModel({ user_ip_address: ip_address, external_ip_address: external_ip, page_access: page_access, username: username, duration: duration, range: geo.range, country: geo.country, region: geo.region, city: geo.city, ll: geo.ll, metro: geo.metro, zip: geo.zip });
+
+            var newFU = new followUserModel({ user_ip_address: ip_address, external_ip_address: external_ip, page_access: page_access, username: username, duration: duration });
+
+            // var geo = geoip.lookup(external_ip);
+            // var newFU = new followUserModel({ user_ip_address: ip_address, external_ip_address: external_ip, page_access: page_access, username: username, duration: duration, range: geo.range, country: geo.country, region: geo.region, city: geo.city, ll: geo.ll, metro: geo.metro, zip: geo.zip });
+            
             followUserModel.add(newFU);
         }
     });
+    
 }
 
 function followUsers(new_page_access, req, res) {
