@@ -218,7 +218,7 @@ exports.postActivity = function (request, response) {
         response.send(appConst.ERROR_MES).status(501);
     } else {
         var usernameAuth = request.cookies.username;
-        if (usernameAuth != null) activity.username = usernameAuth
+        if (usernameAuth != null) activity.username = usernameAuth;
         sendHTMLEmail(appConst.MAIL_USER, activity.username, activity.name, getMailContent(activity.name, activity.created_at));
         activity.save(function (err, resource) {
             postApi(response, err, resource);
@@ -442,7 +442,9 @@ function updateNewIpSuggest(ipSuggestModel, ipSuggest, userip) {
     ipSuggest.size = (userip.size + ipSuggest.size) * 1.0 / 2;
     ipSuggest.price = (userip.size + ipSuggest.size) * 1.0 / 2;
     ipSuggest.avgAminities = (userip.size + ipSuggest.size) * 1.0 / 2;
-    ipSuggestModel.update(userip._id, ipSuggest);
+    if(ipSuggestIsAbleToUpdate(ipSuggest)) {
+        ipSuggestModel.update(userip._id, ipSuggest);
+    }
 }
 
 exports.getRoomSuggestion = function (request, response) {
@@ -517,13 +519,17 @@ function followUserBehavior(page_access, duration, username) {
             // var geo = geoip.lookup(external_ip);
             // var newFU = new followUserModel({ user_ip_address: ip_address, external_ip_address: external_ip, page_access: page_access, username: username, duration: duration, range: geo.range, country: geo.country, region: geo.region, city: geo.city, ll: geo.ll, metro: geo.metro, zip: geo.zip });
             
-            followUserModel.add(newFU);
+            if(followUserIsAbleToUpdate(newFU))
+                followUserModel.add(newFU);
         }
     });
     
 }
 
 function followUsers(new_page_access, req, res) {
+    var username = req.cookies['username'];
+    if(username == '' || username == null)
+        username = 'guest';
     if (req.cookies['page_access'] == null || req.cookies['time_access'] == null) {
         // if no page access => store new page acess and time access
         res.cookie('page_access', new_page_access, { maxAge: 60 * 60 }); // 1 hour
@@ -536,7 +542,7 @@ function followUsers(new_page_access, req, res) {
         var time_access_before = req.cookies['time_access'];
         var new_time_access = Date.now();
         var duration = new_time_access - +time_access_before; // total time stay in 'before page'
-        followUserBehavior(page_access_before, duration, req.cookies['username']);
+        followUserBehavior(page_access_before, duration, username);
 
         // store 'new page access'
         res.cookie('page_access', new_page_access, { maxAge: 60 * 60 }); // 1 hour
@@ -544,6 +550,8 @@ function followUsers(new_page_access, req, res) {
     }
 }
 
+
+// get client ip address
 function getIpAddress() {
     var ip_address = '';
     var os = require('os');
@@ -571,6 +579,8 @@ function checkAuthentication(req, res, next) {
     }
 }
 
+
+// get list rooms recommendation based on price, size, average Aminities)
 function getSuggestionRoom(rooms, price, size, avgAminities) {
     var arrP = get4NumNearest(rooms, 'price', price);
     var arrS = get4NumNearest(rooms, 'size', size);
@@ -578,6 +588,7 @@ function getSuggestionRoom(rooms, price, size, avgAminities) {
     return arrP.concat(arrS).concat(arrA).unique();
 }
 
+// get 4 nearest elements (compare by size, price, average Aminities of a room)
 function get4NumNearest(rooms, att, value) {
     var temp = [];
     for (var i = 0; i < rooms.length; i++) {
@@ -588,7 +599,7 @@ function get4NumNearest(rooms, att, value) {
             attvalue = rooms[i].price;
         if (att == 'avgAminities')
             attvalue = rooms[i].avgAminities;
-        temp[i] = Math.abs(attvalue - value);
+        temp[i] = Math.abs(attvalue - value); // to dind the minimun distance between a room and data tracking
     }
     var result = getIndicesOfMin(temp, 4);
     var finalresult = [];
@@ -597,11 +608,13 @@ function get4NumNearest(rooms, att, value) {
     return finalresult;
 }
 
-function getIndicesOfMin(inp, count) {
+
+// get list n smallest elements in array
+function getIndicesOfMin(inp, n) {
     var outp = [];
     for (var i = 0; i < inp.length; i++) {
         outp.push(i); // add index to output array
-        if (outp.length > count) {
+        if (outp.length > n) {
             outp.sort(function (a, b) { return inp[a] - inp[b]; }); // descending sort the output array
             outp.pop(); // remove the last index (index of smallest element in output array)
         }
@@ -609,6 +622,7 @@ function getIndicesOfMin(inp, count) {
     return outp;
 }
 
+// merge array
 Array.prototype.unique = function () {
     var a = this.concat();
     for (var i = 0; i < a.length; ++i) {
@@ -620,8 +634,7 @@ Array.prototype.unique = function () {
     return a;
 }
 
-var ACTIVITY_RESPONSE_STATUS = ['Not Yet', 'Seen', 'Email sent'];
-
+// Validate function
 function checkNotNull(...items) {
     for (var i = 0; i < items.length; i++)
         if (items[i] == null || items[i] == '')
@@ -644,15 +657,40 @@ function checkIsPositiveFloat(...items) {
     return true;
 }
 
+function isValidEmail(email) {
+    var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(email.toLowerCase());
+}
+
+function isValidIPaddress(ipaddress) {  
+  if (/^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/.test(ipaddress)) {  
+    return (true)  
+  } 
+  return (false)  
+}  
+
+function isValidUsername(username) {
+    return checkNotNull(username) && isValidEmail(username);
+}
+
+function isValidUser(user) {
+    return isValidUsername(user) || user == 'guest';
+}
+
+function isAceptableUser(user) {
+    return isValidUsername(user) || user.includes('A guest');
+}
+
+
+// Check before update
 function activityIsAbleToUpdate(activity) {
-    return checkNotNull(activity.username, activity.name, activity.click, activity.details, activity.note, activity.content) && ACTIVITY_RESPONSE_STATUS.includes(activity.response);
+    return isAceptableUser(activity.username) && checkNotNull(activity.name, activity.click, activity.details, activity.note, activity.content) && appConst.ACTIVITY_RESPONSE_STATUS.includes(activity.response);
 }
 
 function followUserIsAbleToUpdate(followUser) {
-    return checkIsNaturalNumber(duration) && checkNotNull(followUser.page_access, followUser.username) && ACTIVITY_RESPONSE_STATUS.includes(activity.response);
+    return isValidUser(followUser.username) && checkIsNaturalNumber(followUser.duration) && checkNotNull(followUser.page_access) && isValidIPaddress(followUser.user_ip_address) && isValidIPaddress(followUser.external_ip_address);
 }
 
 function ipSuggestIsAbleToUpdate(ipSuggest) {
-    return checkIsPositiveFloat(size, price, avgAminities) && checkIsNaturalNumber(count);
-
+    return checkIsPositiveFloat(ipSuggest.size, ipSuggest.price, ipSuggest.avgAminities) && checkIsNaturalNumber(ipSuggest.count);
 }
