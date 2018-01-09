@@ -58,8 +58,10 @@ var getSearchDateQuery = function(keyword) {
 }
 
 var getSearchDurationQuery = function(keyword) {
-    var duration = parseInt(keyword);
-    return { duration: { '$gte': duration}};
+    let d = keyword.split(',');
+    let d1 = parseInt(d[0]);
+    let d2 = parseInt(d[1]);
+    return { duration: { '$gte': d1, '$lt': d2}};
 }
 
 module.exports.searchTrackingData = function (fieldname, keyword, sort, page, callbackAction) {
