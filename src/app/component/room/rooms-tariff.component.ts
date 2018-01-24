@@ -32,13 +32,16 @@ export class RoomsTariffComponent implements OnInit {
   }
 
   public ngOnInit(): void {
-    //get list all rooms
+    this.showAllRooms()
+  }
+  
+  private showAllRooms() {
     this.roomservice.getAllRooms().subscribe((listrooms: Room[]) => {
       this.listrooms = listrooms
       this.addImgURLRooms()
       this.initializeNumPage()
       this.initializeRoomOfPage()
-    })
+    })	  
   }
 
 

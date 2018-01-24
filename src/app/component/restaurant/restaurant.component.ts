@@ -33,7 +33,11 @@ export class RestaurantComponent implements OnInit {
   }
 
   public ngOnInit(): void {
-    //get list all services
+	this.showAllRestaurantItems();
+  }
+  
+  private showAllRestaurantItems() {
+	//get list all services
     this.restaurantService.getAllService().subscribe((listservice: HotelService[]) => {
       this.listservice = listservice
       this.addImgURLServices()

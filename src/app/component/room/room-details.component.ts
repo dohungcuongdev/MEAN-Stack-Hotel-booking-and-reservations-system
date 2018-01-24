@@ -36,7 +36,11 @@ export class RoomDetailComponent implements OnInit {
     private data: InMemoryDataService,
     private followUserService: FollowUsersService,
     private validationService: ValidationService) {
-    this.roomid = this.route.snapshot.params['id']
+	this.showRoomDetails();
+  }
+  
+  showRoomDetails() {
+	this.roomid = this.route.snapshot.params['id']
     this.roomservice.getRoom(this.roomid).subscribe((room: Room) => {
       if (room === null) {
         this.data.resetRoom()
@@ -54,6 +58,7 @@ export class RoomDetailComponent implements OnInit {
     )
     this.loadFeedbackRoomData()
   }
+
 
   calculateRating() {
     this.data.room.star = this.check(this.data.room.star);

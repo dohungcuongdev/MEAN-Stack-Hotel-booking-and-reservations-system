@@ -16,8 +16,12 @@ export class GalleryComponent {
   }
 
   ngOnInit() {
+	this.showAllImgGallery()
+  }
+  
+  showAllImgGallery() {
     for(var i = 0; i <= 86; i++) {
       this.imagesGallery[i] = "images/photos/" + i + ".jpg"
-    }
+    }	  
   }
 }

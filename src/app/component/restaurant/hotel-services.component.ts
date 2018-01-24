@@ -20,7 +20,11 @@ export class HotelServicesComponent {
     private restaurantservice: RestaurantService,
     private data: InMemoryDataService,
     private followUserService: FollowUsersService) {
-    this.hotel_serviceid = this.route.snapshot.params['id']
+	this.showHotelServiceItem();
+  }
+  
+  showHotelServiceItem() {
+	this.hotel_serviceid = this.route.snapshot.params['id']
     this.restaurantservice.getHotelService(this.hotel_serviceid).subscribe((hotelservice: HotelService) => {
       if (hotelservice === null) {
         this.data.resetHotelservice()
