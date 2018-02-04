@@ -17,8 +17,8 @@ exports.ROOM_NAME_API_URL = SPRING_API_URL + ROOM_NAME_API
 exports.MAIL_SERVICE = 'gmail';
 exports.MAIL_USER = 'cuongvip1295@gmail.com';
 exports.MAIL_AUTH = 'ititiu13170';
-exports.HEADER_MAIL = 'test header mail';
-exports.FOOTER_MAIL = 'test footer mail';
+exports.HEADER_MAIL = 'Dear Customer,<br><br>Thank you for your interest in our hotel. This email is to acknowledge the receipt of your email and thank you for sending us your request. We will carefully review your request. Should your request match our ability, we will contact you soon.<br><br>Your request is that: <br>';
+exports.FOOTER_MAIL = '<br><br>Please click this link to return our web site: <a href="http://localhost:3000">http://localhost:3000/home</a><br><br>With best regards, <br>Hùng Cường.<br><br><b>Holiday Crown</b>.<br>Address: 24 Street 7, Bình An Ward, District 2.<br>Phone Number: 0908998923.<br>Hotline: (08).37404802';
 
 exports.DB_CONNECTION = "mongodb://" + DB_HOST + ":" + DB_PORT + "/" + DATABASE;
 exports.DB_CONNECT_SUCCESS = 'connection succesful';
