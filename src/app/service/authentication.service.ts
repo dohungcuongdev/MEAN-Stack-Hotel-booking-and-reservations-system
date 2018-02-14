@@ -19,7 +19,9 @@ export class AuthenticationService {
     public checkAuthentication() {
         let id = this.cookie.get("id")
         if (id != null && id != '') {
+            console.log(id)
             this.userservice.getUser(id).subscribe((user: User) => {
+                console.log(user)
                 if (user.username != null) {
                     this.authenticated = true
                     this.data.user = user
