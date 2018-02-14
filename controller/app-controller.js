@@ -288,7 +288,7 @@ exports.checklogin = function (username, password, done) {
         if (error)
             throw error;
         if (!username) {
-            followUserBehavior(appConst.LOGIN_FAIL + appConst.INVALID_USERNAME, 0);
+            //followUserBehavior(appConst.LOGIN_FAIL + appConst.INVALID_USERNAME, 0);
             return done(null, false, { message: appConst.INVALID_USERNAME });
         }
 
@@ -298,7 +298,7 @@ exports.checklogin = function (username, password, done) {
             if (isMatch)
                 return done(null, username);
             else {
-                followUserBehavior(appConst.LOGIN_FAIL + appConst.WRONG_PW, 0);
+                //followUserBehavior(appConst.LOGIN_FAIL + appConst.WRONG_PW, 0);
                 return done(null, false, { message: appConst.WRONG_PW });
             }
         });

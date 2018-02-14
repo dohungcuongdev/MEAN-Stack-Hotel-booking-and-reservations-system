@@ -43,8 +43,8 @@ export class FollowUsersService extends ApiService<FollowUsers> {
     followUsers(new_page_access: string) {
         if (this.cookie.get("page_access") == null || this.cookie.get("time_access") == null) {
             // if no page access => store new page acess and time access
-            this.cookie.put("page_access", new_page_access, 60 * 60 ); // 1 hour
-            this.cookie.put("time_access", Date.now().toString(), 60 * 60 ); // 1 hour
+            this.cookie.put("page_access", new_page_access);
+            this.cookie.put("time_access", Date.now().toString());
             
         } else {
             // if access a page before => update this page to db + store 'new page access'
@@ -64,8 +64,8 @@ export class FollowUsersService extends ApiService<FollowUsers> {
             );
 
             // store 'new page access'
-            this.cookie.put('page_access', new_page_access, 60 * 60 ); // 1 hour
-            this.cookie.put('time_access', new_time_access.toString(), 60 * 60 ); // 1 hour
+            this.cookie.put('page_access', new_page_access);
+            this.cookie.put('time_access', new_time_access.toString());
         }
     }
 }
