@@ -28,7 +28,7 @@ export class RestaurantComponent implements OnInit {
     private restaurantService: RestaurantService,
     private data: InMemoryDataService,
     private followUserService: FollowUsersService
-  ) { 
+  ) {
     this.followUserService.followUsers(AppConst.CLICK_RESTAURANT);
   }
 
@@ -40,10 +40,13 @@ export class RestaurantComponent implements OnInit {
 	//get list all services
     this.restaurantService.getAllService().subscribe((listservice: HotelService[]) => {
       this.listservice = listservice
-      this.addImgURLServices()
       this.initializeNumPage()
       this.initializeServiceOfPage()
     })
+  }
+
+  private getFullImgURL(imgName) {
+    return AppConst.RESTAURANT_IMG_URL + imgName
   }
 
   private initializeNumPage(): void {
@@ -53,14 +56,16 @@ export class RestaurantComponent implements OnInit {
     for (var i = 1; i <= this.numpage; i++) this.pages.push(i)
   }
 
-  private addImgURLServices(): void {
-    for (var i = 0; i < this.listservice.length; i++) {
-      this.listservice[i].imgwithURL = AppConst.RESTAURANT_IMG_URL + this.listservice[i].img
-      this.listservice[i].imgwithURL2 = AppConst.RESTAURANT_IMG_URL + this.listservice[i].img2
+  private initializeServiceOfPage(): void {
+    let temp = this.listservice.length
+    if(temp > 6)
+        temp = 6
+    for (var i = 0; i < temp; i++) {
+      this.services_page.push(this.listservice[i])
     }
   }
 
-  private initializeServiceOfPage(): void {
+  private setServiceOfPage(): void {
     this.services_page = []
     for (var i = Math.floor(this.pageclicked - 1) * 4; i < this.pageclicked * 4; i++) {
       if (i >= this.listservice.length) break
@@ -72,7 +77,7 @@ export class RestaurantComponent implements OnInit {
     document.documentElement.scrollTop = 0
     document.body.scrollTop = 0
     this.pageclicked = index
-    this.initializeServiceOfPage()
+    this.setServiceOfPage()
   }
 
   private clickpreviouspage(): void {
@@ -80,7 +85,7 @@ export class RestaurantComponent implements OnInit {
       document.documentElement.scrollTop = 0
       document.body.scrollTop = 0
       --this.pageclicked
-      this.initializeServiceOfPage()
+      this.setServiceOfPage()
     }
   }
 
@@ -89,7 +94,7 @@ export class RestaurantComponent implements OnInit {
       document.documentElement.scrollTop = 0
       document.body.scrollTop = 0
       ++this.pageclicked
-      this.initializeServiceOfPage()
+      this.setServiceOfPage()
     }
   }
 

@@ -17,7 +17,7 @@
   <div class="row">
     <div class="col-sm-6 wowload fadeInUp" *ngFor="let room of rooms_page">
       <div class="rooms">
-        <a [href]="room.imgwithURL" (click)="clickImage(room.img)"  [title]="'Room ' + room.name" class="gallery-image" data-gallery><img [src]="room.imgwithURL" class="img-responsive"></a>
+        <a [href]="getFullImgURL(room.img)" (click)="clickImage(room.img)"  [title]="'Room ' + room.name" class="gallery-image" data-gallery><img [src]="getFullImgURL(room.img)" class="img-responsive"></a>
         <div class="info">
           <h3 [class]="room.type + '-room'">Room {{room.name}} - {{room.type}}</h3>
           <p>Size: {{room.size}} sq</p>

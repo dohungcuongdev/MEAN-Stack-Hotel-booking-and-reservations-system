@@ -2,10 +2,10 @@
 'use strict';
 
 //local
-//export const EXPRESS_SERVER_URL = 'http://localhost:3000/'
+export const EXPRESS_SERVER_URL = 'http://localhost:3000/'
 
 //online
-export const EXPRESS_SERVER_URL = 'https://hotel-booking-and-reservations.herokuapp.com/'
+//export const EXPRESS_SERVER_URL = 'https://hotel-booking-and-reservations.herokuapp.com/'
 
 
 export const SPRING_SERVER_URL = "http://localhost:8080/Hotel-booking-and-reservations-system-admin/"
@@ -25,7 +25,7 @@ export const ACTIVITY_API_URL = EXPRESS_API_URL + ACTIVITY_API
 export const FOLLOWUSER_API_URL = EXPRESS_API_URL + FOLLOWUSER_API
 export const RESTAURANT_API_URL = SPRING_API_URL + RESTAURANT_API
 export const ROOM_API_URL = SPRING_API_URL + ROOM_API
-export const SUGGEST_ROOM_API = EXPRESS_API_URL + FOLLOWUSER_API + "rooms/suggest-room"
+export const SUGGEST_ROOM_API = EXPRESS_API_URL + FOLLOWUSER_API + "rooms/suggest-room/"
 export const USER_IP_FULL_API = EXPRESS_API_URL + FOLLOWUSER_API + "userIP/"
 
 export const IMG_URL = "images/"

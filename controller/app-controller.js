@@ -466,13 +466,16 @@ exports.getRoomSuggestion = function (request, response) {
 
 function updateRecommemdationRoom(follow_users, ip_address) {
     var roomname = getRoomNameCustomerClicked(follow_users);
+    console.log(roomname);
     if (roomname != '') {
         httpRequest({ url: appConst.ROOM_API_URL + roomname, json: true }, function (error, res, room) {
             if (!error && res.statusCode === 200) {
+                console.log(room);
                 ipSuggestModel.findByUserIP(ip_address, function (err, userip) {
                     if (err)
                         console.log(err);
                     var ipSuggest = new ipSuggestModel({ ip: ip_address, size: room.size, price: room.price, avgAminities: room.avgAminities, count: 1, });
+                    console.log(userip);
                     if (userip)
                         updateNewIpSuggest(ipSuggestModel, ipSuggest, userip);
                     else

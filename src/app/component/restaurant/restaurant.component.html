@@ -20,7 +20,7 @@
   <div class="row">
     <div class="col-sm-6 wowload fadeInUp" *ngFor="let service of services_page">
       <div class="rooms">
-        <a [href]="service.imgwithURL" (click)="clickImage(service.name)" [title]="service.name" class="gallery-image" data-gallery><img [src]="service.imgwithURL" class="img-responsive"></a>
+        <a [href]="getFullImgURL(service.img2)" (click)="clickImage(service.name)" [title]="service.name" class="gallery-image" data-gallery><img [src]="getFullImgURL(service.img2)" class="img-responsive"></a>
         <div class="info">
           <h3 [class]="service.type + '-service'">{{service.name}}</h3>
           <p [class]="service.type + '-service'">Type: {{service.type}}</p>

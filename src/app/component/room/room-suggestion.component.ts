@@ -6,6 +6,7 @@ import { InMemoryDataService } from '../../service/in-memory-data.service';
 import * as AppConst from '../../constant/app.const';
 import { CapitalizePipe } from "../../pipe/capitalize.pipe";
 import { FollowUsersService } from '../../service/follow-users.service';
+import { RoomComponent } from './room-component';
 
 @Component({
   selector: 'room-suggestion',
@@ -14,6 +15,7 @@ import { FollowUsersService } from '../../service/follow-users.service';
 })
 export class RoomsSuggestionComponent implements OnInit {
 
+  numRoomsEachPage: number
   numpage: number
   pages = []
   rooms_page = []
@@ -23,85 +25,28 @@ export class RoomsSuggestionComponent implements OnInit {
   listrooms = []
 
   public constructor(
-    private router: Router,
-    private roomservice: RoomService,
-    private data: InMemoryDataService,
-    private followUserService: FollowUsersService
-  ) {
-    this.followUserService.followUsers(AppConst.CLICK_SUGGEST_ROOM);
-  }
+    protected router: Router,
+    protected roomservice: RoomService,
+    protected data: InMemoryDataService,
+    protected followUserService: FollowUsersService
+  ) {}
 
   public ngOnInit(): void {
-    //get list all rooms
-    this.roomservice.getAllRoomsFromURL(AppConst.EXPRESS_API_URL + AppConst.SUGGEST_ROOM_API).subscribe((listrooms: Room[]) => {
+    this.followUserService.followUsers(AppConst.CLICK_SUGGEST_ROOM);
+    this.numRoomsEachPage = 2;
+    this.showAllRooms()
+  }
+  
+  public showAllRooms() {
+    this.roomservice.getAllRoomsFromURL(AppConst.SUGGEST_ROOM_API).subscribe((listrooms: Room[]) => {
       this.listrooms = listrooms
-      this.addImgURLRooms()
+      console.log(listrooms)
       this.initializeNumPage()
       this.initializeRoomOfPage()
-    })
+    })	  
   }
-
-
-  private addImgURLRooms(): void {
-    for (var i = 0; i < this.listrooms.length; i++) {
-      this.listrooms[i].imgwithURL = AppConst.ROOM_IMG_URL + this.listrooms[i].img
-      this.listrooms[i].imgwithURL2 = AppConst.ROOM_IMG_URL + this.listrooms[i].img2
-    }
-  }
-
-  private initializeNumPage(): void {
-    this.numpage = (this.listrooms.length % 6 == 0)
-      ? Math.floor(this.listrooms.length / 6)
-      : this.numpage = Math.floor(this.listrooms.length / 6) + 1
-    for (var i = 1; i <= this.numpage; i++) this.pages.push(i)
-  }
-
-  private initializeRoomOfPage(): void {
-    this.rooms_page = []
-    for (var i = Math.floor(this.pageclicked - 1) * 6; i < this.pageclicked * 6; i++) {
-      if (i >= this.listrooms.length) break
-      this.rooms_page.push(this.listrooms[i])
-    }
-  }
-
-  private clickpage(index: number): void {
-    document.documentElement.scrollTop = 0
-    document.body.scrollTop = 0
-    this.pageclicked = index
-    this.initializeRoomOfPage()
-  }
-
-  private clickpreviouspage(): void {
-    if (this.pageclicked > 1) {
-      document.documentElement.scrollTop = 0
-      document.body.scrollTop = 0
-      --this.pageclicked
-      this.initializeRoomOfPage()
-    }
-  }
-
-  private clicknextpage(): void {
-    if (this.pageclicked < this.pages.length) {
-      document.documentElement.scrollTop = 0
-      document.body.scrollTop = 0
-      ++this.pageclicked
-      this.initializeRoomOfPage()
-    }
-  }
-
-  private resetpage(): void {
-    this.rooms_page = []
-    this.pages = []
-    this.pageclicked = 1
-  }
-
-  private viewRoomDetails(id: string): void {
-    document.documentElement.scrollTop = 0
-    document.body.scrollTop = 0
-    this.router.navigate(['/room-details', id]);
-  }
-
-  private search(room_infor: string): void {
+ 
+  protected search(room_infor: string): void {
     this.followUserService.followUsers(AppConst.FILTER_ROOM + room_infor)
     this.resetpage()
     this.searchselected = room_infor
@@ -121,7 +66,72 @@ export class RoomsSuggestionComponent implements OnInit {
     }
   }
 
-  private searchInput(key: string): void {
+  protected getFullImgURL(imgName) {
+    return AppConst.ROOM_IMG_URL + imgName
+  }
+
+  protected initializeNumPage(): void {
+    this.numpage = (this.listrooms.length % this.numRoomsEachPage == 0)
+      ? Math.floor(this.listrooms.length / this.numRoomsEachPage)
+      : this.numpage = Math.floor(this.listrooms.length / this.numRoomsEachPage) + 1
+    this.pages = new Array(this.numpage)
+  }
+
+  protected initializeRoomOfPage(): void {
+    let temp = this.listrooms.length
+    if(temp > this.numRoomsEachPage)
+        temp = this.numRoomsEachPage
+    for (var i = 0; i < temp; i++) {
+      this.rooms_page.push(this.listrooms[i])
+    }
+  }
+
+  protected setRoomOfPage(): void {
+    this.rooms_page = []
+    for (var i = Math.floor(this.pageclicked - 1) * this.numRoomsEachPage; i < this.pageclicked * this.numRoomsEachPage; i++) {
+      if (i >= this.listrooms.length) break
+      this.rooms_page.push(this.listrooms[i])
+    }
+  }
+
+  protected clickpage(index: number): void {
+    document.documentElement.scrollTop = 0
+    document.body.scrollTop = 0
+    this.pageclicked = index
+    this.setRoomOfPage()
+  }
+
+  protected clickpreviouspage(): void {
+    if (this.pageclicked > 1) {
+      document.documentElement.scrollTop = 0
+      document.body.scrollTop = 0
+      --this.pageclicked
+      this.setRoomOfPage()
+    }
+  }
+
+  protected clicknextpage(): void {
+    if (this.pageclicked < this.pages.length) {
+      document.documentElement.scrollTop = 0
+      document.body.scrollTop = 0
+      ++this.pageclicked
+      this.setRoomOfPage()
+    }
+  }
+
+  protected resetpage(): void {
+    this.rooms_page = []
+    this.pages = []
+    this.pageclicked = 1
+  }
+
+  protected viewRoomDetails(id: string): void {
+    document.documentElement.scrollTop = 0
+    document.body.scrollTop = 0
+    this.router.navigate(['/room-details', id]);
+  }
+
+  protected searchInput(key: string): void {
     if (key !== '') {
       this.followUserService.followUsers(AppConst.SEARCH_ROOM + key)
       this.resetpage()
@@ -135,7 +145,7 @@ export class RoomsSuggestionComponent implements OnInit {
     }
   }
 
-  private clickImage(img: string) {
-    this.followUserService.followUsers(AppConst.CLICK_IMG_ROOM + img)
+  protected clickImage(room: string) {
+    this.followUserService.followUsers(AppConst.CLICK_IMG_ROOM + room);
   }
 }

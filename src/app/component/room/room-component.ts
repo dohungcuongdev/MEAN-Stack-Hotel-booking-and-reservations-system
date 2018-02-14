@@ -6,64 +6,27 @@ import { InMemoryDataService } from '../../service/in-memory-data.service';
 import * as AppConst from '../../constant/app.const';
 import { CapitalizePipe } from "../../pipe/capitalize.pipe";
 import { FollowUsersService } from '../../service/follow-users.service';
-import { RoomComponent } from './room-component';
 
 @Component({
-  selector: 'rooms-tariff',
-  templateUrl: 'rooms-tariff.component.html',
-  styleUrls: ['rooms-tariff.component.css']
+  selector: 'room-component'
 })
-export class RoomsTariffComponent implements OnInit {
+export class RoomComponent {
 
-    numRoomsEachPage: number
-    numpage: number
-    pages = []
-    rooms_page = []
-    pageclicked = 1
-    searchselected = 'all'
-    searchboxvalue = ''
-    listrooms = []
+  numRoomsEachPage: number
+  numpage: number
+  pages = []
+  rooms_page = []
+  pageclicked = 1
+  searchselected = 'all'
+  searchboxvalue = ''
+  listrooms = []
 
-    public constructor(
+  public constructor(
     protected router: Router,
     protected roomservice: RoomService,
     protected data: InMemoryDataService,
     protected followUserService: FollowUsersService
   ) {}
-
-  public ngOnInit(): void {
-    this.numRoomsEachPage = 6;
-    this.showAllRooms()
-    this.followUserService.followUsers(AppConst.CLICK_ROOMS);
-  }
-  
-  public showAllRooms() {
-    this.roomservice.getAllRooms().subscribe((listrooms: Room[]) => {
-      this.listrooms = listrooms
-      this.initializeNumPage()
-      this.initializeRoomOfPage()
-    })	  
-  }
- 
-  protected search(room_infor: string): void {
-    this.followUserService.followUsers(AppConst.FILTER_ROOM + room_infor)
-    this.resetpage()
-    this.searchselected = room_infor
-    if (room_infor === 'all')
-      this.ngOnInit()
-    else {
-      this.pages = [1]
-      if (AppConst.ROOM_TYPES.includes(room_infor)) {
-        for (var i = 0; i < this.listrooms.length; i++)
-          if (this.listrooms[i].type === room_infor)
-            this.rooms_page.push(this.listrooms[i])
-      } else {
-        for (var i = 0; i < this.listrooms.length; i++)
-          if (this.listrooms[i].status === room_infor)
-            this.rooms_page.push(this.listrooms[i])
-      }
-    }
-  }
 
   protected getFullImgURL(imgName) {
     return AppConst.ROOM_IMG_URL + imgName
