@@ -449,14 +449,19 @@ function updateNewIpSuggest(ipSuggestModel, ipSuggest, userip) {
 
 exports.getRoomSuggestion = function (request, response) {
     var ip_address = getIpAddress(request);
+    console.log(ip_address);
+    console.log(appConst.ROOM_API_URL);
     httpRequest({ url: appConst.ROOM_API_URL, json: true }, function (error, res, rooms) {
+        console.log(rooms);
         if (!error && res.statusCode === 200) {
             ipSuggestModel.findByUserIP(ip_address, function (err, ip_suggest) {
                 if (err) {
                     console.log(err);
                 } else if (ip_suggest) {
+                    console.log('ip exist on db');
                     response.send(getSuggestionRoom(rooms, ip_suggest.price, ip_suggest.size, ip_suggest.avgAminities)).status(200);
                 } else {
+                    console.log('new ip');
                     response.send(getSuggestionRoom(rooms, appConst.DEFAULT_ROOM_PRICE, appConst.DEFAULT_ROOM_SIZE, appConst.DEFAULT_ROOM_AMINITY)).status(200);
                 }
             });

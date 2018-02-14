@@ -1,13 +1,13 @@
 
 //local
-// var MEAN_SERVER_URL = "http://localhost:3000/";
+var MEAN_SERVER_URL = "http://localhost:3000/";
 // var DATABASE = "HotelBookingReservationsSystem";
 // var DB_HOST = "localhost";
 // var DB_PORT = "27017";
 // exports.DB_CONNECTION = "mongodb://" + DB_HOST + ":" + DB_PORT + "/" + DATABASE;
 
 //online
-var MEAN_SERVER_URL = "https://hotel-booking-and-reservations.herokuapp.com/";
+//var MEAN_SERVER_URL = "https://hotel-booking-and-reservations.herokuapp.com/";
 var DB_USERNAME = 'dohungcuongdev';
 var DB_PW = 'ititiu13170';
 var DB_MLAB_HOST = 'ds157057.mlab.com:57057';
