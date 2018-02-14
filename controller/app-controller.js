@@ -448,7 +448,7 @@ function updateNewIpSuggest(ipSuggestModel, ipSuggest, userip) {
 }
 
 exports.getRoomSuggestion = function (request, response) {
-    var ip_address = getIpAddress();
+    var ip_address = getIpAddress(request);
     httpRequest({ url: appConst.ROOM_API_URL, json: true }, function (error, res, rooms) {
         if (!error && res.statusCode === 200) {
             ipSuggestModel.findByUserIP(ip_address, function (err, ip_suggest) {
@@ -504,11 +504,11 @@ function saveFollowUserByIP(follow_users, ip_address, external_ip, response) {
 }
 
 function saveFollowUserData(request, response, external_ip) {
-    saveFollowUserByIP(new followUserModel(request.body), getIpAddress(), external_ip, response)
+    saveFollowUserByIP(new followUserModel(request.body), getIpAddress(request), external_ip, response)
 }
 
-function followUserBehavior(page_access, duration, username) {
-    var ip_address = getIpAddress();
+function followUserBehavior(request, page_access, duration, username) {
+    var ip_address = getIpAddress(request);
     getIP(function (err, external_ip) {
         if (err)
             console.log(err);
@@ -542,7 +542,7 @@ function followUsers(new_page_access, req, res) {
         var time_access_before = req.cookies['time_access'];
         var new_time_access = Date.now();
         var duration = new_time_access - +time_access_before; // total time stay in 'before page'
-        followUserBehavior(page_access_before, duration, username);
+        followUserBehavior(req, page_access_before, duration, username);
 
         // store 'new page access'
         res.cookie('page_access', new_page_access, { maxAge: 60 * 60 }); // 1 hour
@@ -552,23 +552,29 @@ function followUsers(new_page_access, req, res) {
 
 
 // get client ip address
-function getIpAddress() {
-    var ip_address = '';
-    var os = require('os');
-    var ifaces = os.networkInterfaces();
-    Object.keys(ifaces).forEach(function (ifname) {
-        var alias = 0;
-        ifaces[ifname].forEach(function (iface) {
-            if ('IPv4' !== iface.family || iface.internal !== false)
-                return;
-            if (alias >= 1)
-                ip_address = iface.address;
-            else
-                ip_address = iface.address;
-            ++alias;
-        });
-    });
-    return ip_address;
+// function getIpAddress() {
+//     var ip_address = '';
+//     var os = require('os');
+//     var ifaces = os.networkInterfaces();
+//     Object.keys(ifaces).forEach(function (ifname) {
+//         var alias = 0;
+//         ifaces[ifname].forEach(function (iface) {
+//             if ('IPv4' !== iface.family || iface.internal !== false)
+//                 return;
+//             if (alias >= 1)
+//                 ip_address = iface.address;
+//             else
+//                 ip_address = iface.address;
+//             ++alias;
+//         });
+//     });
+//     return ip_address;
+// }
+
+function getIpAddress(request) {
+    var ip = request.header('x-forwarded-for') || request.connection.remoteAddress;
+    console.log(ip);
+    return ip;
 }
 
 function checkAuthentication(req, res, next) {
