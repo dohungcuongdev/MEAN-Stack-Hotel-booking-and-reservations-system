@@ -2,10 +2,10 @@
 'use strict';
 
 //local
-export const EXPRESS_SERVER_URL = 'http://localhost:3000/'
+//export const EXPRESS_SERVER_URL = 'http://localhost:3000/'
 
 //online
-//export const EXPRESS_SERVER_URL = 'https://hotel-booking-and-reservations.herokuapp.com/'
+export const EXPRESS_SERVER_URL = 'https://hotel-booking-and-reservations.herokuapp.com/'
 
 
 export const SPRING_SERVER_URL = "http://localhost:8080/Hotel-booking-and-reservations-system-admin/"
