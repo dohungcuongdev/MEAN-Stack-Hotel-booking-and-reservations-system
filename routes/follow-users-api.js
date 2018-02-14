@@ -21,6 +21,6 @@ router.get('/statistics/PageAccess/userIP/:userIP', ctrl.getPageAccessByIP);
 router.get('/statistics/PageAccess/username/:username', ctrl.getPageAccessByUsername);
 router.delete('/:id', ctrl.deleteFollowUser);
 router.post('/', ctrl.postFollowUser);
-router.get('/room/suggest-room', ctrl.getRoomSuggestion);
+router.get('/rooms/suggest-room', ctrl.getRoomSuggestion);
 
 module.exports = router;

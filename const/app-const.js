@@ -1,7 +1,20 @@
 
+//local
+//var MEAN_SERVER_URL = "http://localhost:3000/";
 var DATABASE = "HotelBookingReservationsSystem";
 var DB_HOST = "localhost";
 var DB_PORT = "27017";
+//exports.DB_CONNECTION = "mongodb://" + DB_HOST + ":" + DB_PORT + "/" + DATABASE;
+
+//online
+var MEAN_SERVER_URL = "https://hotel-booking-and-reservations.herokuapp.com/";
+var DB_USERNAME = 'dohungcuongdev';
+var DB_PW = 'ititiu13170';
+var DB_MLAB_HOST = 'ds157057.mlab.com:57057';
+var DB_MLAB = 'hotel_booking_system';
+var DB_HOST_ONLINE = "mongodb://" + DB_USERNAME + ":" + DB_PW + "@" + DB_MLAB_HOST + "/" + DB_MLAB;
+exports.DB_CONNECTION = DB_HOST_ONLINE;
+//exports.DB_CONNECTION = "mongodb://dohungcuongdev:ititiu13170@ds157057.mlab.com:57057/hotel_booking_system";
 
 var SPRING_SERVER_URL = "http://localhost:8080/Hotel-booking-and-reservations-system-admin/"
 var SPRING_API_URL = SPRING_SERVER_URL + "api/"
@@ -18,10 +31,9 @@ exports.MAIL_SERVICE = 'gmail';
 exports.MAIL_USER = 'cuongvip1295@gmail.com';
 exports.MAIL_AUTH = 'ititiu13170';
 exports.HEADER_MAIL = 'Dear Customer,<br><br>Thank you for your interest in our hotel. This email is to acknowledge the receipt of your email and thank you for sending us your request. We will carefully review your request. Should your request match our ability, we will contact you soon.<br><br>Your request is that: <br>';
-exports.FOOTER_MAIL = '<br><br>Please click this link to return our web site: <a href="http://localhost:3000">http://localhost:3000/home</a><br><br>With best regards, <br>Hùng Cường.<br><br><b>Holiday Crown</b>.<br>Address: 24 Street 7, Bình An Ward, District 2.<br>Phone Number: 0908998923.<br>Hotline: (08).37404802';
+exports.FOOTER_MAIL = '<br><br>Please click this link to return our web site: <a href="' + MEAN_SERVER_URL + '">' + MEAN_SERVER_URL + 'home</a><br><br>With best regards, <br>Hùng Cường.<br><br><b>Holiday Crown</b>.<br>Address: 24 Street 7, Bình An Ward, District 2.<br>Phone Number: 0908998923.<br>Hotline: (08).37404802';
 
-exports.DB_CONNECTION = "mongodb://dohungcuongdev:ititiu13170@ds157057.mlab.com:57057/hotel_booking_system";
-//exports.DB_CONNECTION = "mongodb://" + DB_HOST + ":" + DB_PORT + "/" + DATABASE;
+
 exports.DB_CONNECT_SUCCESS = 'connection succesful';
 exports.SERCRET = 'dohungcuong';
 exports.PORT = 3000;
