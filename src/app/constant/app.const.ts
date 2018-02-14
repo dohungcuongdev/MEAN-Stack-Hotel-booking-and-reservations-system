@@ -5,7 +5,8 @@ export const SPRING_SERVER_URL = "http://localhost:8080/Hotel-booking-and-reserv
 export const SPRING_RESOURCE_URL = SPRING_SERVER_URL + "resources/"
 export const SPRING_API_URL = SPRING_SERVER_URL + "api/"
 
-export const EXPRESS_SERVER_URL = 'http://localhost:3000/'
+//export const EXPRESS_SERVER_URL = 'http://localhost:3000/'
+export const EXPRESS_SERVER_URL = 'https://hotel-booking-and-reservations.herokuapp.com'
 export const EXPRESS_API_URL = EXPRESS_SERVER_URL + 'api/'
 
 export const USER_API = 'users/'
