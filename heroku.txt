@@ -1,0 +1,16 @@
+https://dashboard.heroku.com/apps/hotel-booking-and-reservations/deploy/heroku-git
+https://devcenter.heroku.com/articles/deploying-nodejs
+
+push to server
+1/ create Procfile (no extension) with content web: npm start
+2/ npm install
+3/ heroku local web
+4/ heroku login (input heroku email +  pw)
+5/ git add .
+6/ git commit -m "Added a Procfile."
+7/ git push heroku master
+
+clone code:
+1/ heroku login
+2/ heroku git:clone -a hotel-booking-and-reservations
+3/ cd hotel-booking-and-reservations
