@@ -7,7 +7,7 @@ push to server
 3/ heroku local web
 4/ heroku login (input heroku email +  pw)
 5/ git add .
-6/ git commit -m "Added a Procfile."
+6/ git commit -m "make it better"
 7/ git push heroku master
 
 clone code:
