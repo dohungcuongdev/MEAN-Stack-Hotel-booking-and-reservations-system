@@ -449,8 +449,8 @@ function updateNewIpSuggest(ipSuggestModel, ipSuggest, userip) {
 
 exports.getRoomSuggestion = function (request, response) {
     var ip_address = getIpAddress(request);
-    console.log(ip_address);
-    console.log(appConst.ROOM_API_URL);
+    //onsole.log(ip_address);
+    //console.log(appConst.ROOM_API_URL);
     httpRequest({ url: appConst.ROOM_API_URL, json: true }, function (error, res, rooms) {
         console.log(rooms);
         if (!error && res.statusCode === 200) {
@@ -458,10 +458,10 @@ exports.getRoomSuggestion = function (request, response) {
                 if (err) {
                     console.log(err);
                 } else if (ip_suggest) {
-                    console.log('ip exist on db');
+                    //cons/le.log('ip exist on db');
                     response.send(getSuggestionRoom(rooms, ip_suggest.price, ip_suggest.size, ip_suggest.avgAminities)).status(200);
                 } else {
-                    console.log('new ip');
+                    //console.log('new ip');
                     response.send(getSuggestionRoom(rooms, appConst.DEFAULT_ROOM_PRICE, appConst.DEFAULT_ROOM_SIZE, appConst.DEFAULT_ROOM_AMINITY)).status(200);
                 }
             });
@@ -471,16 +471,16 @@ exports.getRoomSuggestion = function (request, response) {
 
 function updateRecommemdationRoom(follow_users, ip_address) {
     var roomname = getRoomNameCustomerClicked(follow_users);
-    console.log(roomname);
+    //console.log(roomname);
     if (roomname != '') {
         httpRequest({ url: appConst.ROOM_API_URL + roomname, json: true }, function (error, res, room) {
             if (!error && res.statusCode === 200) {
-                console.log(room);
+                //console.log(room);
                 ipSuggestModel.findByUserIP(ip_address, function (err, userip) {
                     if (err)
                         console.log(err);
                     var ipSuggest = new ipSuggestModel({ ip: ip_address, size: room.size, price: room.price, avgAminities: room.avgAminities, count: 1, });
-                    console.log(userip);
+                    //console.log(userip);
                     if (userip)
                         updateNewIpSuggest(ipSuggestModel, ipSuggest, userip);
                     else
@@ -561,28 +561,32 @@ function followUsers(new_page_access, req, res) {
 
 // get client ip address
 // function getIpAddress() {
-//     var ip_address = '';
-//     var os = require('os');
-//     var ifaces = os.networkInterfaces();
-//     Object.keys(ifaces).forEach(function (ifname) {
-//         var alias = 0;
-//         ifaces[ifname].forEach(function (iface) {
-//             if ('IPv4' !== iface.family || iface.internal !== false)
-//                 return;
-//             if (alias >= 1)
-//                 ip_address = iface.address;
-//             else
-//                 ip_address = iface.address;
-//             ++alias;
-//         });
-//     });
-//     return ip_address;
+
 // }
 
+// get client ip address
 function getIpAddress(request) {
-    var ip = request.header('x-forwarded-for') || request.connection.remoteAddress;
-    console.log(ip);
-    return ip;
+    if(appConst.RUN_ON_SERVER == 'online') {
+        return request.header('x-forwarded-for') || request.connection.remoteAddress;
+    }
+    else if(appConst.RUN_ON_SERVER == 'localhost') {
+        var ip_address = '';
+        var os = require('os');
+        var ifaces = os.networkInterfaces();
+        Object.keys(ifaces).forEach(function (ifname) {
+            var alias = 0;
+            ifaces[ifname].forEach(function (iface) {
+                if ('IPv4' !== iface.family || iface.internal !== false)
+                    return;
+                if (alias >= 1)
+                    ip_address = iface.address;
+                else
+                    ip_address = iface.address;
+                ++alias;
+            });
+        });
+        return ip_address;
+    }
 }
 
 function checkAuthentication(req, res, next) {
