@@ -40,3 +40,27 @@ h3 {
   background-color: #363636;
   color: white;
 }
+
+/* iPad */
+@media only screen and (max-width: 1024px) {
+    .my-ejs-body {
+      margin-top: 300px;
+    }
+
+    .footer {
+      margin-top: 720px;
+      background-color: #FFFACD;
+    }
+} /* responsive */
+
+/* mobile */
+@media only screen and (max-width: 605px) { 
+    .my-ejs-body {
+      margin-top: 300px;
+    }
+
+    .footer {
+      margin-top: 720px;
+      background-color: #FFFACD;
+    }
+} /* responsive */
