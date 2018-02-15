@@ -1,0 +1,128 @@
+h2 {
+    color:#FF4500;
+}
+
+h3 {
+    color:#FF4500;
+    font-weight: bold;
+}
+
+.available-room {
+    color: #4CAF50;
+    font-weight: bold;
+}
+
+.booked-room {
+    color: red;
+    font-weight: bold;
+}
+
+
+.all-room {
+    color: #bfa145;
+    font-weight: bold;
+}
+
+.deluxe-room {
+    color:#FF4500;
+    font-weight: bold;
+}
+
+.family-room {
+    color: #ff9800;
+    font-weight: bold;
+}
+
+.single-room {
+    color: fuchsia;
+    font-weight: bold;
+}
+
+.couple-room {
+    color: #2196F3;
+    font-weight: bold;
+}
+
+.img-responsive,.thumbnail>img,.thumbnail a>img,.carousel-inner>.item>img,.carousel-inner>.item>a>img{
+    display:block;
+    max-width:100%;
+    height:auto;
+    position: relative;
+    width: 555px;
+    height: 355px;
+    background-position: 50% 50%;
+    background-repeat:no-repeat;
+    background-size: cover;
+}
+
+
+.toolbar {
+    margin-left: 10px;
+    margin-bottom: 20px;
+}
+
+.btn {
+    border: none;
+    padding: 14px 28px;
+    font-size: 16px;
+    cursor: pointer;
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    -ms-border-radius: 10px;
+    -o-border-radius: 10px;
+    border-radius: 10px;
+    color: #fff;
+}
+
+.space {
+    margin-left:55px;
+    padding: 10px 28px;
+    font-size: 16px;
+}
+
+.btn-type{
+    background:#bfa145;
+    box-shadow: none !important;
+    color: #fff;
+}
+
+.btn-type:hover, .btn-type:focus, .btn-type.focus, .btn-type:active, .btn-type.active{
+    box-shadow: none !important;
+    background:#756534;
+    color: #fff;
+    outline: none !important;
+}
+
+.search {
+    background:url('images/search.jpg') no-repeat  no-repeat;
+    height: 40px;
+    width:150px;
+} /* Search img */ 
+
+.search:hover {
+    background:url('images/search hover.jpg') no-repeat  no-repeat;
+    height: 40px;
+    width:150px;
+}
+
+/* iPad */
+@media only screen and (max-width: 1024px) {
+
+    #suggestRoom, #input-item, #search-item {
+        display: none;
+    }
+} /* responsive */
+
+/* mobile */
+@media only screen and (max-width: 605px) { 
+   .space {
+        margin-top:20px;
+        margin-left:0px;
+        padding: 10px 28px;
+        font-size: 16px;
+    }
+
+    #suggestRoom, #btn-all-room, #btn-available, #btn-type-d, #btn-type-f, #btn-type-s, #btn-type-c{
+        display: none;
+    }
+} /* responsive */

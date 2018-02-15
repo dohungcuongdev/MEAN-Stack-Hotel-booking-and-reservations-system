@@ -8,6 +8,7 @@ export class InMemoryDataService {
   room: Room
   user: User
   no_img = AppConst.IMG_NOT_FOUND
+  roomComponentName: String
 
   constructor() {
     this.resetHotelservice()
@@ -17,12 +18,12 @@ export class InMemoryDataService {
 
   resetHotelservice() {
     //this.hotelservice = new HotelService(AppConst.NOT_FOUND, null, 0, this.no_img, this.no_img, 0, null, null)
-    this.hotelservice = new HotelService('', '', null, '', '', null, '', '')
+    this.hotelservice = new HotelService('Loading...', '', null, '', '', null, '', '')
   }
 
   resetRoom() {
     //this.room = new Room(AppConst.NOT_FOUND, 0, 0, 0, null, this.no_img, this.no_img, null, null, "", null, null, null, 0)
-    this.room = new Room('', null, null, null, '', '', '', '', '', "", '', null, null, null)
+    this.room = new Room('Loading...', null, null, null, '', '', '', '', '', "", '', null, null, null)
   }
 
   resetUser() {
