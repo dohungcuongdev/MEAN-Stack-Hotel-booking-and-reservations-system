@@ -4,7 +4,8 @@
     <div class="carousel-inner">
         <br>
         <h3>Top Rooms</h3>
-        <table class="rooms" border="1" id="top-room-table">
+        <div *ngIf="isloading == false">Loading...<div style="margin-top: 500px"></div></div>
+        <table *ngIf="isloading == true" class="rooms" border="1" id="top-room-table">
             <tr>
                 <th class="tr-p" onclick="sortNum(0,'top-room-table')">No.</th>
                 <th class="tr-p" onclick="sortAlpha(1,'top-room-table')">Room</th>

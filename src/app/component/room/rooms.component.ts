@@ -22,6 +22,7 @@ export class RoomsComponent implements OnInit {
   searchselected = 'all'
   searchboxvalue = ''
   listrooms = []
+  isloading = true
 
   public constructor(
     protected router: Router,
@@ -32,6 +33,7 @@ export class RoomsComponent implements OnInit {
 
   public ngOnInit(): void {
     this.showAllRooms()
+    this.isloading = false
   }
 
   public showAllRooms() {
@@ -42,6 +44,7 @@ export class RoomsComponent implements OnInit {
         this.listrooms = listrooms
         this.initializeNumPage()
         this.initializeRoomOfPage()
+        this.isloading = true
       })
       this.followUserService.followUsers(AppConst.CLICK_ROOMS);
     }
@@ -52,6 +55,7 @@ export class RoomsComponent implements OnInit {
         this.listrooms = listrooms
         this.initializeNumPage()
         this.initializeRoomOfPage()
+        this.isloading = true
       })
       this.followUserService.followUsers(AppConst.CLICK_SUGGEST_ROOM);
     }

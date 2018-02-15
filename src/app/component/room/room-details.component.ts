@@ -25,6 +25,7 @@ export class RoomDetailComponent implements OnInit {
   private clicked_book_now = false
   private star = 3
   private list_activity = []
+  isloading = true
 
   constructor(
     private router: Router,
@@ -36,7 +37,13 @@ export class RoomDetailComponent implements OnInit {
     private data: InMemoryDataService,
     private followUserService: FollowUsersService,
     private validationService: ValidationService) {
-	this.showRoomDetails();
+	
+  }
+  
+  public ngOnInit(): void {
+    this.showRoomDetails()
+    this.isloading = false
+    this.followUserService.followUsers(AppConst.CLICK_ROOM_DETAIL + this.data.room.name)
   }
   
   showRoomDetails() {
@@ -48,7 +55,7 @@ export class RoomDetailComponent implements OnInit {
         this.data.room = room
         this.calculateRating()
         this.data.addImgURLRoom()
-        this.followUserService.followUsers(AppConst.CLICK_ROOM_DETAIL + this.data.room.name)
+        this.isloading = true
       }
     },
       err => {
@@ -81,8 +88,6 @@ export class RoomDetailComponent implements OnInit {
     }
     return value;
   }
-
-  ngOnInit(): void { }
 
   booknow() {
     if (this.auth.authenticated == false) {

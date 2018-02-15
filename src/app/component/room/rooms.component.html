@@ -17,6 +17,7 @@
     </div>
   </div>
   <h3 [class]="searchselected + '-room'">{{searchselected | capitalize }} Room</h3>
+  <div *ngIf="isloading == false">Loading...</div>
   <div class="row">
     <div class="col-sm-6 wowload fadeInUp" *ngFor="let room of rooms_page">
       <div class="rooms">

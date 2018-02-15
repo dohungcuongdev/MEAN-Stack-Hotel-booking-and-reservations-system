@@ -17,14 +17,13 @@ declare var swal: any;
 export class TopRoomComponent implements OnInit {
 
   listrooms = []
+  isloading = true
 
   constructor(
     private router: Router,
     private roomservice: RoomService,
     private data: InMemoryDataService,
-    private followUserService: FollowUsersService) {
-    this.followUserService.followUsers(AppConst.CLICK_TOPROOM);
-  }
+    private followUserService: FollowUsersService) { }
 
   check(value: any): number {
     if (value == null || typeof value == undefined || isNaN(value)) {
@@ -42,7 +41,10 @@ export class TopRoomComponent implements OnInit {
         listrooms[i].imgwithURL = AppConst.ROOM_IMG_URL + this.listrooms[i].img;
         listrooms[i].average_star = (listrooms[i].numvote == 0) ? 0 : listrooms[i].star / listrooms[i].numvote
       }
+      this.isloading = true
     })
+    this.isloading = false
+    this.followUserService.followUsers(AppConst.CLICK_TOPROOM);
   }
 
   private clickImage(room: string) {

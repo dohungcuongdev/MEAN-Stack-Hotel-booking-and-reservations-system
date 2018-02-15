@@ -22,18 +22,19 @@ export class RestaurantComponent implements OnInit {
   searchboxvalue = ''
   searchselected = 'all'
   listservice = []
+  isloading = true
 
   public constructor(
     private router: Router,
     private restaurantService: RestaurantService,
     private data: InMemoryDataService,
     private followUserService: FollowUsersService
-  ) {
-    this.followUserService.followUsers(AppConst.CLICK_RESTAURANT);
-  }
+  ) { }
 
   public ngOnInit(): void {
-	this.showAllRestaurantItems();
+    this.showAllRestaurantItems()
+    this.isloading = false
+    this.followUserService.followUsers(AppConst.CLICK_RESTAURANT);
   }
   
   private showAllRestaurantItems() {
@@ -42,6 +43,7 @@ export class RestaurantComponent implements OnInit {
       this.listservice = listservice
       this.initializeNumPage()
       this.initializeServiceOfPage()
+      this.isloading = true
     })
   }
 
