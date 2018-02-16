@@ -455,16 +455,13 @@ function updateNewIpSuggest(ipSuggestModel, ipSuggest, userip) {
 
 exports.getRoomSuggestion = function (request, response) {
     var ip_address = getIpAddress(request);
-    //onsole.log(ip_address);
-    //console.log(appConst.ROOM_API_URL);
     httpRequest({ url: appConst.ROOM_API_URL, json: true }, function (error, res, rooms) {
-        console.log(rooms);
         if (!error && res.statusCode === 200) {
             ipSuggestModel.findByUserIP(ip_address, function (err, ip_suggest) {
                 if (err) {
                     console.log(err);
                 } else if (ip_suggest) {
-                    //cons/le.log('ip exist on db');
+                    //console.log('ip exist on db');
                     response.send(getSuggestionRoom(rooms, ip_suggest.price, ip_suggest.size, ip_suggest.avgAminities)).status(200);
                 } else {
                     //console.log('new ip');
@@ -477,16 +474,13 @@ exports.getRoomSuggestion = function (request, response) {
 
 function updateRecommemdationRoom(follow_users, ip_address) {
     var roomname = getRoomNameCustomerClicked(follow_users);
-    //console.log(roomname);
     if (roomname != '') {
         httpRequest({ url: appConst.ROOM_API_URL + roomname, json: true }, function (error, res, room) {
             if (!error && res.statusCode === 200) {
-                //console.log(room);
                 ipSuggestModel.findByUserIP(ip_address, function (err, userip) {
                     if (err)
                         console.log(err);
                     var ipSuggest = new ipSuggestModel({ ip: ip_address, size: room.size, price: room.price, avgAminities: room.avgAminities, count: 1, });
-                    //console.log(userip);
                     if (userip)
                         updateNewIpSuggest(ipSuggestModel, ipSuggest, userip);
                     else
@@ -524,11 +518,9 @@ function saveFollowUserData(request, response, ip_address, external_ip) {
 function followUserBehavior(request, page_access, duration, username) {
     let ip_address = getIpAddress(request);
     if (appConst.RUN_ON_SERVER == 'online') {
-        console.log('online');
         updateFollowUserBehavior(ip_address, ip_address, page_access, username, duration);
     }
     if (appConst.RUN_ON_SERVER == 'localhost') {
-        console.log('localhost');
         getIP(function (err, external_ip) {
             if (err)
                 console.log(err);
@@ -544,10 +536,8 @@ function updateFollowUserBehavior(ip_address, external_ip, page_access, username
 
     // var geo = geoip.lookup(external_ip);
     // var newFU = new followUserModel({ user_ip_address: ip_address, external_ip_address: external_ip, page_access: page_access, username: username, duration: duration, range: geo.range, country: geo.country, region: geo.region, city: geo.city, ll: geo.ll, metro: geo.metro, zip: geo.zip });
-
     if (followUserIsAbleToUpdate(newFU)) {
         followUserModel.add(newFU);
-        console.log('updateFollowUserBehavior');
     }
 }
 
@@ -557,8 +547,8 @@ function followUsers(new_page_access, req, res) {
         username = 'guest';
     if (req.cookies['page_access'] == null || req.cookies['time_access'] == null) {
         // if no page access => store new page acess and time access
-        res.cookie('page_access', new_page_access, { maxAge: 60 * 60 }); // 1 hour
-        res.cookie('time_access', Date.now().toString(), { maxAge: 60 * 60 }); // 1 hour
+        res.cookie('page_access', new_page_access, { maxAge: 60 * 60 * 1000 }); // 1 hour
+        res.cookie('time_access', Date.now().toString(), { maxAge: 60 * 60 * 1000 }); // 1 hour
     } else {
         // if access a page before => update this page to db + store 'new page access'
 
@@ -570,8 +560,8 @@ function followUsers(new_page_access, req, res) {
         followUserBehavior(req, page_access_before, duration, username);
 
         // store 'new page access'
-        res.cookie('page_access', new_page_access, { maxAge: 60 * 60 }); // 1 hour
-        res.cookie('time_access', new_time_access.toString(), { maxAge: 60 * 60 }); // 1 hour
+        res.cookie('page_access', new_page_access, { maxAge: 60 * 60 * 1000 }); // 1 hour
+        res.cookie('time_access', new_time_access.toString(), { maxAge: 60 * 60 * 1000 }); // 1 hour
     }
 }
 
@@ -723,6 +713,13 @@ function activityIsAbleToUpdate(activity) {
 }
 
 function followUserIsAbleToUpdate(followUser) {
+    console.log('isValidUser: ' + isValidUser(followUser.username));
+    console.log('checkIsNaturalNumber: ' + checkIsNaturalNumber(followUser.duration));
+    console.log('checkNotNull: ' + checkNotNull(followUser.page_access));
+    console.log('isValidIPaddress; ' + isValidIPaddress(followUser.user_ip_address));
+    console.log('isValidIPaddress2: ' + isValidIPaddress(followUser.external_ip_address));
+    console.log(followUser.user_ip_address);
+    console.log(followUser.external_ip_address);
     return isValidUser(followUser.username) && checkIsNaturalNumber(followUser.duration) && checkNotNull(followUser.page_access) && isValidIPaddress(followUser.user_ip_address) && isValidIPaddress(followUser.external_ip_address);
 }
 
