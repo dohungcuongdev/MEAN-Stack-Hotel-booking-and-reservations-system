@@ -104,7 +104,7 @@ exports.getFollowUserByPage = function (request, response) {
 
 exports.getNumPageTracking = function (request, response) {
     followUserModel.countClickTracking(function (err, totalTracking) {
-        var numPage = {"total_page" : Math.round(totalTracking/appConst.NUM_TRACKING_EACH_PAGE)};
+        var numPage = { "total_page": Math.round(totalTracking / appConst.NUM_TRACKING_EACH_PAGE) };
         getApi(response, err, numPage);
     });
 };
@@ -129,7 +129,7 @@ exports.searchTrackingData = function (request, response) {
 
 exports.searchTotalPage = function (request, response) {
     followUserModel.countSearchPage(request.params.fieldname, request.params.keyword, function (err, totalTracking) {
-        var numPage = {"total_page" : Math.round(totalTracking/appConst.NUM_TRACKING_EACH_PAGE)};
+        var numPage = { "total_page": Math.round(totalTracking / appConst.NUM_TRACKING_EACH_PAGE) };
         getApi(response, err, numPage);
     });
 };
@@ -442,7 +442,7 @@ function updateNewIpSuggest(ipSuggestModel, ipSuggest, userip) {
     ipSuggest.size = (userip.size + ipSuggest.size) * 1.0 / 2;
     ipSuggest.price = (userip.size + ipSuggest.size) * 1.0 / 2;
     ipSuggest.avgAminities = (userip.size + ipSuggest.size) * 1.0 / 2;
-    if(ipSuggestIsAbleToUpdate(ipSuggest)) {
+    if (ipSuggestIsAbleToUpdate(ipSuggest)) {
         ipSuggestModel.update(userip._id, ipSuggest);
     }
 }
@@ -516,27 +516,35 @@ function saveFollowUserData(request, response, external_ip) {
 }
 
 function followUserBehavior(request, page_access, duration, username) {
-    var ip_address = getIpAddress(request);
-    getIP(function (err, external_ip) {
-        if (err)
-            console.log(err);
-        else {
+    let ip_address = getIpAddress(request);
+    if (appConst.RUN_ON_SERVER == 'online') {
+        updateFollowUserBehavior(ip_address, ip_address, page_access, username, duration);
+    }
+    if (appConst.RUN_ON_SERVER == 'localhost') {
+        getIP(function (err, external_ip) {
+            if (err)
+                console.log(err);
+            else {
+                updateFollowUserBehavior(ip_address, external_ip, page_access, username, duration);
+            }
+        });
+    }
 
-            var newFU = new followUserModel({ user_ip_address: ip_address, external_ip_address: external_ip, page_access: page_access, username: username, duration: duration });
+}
 
-            // var geo = geoip.lookup(external_ip);
-            // var newFU = new followUserModel({ user_ip_address: ip_address, external_ip_address: external_ip, page_access: page_access, username: username, duration: duration, range: geo.range, country: geo.country, region: geo.region, city: geo.city, ll: geo.ll, metro: geo.metro, zip: geo.zip });
-            
-            if(followUserIsAbleToUpdate(newFU))
-                followUserModel.add(newFU);
-        }
-    });
-    
+function updateFollowUserBehavior(ip_address, external_ip, page_access, username, duration) {
+    var newFU = new followUserModel({ user_ip_address: ip_address, external_ip_address: external_ip, page_access: page_access, username: username, duration: duration });
+
+    // var geo = geoip.lookup(external_ip);
+    // var newFU = new followUserModel({ user_ip_address: ip_address, external_ip_address: external_ip, page_access: page_access, username: username, duration: duration, range: geo.range, country: geo.country, region: geo.region, city: geo.city, ll: geo.ll, metro: geo.metro, zip: geo.zip });
+
+    if (followUserIsAbleToUpdate(newFU))
+        followUserModel.add(newFU);
 }
 
 function followUsers(new_page_access, req, res) {
     var username = req.cookies['username'];
-    if(username == '' || username == null)
+    if (username == '' || username == null)
         username = 'guest';
     if (req.cookies['page_access'] == null || req.cookies['time_access'] == null) {
         // if no page access => store new page acess and time access
@@ -566,10 +574,10 @@ function followUsers(new_page_access, req, res) {
 
 // get client ip address
 function getIpAddress(request) {
-    if(appConst.RUN_ON_SERVER == 'online') {
+    if (appConst.RUN_ON_SERVER == 'online') {
         return request.header('x-forwarded-for') || request.connection.remoteAddress;
     }
-    else if(appConst.RUN_ON_SERVER == 'localhost') {
+    else if (appConst.RUN_ON_SERVER == 'localhost') {
         var ip_address = '';
         var os = require('os');
         var ifaces = os.networkInterfaces();
@@ -680,12 +688,12 @@ function isValidEmail(email) {
     return re.test(email.toLowerCase());
 }
 
-function isValidIPaddress(ipaddress) {  
-  if (/^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/.test(ipaddress)) {  
-    return (true)  
-  } 
-  return (false)  
-}  
+function isValidIPaddress(ipaddress) {
+    if (/^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/.test(ipaddress)) {
+        return (true)
+    }
+    return (false)
+}
 
 function isValidUsername(username) {
     return checkNotNull(username) && isValidEmail(username);
