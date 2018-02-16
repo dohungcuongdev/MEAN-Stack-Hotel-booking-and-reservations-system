@@ -240,14 +240,20 @@ function getMailContent(subject, time) {
 }
 
 exports.postFollowUser = function (request, response) {
-    getIP((err, external_ip) => {
-        if (err) {
-            console.log(err);
-            //saveFollowUserData(request, response, appConst.DEFAULT_IP);
-        } else {
-            saveFollowUserData(request, response, external_ip);
-        }
-    });
+    var ip_address = getIpAddress(request);
+    if (appConst.RUN_ON_SERVER == 'online') {
+        saveFollowUserData(request, response, ip_address, ip_address);
+    }
+    if (appConst.RUN_ON_SERVER == 'localhost') {
+        getIP((err, external_ip) => {
+            if (err) {
+                console.log(err);
+                //saveFollowUserData(request, response, appConst.DEFAULT_IP);
+            } else {
+                saveFollowUserData(request, response, ip_address, external_ip);
+            }
+        });
+    }
 };
 
 exports.putUser = function (req, response, next) {
@@ -511,16 +517,18 @@ function saveFollowUserByIP(follow_users, ip_address, external_ip, response) {
     updateRecommemdationRoom(follow_users, ip_address);
 }
 
-function saveFollowUserData(request, response, external_ip) {
-    saveFollowUserByIP(new followUserModel(request.body), getIpAddress(request), external_ip, response)
+function saveFollowUserData(request, response, ip_address, external_ip) {
+    saveFollowUserByIP(new followUserModel(request.body), ip_address, external_ip, response)
 }
 
 function followUserBehavior(request, page_access, duration, username) {
     let ip_address = getIpAddress(request);
     if (appConst.RUN_ON_SERVER == 'online') {
+        console.log('online');
         updateFollowUserBehavior(ip_address, ip_address, page_access, username, duration);
     }
     if (appConst.RUN_ON_SERVER == 'localhost') {
+        console.log('localhost');
         getIP(function (err, external_ip) {
             if (err)
                 console.log(err);
@@ -529,7 +537,6 @@ function followUserBehavior(request, page_access, duration, username) {
             }
         });
     }
-
 }
 
 function updateFollowUserBehavior(ip_address, external_ip, page_access, username, duration) {
@@ -538,8 +545,10 @@ function updateFollowUserBehavior(ip_address, external_ip, page_access, username
     // var geo = geoip.lookup(external_ip);
     // var newFU = new followUserModel({ user_ip_address: ip_address, external_ip_address: external_ip, page_access: page_access, username: username, duration: duration, range: geo.range, country: geo.country, region: geo.region, city: geo.city, ll: geo.ll, metro: geo.metro, zip: geo.zip });
 
-    if (followUserIsAbleToUpdate(newFU))
+    if (followUserIsAbleToUpdate(newFU)) {
         followUserModel.add(newFU);
+        console.log('updateFollowUserBehavior');
+    }
 }
 
 function followUsers(new_page_access, req, res) {
