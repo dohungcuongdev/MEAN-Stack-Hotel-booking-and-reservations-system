@@ -1,6 +1,6 @@
 
 //local
-// exports.RUN_ON_SERVER = "localhost";
+exports.RUN_ON_SERVER = "localhost";
 //const MEAN_SERVER_URL = "http://localhost:3000/";
 //const SPRING_SERVER_URL = "http://localhost:8080/Hotel-booking-and-reservations-system-admin/"
 // const DATABASE = "HotelBookingReservationsSystem";
@@ -9,7 +9,7 @@
 // exports.DB_CONNECTION = "mongodb://" + DB_HOST + ":" + DB_PORT + "/" + DATABASE;
 
 //online
-exports.RUN_ON_SERVER = "online";
+//exports.RUN_ON_SERVER = "online";
 const MEAN_SERVER_URL = "https://hotel-booking-and-reservations.herokuapp.com/";
 const SPRING_SERVER_URL = "https://admin-hotel-booking.herokuapp.com/";
 const DB_USERNAME = 'dohungcuongdev';
