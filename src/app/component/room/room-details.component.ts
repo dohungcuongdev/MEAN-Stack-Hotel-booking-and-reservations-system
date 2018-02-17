@@ -47,7 +47,7 @@ export class RoomDetailComponent implements OnInit {
   }
   
   showRoomDetails() {
-	this.roomid = this.route.snapshot.params['id']
+	  this.roomid = this.route.snapshot.params['id']
     this.roomservice.getRoom(this.roomid).subscribe((room: Room) => {
       if (room === null) {
         this.data.resetRoom()
@@ -141,7 +141,7 @@ export class RoomDetailComponent implements OnInit {
     room.booked_by = this.data.user.username
     room.checkin = checkindate
     room.checkout = checkoutdate
-    this.roomservice.editRoom(room).subscribe(
+    this.roomservice.bookRoom(room).subscribe(
       responsse => {
         if (responsse) {
           //this.roomservice.LoadData();
@@ -213,7 +213,7 @@ export class RoomDetailComponent implements OnInit {
       this.data.room.star += this.star
       ++this.data.room.numvote
     }
-    this.roomservice.editRoom(this.data.room).subscribe(
+    this.roomservice.feedbackRoom(this.data.room).subscribe(
       responsse => {
         if (responsse) {
           this.activityservice.addActivity(activity).subscribe(

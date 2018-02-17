@@ -85,7 +85,7 @@
     <div class="col-sm-8">
       <div id="information" class="my-spacer" *ngFor="let activity of list_activity">
         <i>{{activity.created_at | convertdate}}</i>
-        <br>User: <b style="color: #FF4500">{{activity.fullname}}</b>
+        <br>User: <b style="color: #FF4500">{{activity.username}}</b>
         <br>Feedback: <b style="color: blue">{{activity.content}}</b>
         <br>Rating: <b *ngFor="let i of activity.note.substring(21, 22)|toarray">★</b>
       </div>

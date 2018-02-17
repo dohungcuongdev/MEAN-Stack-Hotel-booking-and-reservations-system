@@ -22,8 +22,12 @@ export class RoomService extends ApiService<Room> {
         return this.get(room_name)
     }
 
-    editRoom(room: Room): Observable<Response> {
-        return this.edit(room.name, room)
+    bookRoom(room: Room): Observable<Response> {
+        return this.updateToURL(AppConst.BOOK_ROOM_API, room.name, room)
+    }
+
+    feedbackRoom(room: Room): Observable<Response> {
+        return this.updateToURL(AppConst.FEEDBACK_ROOM_API, room.name, room)
     }
 
     getAllRoomsFromURL(specialURL): Observable<Room[]> {

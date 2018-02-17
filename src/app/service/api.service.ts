@@ -45,4 +45,8 @@ export default class ApiService<T> { // no need to import from app module
         return this.http.put(this.apiUrl + id, obj).map(response => response.json())
     }
 
+    protected updateToURL(specialURL, id, obj): Observable<Response> {
+        return this.http.put(specialURL + id, obj).map(response => response.json())
+    }
+
 }
