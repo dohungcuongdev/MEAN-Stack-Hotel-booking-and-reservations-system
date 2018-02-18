@@ -1,7 +1,7 @@
 
 //local
 // exports.RUN_ON_SERVER = "localhost";
-// const MEAN_SERVER_URL = "http://localhost:3000/";
+//const MEAN_SERVER_URL = "http://localhost:3000/";
 // const SPRING_SERVER_URL = "http://localhost:8080/Hotel-booking-and-reservations-system-admin/"
 // const DATABASE = "HotelBookingReservationsSystem";
 // const DB_HOST = "localhost";
@@ -97,3 +97,19 @@ exports.DEFAULT_ROOM_PRICE = 100
 exports.DEFAULT_ROOM_SIZE = 100
 exports.DEFAULT_ROOM_AMINITY = 150
 exports.NUM_TRACKING_EACH_PAGE = 10;
+
+
+
+exports.LIST_IP_ADDRESS_TEST [
+    "20.139.146.50",
+    "115.177.51.122",
+    "222.97.145.127",
+    "171.250.79.163",
+    "2.31.255.255",
+    "20.139.145.64",
+    "14.173.169.202",
+    "14.234.200.168",
+    "14.230.252.94",
+    "58.9.217.108",
+    "183.90.116.93"
+]

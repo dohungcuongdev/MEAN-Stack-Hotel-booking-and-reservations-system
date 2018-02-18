@@ -2,7 +2,7 @@
 'use strict';
 
 //local
-// export const EXPRESS_SERVER_URL = 'http://localhost:3000/'
+//export const EXPRESS_SERVER_URL = 'http://localhost:3000/'
 // export const SPRING_SERVER_URL = "http://localhost:8080/Hotel-booking-and-reservations-system-admin/"
 
 //online
@@ -23,6 +23,9 @@ export const ROOM_API = 'rooms/'
 
 export const USER_API_URL = EXPRESS_API_URL + USER_API
 export const ACTIVITY_API_URL = EXPRESS_API_URL + ACTIVITY_API
+export const ACTIVITY_UN_API_URL = ACTIVITY_API_URL + 'username/'
+export const ACTIVITY_FB_API_URL = ACTIVITY_API_URL + 'feedback/hotel/'
+export const ACTIVITY_FB_ROOM_API_URL = ACTIVITY_API_URL + 'feedback-room/'
 export const FOLLOWUSER_API_URL = EXPRESS_API_URL + FOLLOWUSER_API
 export const RESTAURANT_API_URL = SPRING_API_URL + RESTAURANT_API
 export const ROOM_API_URL = SPRING_API_URL + ROOM_API

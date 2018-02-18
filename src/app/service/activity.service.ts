@@ -23,11 +23,15 @@ export class ActivityService extends ApiService<Activity> {
     }
 
     getAllActivityByUserName(username: string): Observable<Activity[]> {
-        return this.getAllby(username, this.apiUrl + "username/")
+        return this.getAllby(username, AppConst.ACTIVITY_UN_API_URL)
     }
 
     getFeedbackRoomById(roomid: string): Observable<Activity[]> {
-        return this.getAllby(roomid, this.apiUrl + "feedback-room/")
+        return this.getAllby(roomid, AppConst.ACTIVITY_FB_ROOM_API_URL)
+    }
+
+    getListFeedbackHotel(): Observable<Activity[]> {
+        return this.getAllFromURL(AppConst.ACTIVITY_FB_API_URL)
     }
 
     addActivity(activity: Activity): Observable<Response> {

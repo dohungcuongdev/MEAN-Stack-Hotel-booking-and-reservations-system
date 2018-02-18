@@ -6,6 +6,7 @@ router.get('/', ctrl.getActivity);
 router.get('/:id', ctrl.getActivityByID);
 router.get('/username/:username', ctrl.getActivityByUserName);
 router.get('/feedback-room/:id', ctrl.getActivityFeedBackRoom);
+router.get('/feedback/hotel', ctrl.getActivityFeedBackHotel);
 router.get('/response/not-yet', ctrl.getNotResponseActivity);
 router.get('/seen-notification/:id', ctrl.seenAndGetNotification);
 router.get('/reply-notification/:id', ctrl.replyAndGetNotification);

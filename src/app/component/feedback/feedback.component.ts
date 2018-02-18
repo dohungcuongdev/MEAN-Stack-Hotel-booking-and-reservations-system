@@ -16,6 +16,10 @@ import * as AppConst from '../../constant/app.const';
 export class FeedBackComponent implements OnInit {
 
   private star = 3
+  private list_activity = []
+  private totalStar = 0
+  private numVote = 0
+  private avgStar = 0
 
   constructor(
     private activityservice: ActivityService,
@@ -23,14 +27,15 @@ export class FeedBackComponent implements OnInit {
     private followUserService: FollowUsersService,
     private data: InMemoryDataService,
     private cookie: CookieService,
-    private validationService: ValidationService) { 
+    private validationService: ValidationService) {
     this.followUserService.followUsers(AppConst.CLICK_FEED_BACK)
   }
 
   ngOnInit(): void {
     if (this.cookie.get("id") == null) {
       this.auth.pleaselogin()
-    }
+    } else 
+      this.loadFeedbackRoomData()
   }
 
   rating(star: number) {
@@ -45,11 +50,25 @@ export class FeedBackComponent implements OnInit {
       responsse => {
         if (responsse) {
           //this.roomservice.LoadData();
+          this.loadFeedbackRoomData()
           this.followUserService.followUsers(AppConst.FEEDBACK_HOTEL)
           this.validationService.swAlertFeedbackSent()
         }
       },
       err => this.validationService.swAlertUsualErr(err)
     )
+  }
+
+  loadFeedbackRoomData() {
+    this.activityservice.getListFeedbackHotel().subscribe((list_activity: Activity[]) => {
+      this.list_activity = list_activity
+      this.numVote = list_activity.length
+      if(this.numVote != 0 ) {
+        for(var i = 0; i < list_activity.length; i++) {
+          this.totalStar += parseInt(list_activity[i].note.substring(12, 13));
+        }
+        this.avgStar = this.totalStar/this.numVote
+      }
+    })
   }
 }

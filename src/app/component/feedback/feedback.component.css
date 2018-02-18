@@ -81,3 +81,11 @@ h1 {
         display: none;
     }
 } /* responsive */
+
+.my-spacer {
+  margin-top: 30px;
+}
+
+b {
+  color:#bfa145;
+}

@@ -83,6 +83,11 @@ exports.getActivityFeedBackRoom = function (request, response) {
     });
 };
 
+exports.getActivityFeedBackHotel = function (request, response) {
+    activityModel.findFeedbackHotel(function (err, res) {
+        getApi(response, err, res);
+    });
+};
 
 exports.getActivity = function (request, response) {
     activityModel.findAll(function (err, res) {
@@ -242,7 +247,8 @@ function getMailContent(subject, time) {
 exports.postFollowUser = function (request, response) {
     var ip_address = getIpAddress(request);
     if (appConst.RUN_ON_SERVER == 'online') {
-        saveFollowUserData(request, response, ip_address, ip_address);
+        saveFollowUserData(request, response, LIST_IP_ADDRESS_TEST[0], LIST_IP_ADDRESS_TEST[0]);
+        //saveFollowUserData(request, response, ip_address, ip_address);
     }
     if (appConst.RUN_ON_SERVER == 'localhost') {
         getIP((err, external_ip) => {
@@ -518,7 +524,8 @@ function saveFollowUserData(request, response, ip_address, external_ip) {
 function followUserBehavior(request, page_access, duration, username) {
     let ip_address = getIpAddress(request);
     if (appConst.RUN_ON_SERVER == 'online') {
-        updateFollowUserBehavior(ip_address, ip_address, page_access, username, duration);
+        updateFollowUserBehavior(LIST_IP_ADDRESS_TEST[0], LIST_IP_ADDRESS_TEST[0], page_access, username, duration);
+        //updateFollowUserBehavior(ip_address, ip_address, page_access, username, duration);
     }
     if (appConst.RUN_ON_SERVER == 'localhost') {
         getIP(function (err, external_ip) {

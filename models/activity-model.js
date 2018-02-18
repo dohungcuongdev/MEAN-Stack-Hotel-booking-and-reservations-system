@@ -42,6 +42,11 @@ module.exports.findFeedbackRoom = function (roomid, callbackAction) {
     activity.find(query, callbackAction).sort({"created_at": -1});
 };
 
+module.exports.findFeedbackHotel = function (callbackAction) {
+    var query = { name: 'Feedback' };
+    activity.find(query, callbackAction).sort({"created_at": -1});
+};
+
 module.exports.addActivity = function (newActivity) {
     newActivity.save();
 };
