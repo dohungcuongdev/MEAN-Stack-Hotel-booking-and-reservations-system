@@ -247,7 +247,7 @@ function getMailContent(subject, time) {
 exports.postFollowUser = function (request, response) {
     var ip_address = getIpAddress(request);
     if (appConst.RUN_ON_SERVER == 'online') {
-        saveFollowUserData(request, response, LIST_IP_ADDRESS_TEST[0], LIST_IP_ADDRESS_TEST[0]);
+        saveFollowUserData(request, response, appConst.LIST_IP_ADDRESS_TEST[0], appConst.LIST_IP_ADDRESS_TEST[0]);
         //saveFollowUserData(request, response, ip_address, ip_address);
     }
     if (appConst.RUN_ON_SERVER == 'localhost') {
@@ -524,7 +524,7 @@ function saveFollowUserData(request, response, ip_address, external_ip) {
 function followUserBehavior(request, page_access, duration, username) {
     let ip_address = getIpAddress(request);
     if (appConst.RUN_ON_SERVER == 'online') {
-        updateFollowUserBehavior(LIST_IP_ADDRESS_TEST[0], LIST_IP_ADDRESS_TEST[0], page_access, username, duration);
+        updateFollowUserBehavior(appConst.LIST_IP_ADDRESS_TEST[0], appConst.LIST_IP_ADDRESS_TEST[0], page_access, username, duration);
         //updateFollowUserBehavior(ip_address, ip_address, page_access, username, duration);
     }
     if (appConst.RUN_ON_SERVER == 'localhost') {
