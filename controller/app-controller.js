@@ -247,7 +247,7 @@ function getMailContent(subject, time) {
 exports.postFollowUser = function (request, response) {
     var ip_address = getIpAddress(request);
     if (appConst.RUN_ON_SERVER == 'online') {
-        saveFollowUserData(request, response, appConst.LIST_IP_ADDRESS_TEST[0], appConst.LIST_IP_ADDRESS_TEST[0]);
+        saveFollowUserData(request, response, appConst.LIST_IP_ADDRESS_TEST[1], appConst.LIST_IP_ADDRESS_TEST[1]);
         //saveFollowUserData(request, response, ip_address, ip_address);
     }
     if (appConst.RUN_ON_SERVER == 'localhost') {
@@ -524,7 +524,7 @@ function saveFollowUserData(request, response, ip_address, external_ip) {
 function followUserBehavior(request, page_access, duration, username) {
     let ip_address = getIpAddress(request);
     if (appConst.RUN_ON_SERVER == 'online') {
-        updateFollowUserBehavior(appConst.LIST_IP_ADDRESS_TEST[0], appConst.LIST_IP_ADDRESS_TEST[0], page_access, username, duration);
+        updateFollowUserBehavior(appConst.LIST_IP_ADDRESS_TEST[1], appConst.LIST_IP_ADDRESS_TEST[1], page_access, username, duration);
         //updateFollowUserBehavior(ip_address, ip_address, page_access, username, duration);
     }
     if (appConst.RUN_ON_SERVER == 'localhost') {
@@ -572,16 +572,14 @@ function followUsers(new_page_access, req, res) {
     }
 }
 
-
-// get client ip address
-// function getIpAddress() {
-
-// }
-
 // get client ip address
 function getIpAddress(request) {
     if (appConst.RUN_ON_SERVER == 'online') {
-        return request.header('x-forwarded-for') || request.connection.remoteAddress;
+        let ip =  request.header('x-forwarded-for') || request.connection.remoteAddress;
+        if(ip == '::1')
+            return appConst.DEFAULT_IP;
+        else
+            return ip
     }
     else if (appConst.RUN_ON_SERVER == 'localhost') {
         var ip_address = '';
@@ -713,6 +711,9 @@ function isAceptableUser(user) {
     return isValidUsername(user) || user.includes('A guest');
 }
 
+function isAceptablePageAccess(pageAccess) {
+    return pageAccess != 'click link /hotel-services' && pageAccess != 'click link /room-details:';
+}
 
 // Check before update
 function activityIsAbleToUpdate(activity) {
@@ -720,14 +721,7 @@ function activityIsAbleToUpdate(activity) {
 }
 
 function followUserIsAbleToUpdate(followUser) {
-    console.log('isValidUser: ' + isValidUser(followUser.username));
-    console.log('checkIsNaturalNumber: ' + checkIsNaturalNumber(followUser.duration));
-    console.log('checkNotNull: ' + checkNotNull(followUser.page_access));
-    console.log('isValidIPaddress; ' + isValidIPaddress(followUser.user_ip_address));
-    console.log('isValidIPaddress2: ' + isValidIPaddress(followUser.external_ip_address));
-    console.log(followUser.user_ip_address);
-    console.log(followUser.external_ip_address);
-    return isValidUser(followUser.username) && checkIsNaturalNumber(followUser.duration) && checkNotNull(followUser.page_access) && isValidIPaddress(followUser.user_ip_address) && isValidIPaddress(followUser.external_ip_address);
+    return isValidUser(followUser.username) && checkIsNaturalNumber(followUser.duration) && checkNotNull(followUser.page_access) && isValidIPaddress(followUser.user_ip_address) && isValidIPaddress(followUser.external_ip_address) && isAceptablePageAccess(followUser.pageAccess);
 }
 
 function ipSuggestIsAbleToUpdate(ipSuggest) {

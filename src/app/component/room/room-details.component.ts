@@ -43,7 +43,6 @@ export class RoomDetailComponent implements OnInit {
   public ngOnInit(): void {
     this.showRoomDetails()
     this.isloading = false
-    this.followUserService.followUsers(AppConst.CLICK_ROOM_DETAIL + this.data.room.name)
   }
   
   showRoomDetails() {
@@ -56,6 +55,7 @@ export class RoomDetailComponent implements OnInit {
         this.calculateRating()
         this.data.addImgURLRoom()
         this.isloading = true
+        this.followUserService.followUsers(AppConst.CLICK_ROOM_DETAIL + this.data.room.name)
       }
     },
       err => {
