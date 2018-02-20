@@ -1,23 +1,23 @@
 
 //local
-// exports.RUN_ON_SERVER = "localhost";
-//const MEAN_SERVER_URL = "http://localhost:3000/";
-// const SPRING_SERVER_URL = "http://localhost:8080/Hotel-booking-and-reservations-system-admin/"
-// const DATABASE = "HotelBookingReservationsSystem";
-// const DB_HOST = "localhost";
-// const DB_PORT = "27017";
-// exports.DB_CONNECTION = "mongodb://" + DB_HOST + ":" + DB_PORT + "/" + DATABASE;
+exports.RUN_ON_SERVER = "localhost";
+const MEAN_SERVER_URL = "http://localhost:3000/";
+const SPRING_SERVER_URL = "http://localhost:8080/Hotel-booking-and-reservations-system-admin/"
+const DATABASE = "HotelBookingReservationsSystem";
+const DB_HOST = "localhost";
+const DB_PORT = "27017";
+exports.DB_CONNECTION = "mongodb://" + DB_HOST + ":" + DB_PORT + "/" + DATABASE;
 
 //online
-exports.RUN_ON_SERVER = "online";
-const MEAN_SERVER_URL = "https://hotel-booking-and-reservations.herokuapp.com/";
-const SPRING_SERVER_URL = "https://admin-hotel-booking.herokuapp.com/";
-const DB_USERNAME = 'dohungcuongdev';
-const DB_PW = 'ititiu13170';
-const DB_MLAB_HOST = 'ds157057.mlab.com:57057';
-const DB_MLAB = 'hotel_booking_system';
-const DB_HOST_ONLINE = "mongodb://" + DB_USERNAME + ":" + DB_PW + "@" + DB_MLAB_HOST + "/" + DB_MLAB;
-exports.DB_CONNECTION = DB_HOST_ONLINE;
+// exports.RUN_ON_SERVER = "online";
+// const MEAN_SERVER_URL = "https://hotel-booking-and-reservations.herokuapp.com/";
+// const SPRING_SERVER_URL = "https://admin-hotel-booking.herokuapp.com/";
+// const DB_USERNAME = 'dohungcuongdev';
+// const DB_PW = 'ititiu13170';
+// const DB_MLAB_HOST = 'ds157057.mlab.com:57057';
+// const DB_MLAB = 'hotel_booking_system';
+// const DB_HOST_ONLINE = "mongodb://" + DB_USERNAME + ":" + DB_PW + "@" + DB_MLAB_HOST + "/" + DB_MLAB;
+// exports.DB_CONNECTION = DB_HOST_ONLINE;
 
 
 
@@ -54,6 +54,8 @@ exports.SUCCESS_MES = 'success_msg';
 exports.USER_API = '/api/users';
 exports.ACTIVITY_API = '/api/activity';
 exports.FOLLOW_USER_API = '/api/follow-users';
+exports.ROOM_API = '/api/rooms';
+exports.RESTAURANT_API = '/api/restaurant';
 
 exports.SIGNUP_SUCESS = 'sign up successfully: ';
 exports.TKS_SIGNUP = 'Thank you for join us! You are able to use premium feature!'

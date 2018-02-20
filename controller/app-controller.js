@@ -247,8 +247,8 @@ function getMailContent(subject, time) {
 exports.postFollowUser = function (request, response) {
     var ip_address = getIpAddress(request);
     if (appConst.RUN_ON_SERVER == 'online') {
-        saveFollowUserData(request, response, appConst.LIST_IP_ADDRESS_TEST[1], appConst.LIST_IP_ADDRESS_TEST[1]);
-        //saveFollowUserData(request, response, ip_address, ip_address);
+        //saveFollowUserData(request, response, appConst.LIST_IP_ADDRESS_TEST[1], appConst.LIST_IP_ADDRESS_TEST[1]);
+        saveFollowUserData(request, response, ip_address, ip_address);
     }
     if (appConst.RUN_ON_SERVER == 'localhost') {
         getIP((err, external_ip) => {
@@ -524,8 +524,8 @@ function saveFollowUserData(request, response, ip_address, external_ip) {
 function followUserBehavior(request, page_access, duration, username) {
     let ip_address = getIpAddress(request);
     if (appConst.RUN_ON_SERVER == 'online') {
-        updateFollowUserBehavior(appConst.LIST_IP_ADDRESS_TEST[1], appConst.LIST_IP_ADDRESS_TEST[1], page_access, username, duration);
-        //updateFollowUserBehavior(ip_address, ip_address, page_access, username, duration);
+        //updateFollowUserBehavior(appConst.LIST_IP_ADDRESS_TEST[1], appConst.LIST_IP_ADDRESS_TEST[1], page_access, username, duration);
+        updateFollowUserBehavior(ip_address, ip_address, page_access, username, duration);
     }
     if (appConst.RUN_ON_SERVER == 'localhost') {
         getIP(function (err, external_ip) {
@@ -727,3 +727,47 @@ function followUserIsAbleToUpdate(followUser) {
 function ipSuggestIsAbleToUpdate(ipSuggest) {
     return checkIsPositiveFloat(ipSuggest.size, ipSuggest.price, ipSuggest.avgAminities) && checkIsNaturalNumber(ipSuggest.count);
 }
+
+
+//Old version use mongodb
+var roomModel = require('../models/room-model.js');
+var serviceModel = require('../models/hotel-service-model');
+
+exports.getRoomByID = function (request, response) {
+    var id = request.params.id;
+    roomModel.findById(id, function (err, res) {
+        getApi(response, err, res);
+    });
+};
+
+
+exports.getRoom = function (request, response) {
+    roomModel.find({}, function (err, res) {
+        getApi(response, err, res);
+    });
+};
+
+exports.putRoom = function (req, response, next) {
+    roomModel.findByIdAndUpdate(req.params.id, req.body, function (err, res) {
+        putApi(response, err, res);
+    });
+};
+
+exports.getSerivceByID = function (request, response) {
+    var id = request.params.id;
+    serviceModel.findById(id, function (err, res) {
+        getApi(response, err, res);
+    });
+};
+
+exports.getService = function (request, response) {
+    serviceModel.find({}, function (err, res) {
+        getApi(response, err, res);
+    });
+};
+
+exports.putService = function (req, response, next) {
+    serviceModel.findByIdAndUpdate(req.params.id, req.body, function (err, res) {
+        putApi(response, err, res);
+    });
+};
