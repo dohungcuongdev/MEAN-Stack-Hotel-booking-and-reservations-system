@@ -5,9 +5,13 @@
 export const EXPRESS_SERVER_URL = 'http://localhost:3000/'
 export const SPRING_SERVER_URL = "http://localhost:8080/Hotel-booking-and-reservations-system-admin/"
 
-//online
+//online v2
 // export const EXPRESS_SERVER_URL = 'https://hotel-booking-and-reservations.herokuapp.com/'
 // export const SPRING_SERVER_URL = "https://admin-hotel-booking.herokuapp.com/"
+
+//online v1
+// const EXPRESS_SERVER_URL = "https://hotel-booking-system-v1.herokuapp.com/"
+// const SPRING_SERVER_URL = "https://admin-hotel-booking-v1.herokuapp.com/"
 
 
 export const SPRING_RESOURCE_URL = SPRING_SERVER_URL + "resources/"

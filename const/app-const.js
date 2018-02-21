@@ -10,8 +10,6 @@ exports.DB_CONNECTION = "mongodb://" + DB_HOST + ":" + DB_PORT + "/" + DATABASE;
 
 //online
 // exports.RUN_ON_SERVER = "online";
-// const MEAN_SERVER_URL = "https://hotel-booking-and-reservations.herokuapp.com/";
-// const SPRING_SERVER_URL = "https://admin-hotel-booking.herokuapp.com/";
 // const DB_USERNAME = 'dohungcuongdev';
 // const DB_PW = 'ititiu13170';
 // const DB_MLAB_HOST = 'ds157057.mlab.com:57057';
@@ -19,9 +17,13 @@ exports.DB_CONNECTION = "mongodb://" + DB_HOST + ":" + DB_PORT + "/" + DATABASE;
 // const DB_HOST_ONLINE = "mongodb://" + DB_USERNAME + ":" + DB_PW + "@" + DB_MLAB_HOST + "/" + DB_MLAB;
 // exports.DB_CONNECTION = DB_HOST_ONLINE;
 
+//online v2
+// const MEAN_SERVER_URL = "https://hotel-booking-and-reservations.herokuapp.com/";
+// const SPRING_SERVER_URL = "https://admin-hotel-booking.herokuapp.com/";
 
-
-
+//online v1
+// const MEAN_SERVER_URL = "https://hotel-booking-system-v1.herokuapp.com/";
+// const SPRING_SERVER_URL = "https://admin-hotel-booking-v1.herokuapp.com/";
 
 const SPRING_API_URL = SPRING_SERVER_URL + "api/"
 const RESTAURANT_API = 'restaurant/'
