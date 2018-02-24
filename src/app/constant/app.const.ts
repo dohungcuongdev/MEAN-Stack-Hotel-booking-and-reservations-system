@@ -112,4 +112,4 @@ export const CANCEL_CONT = "! Please waiting for our response. If your requireme
 export const SENT_FB_ROOM = 'send feedback for room '
 export const NOT_FOUND = "not found"
 export const IMG_NOT_FOUND = NOT_FOUND + ".jpg"
-export const FOOTER = 'Holiday Crown was these three and songs arose whose. Of in vicinity contempt together in possible branched. Assured company hastily looking garrets in oh. Most have love my gone to this so. Discovered interested prosperous the our affronting insipidity day. Missed lovers way one vanity wishes nay but. Use shy seemed within twenty wished old few regret passed. Absolute one hastened mrs any sensible.'
+export const FOOTER = 'Marina Meepo is the best hotel in VietNam with the best facilities and amenity. Come with us, you will have the best holiday in VietNam and enjoy Luxurious rooms, restaurant. Our goal is make you feel relax, comfortable and convenient after stressful working day with the best price of rooms and services.'
