@@ -14,3 +14,7 @@ clone code:
 1/ heroku login
 2/ heroku git:clone -a hotel-booking-and-reservations
 3/ cd hotel-booking-and-reservations
+
+
+email-authentication:
+https://accounts.google.com/displayunlockcaptcha
