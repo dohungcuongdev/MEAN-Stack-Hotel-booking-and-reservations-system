@@ -296,7 +296,7 @@ exports.deserializeUser = function (id, done) {
 };
 
 exports.updateUserStatus = function (request, response) {
-    userModel.updateStatus(request.params.status, request.params.username);
+    userModel.updateStatus(request.params.username, request.params.status);
     userModel.GetUserByUsername(request.params.username, function (err, res) {
         getApi(response, err, res);
     });
