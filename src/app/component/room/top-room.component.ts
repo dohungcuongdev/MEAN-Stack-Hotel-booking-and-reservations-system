@@ -50,4 +50,8 @@ export class TopRoomComponent implements OnInit {
   private clickImage(room: string) {
     this.followUserService.followUsers(AppConst.CLICK_IMG_ROOM + room);
   }
+
+  private getClassForRoomType(roomtype: string): string {
+    return 'color-row-' + roomtype;
+  }
 }

@@ -21,7 +21,7 @@
             <tr *ngFor="let room of listrooms | orderby : 'average_star'; let i=index">
                 <td>{{i+1}}</td>
                 <td>Room {{room.name}}</td>
-                <td>{{room.type}}</td>
+                <td [class]="getClassForRoomType(room.type)"><b>{{room.type | capitalize}}</b></td>
                 <td>{{room.size}}</td>
                 <td>{{room.price}}</td>
                 <td>{{room.star}}</td>
