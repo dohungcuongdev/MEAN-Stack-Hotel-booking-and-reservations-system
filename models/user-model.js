@@ -11,6 +11,7 @@ var userSchema = new Schema(
             phone: String,
             address: String,
             balance: Number,
+            status: String,
             created_at: {type: Date, default: Date.now}
         },
         {
@@ -62,3 +63,11 @@ module.exports.updatePassword = function (username, newpassword) {
     });
 };
 
+module.exports.updateStatus = function(username, status) {
+    var query = { username: username };
+    var newvalues = { $set: { status: status } };
+    User.updateOne(query, newvalues, function(err, res) {
+        if (err) console.log(err);
+        console.log("user: " + username + " is now " + status);
+    });
+}

@@ -27,7 +27,7 @@ h3 {
 }
 
 .footer {
-  margin-top: 23.49px;
+  margin-top: 80px;
   background-color: #FFFACD;
 }
 
@@ -61,6 +61,19 @@ h3 {
 
     .footer {
       margin-top: 720px;
+      background-color: #FFFACD;
+    }
+} /* responsive */
+
+
+/* desktop */
+@media only screen and (min-height: 760px) { 
+    .my-ejs-body {
+      margin-top: 150px;
+    }
+
+    .footer {
+      margin-top: 250px;
       background-color: #FFFACD;
     }
 } /* responsive */

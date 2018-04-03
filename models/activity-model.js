@@ -56,6 +56,6 @@ module.exports.updateResponse = function(id, response) {
     var newvalues = { $set: { response: response } };
     activity.updateOne(query, newvalues, function(err, res) {
         if (err) console.log(err);
-        console.log("1 document updated");
+        console.log("response of activity: " + id + " is updated");
     });
 }

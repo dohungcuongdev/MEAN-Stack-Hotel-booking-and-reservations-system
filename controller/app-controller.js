@@ -295,20 +295,32 @@ exports.deserializeUser = function (id, done) {
     });
 };
 
+exports.updateUserStatus = function (request, response) {
+    userModel.updateStatus(request.params.status, request.params.username);
+    userModel.GetUserByUsername(request.params.username, function (err, res) {
+        getApi(response, err, res);
+    });
+};
+
 exports.checklogin = function (username, password, done) {
-    userModel.GetUserByUsername(username, function (error, username) {
+    userModel.GetUserByUsername(username, function (error, user) {
         if (error)
             throw error;
-        if (!username) {
+        if (!user) {
             //followUserBehavior(appConst.LOGIN_FAIL + appConst.INVALID_USERNAME, 0);
             return done(null, false, { message: appConst.INVALID_USERNAME });
         }
 
-        userModel.comparePwd(password, username.password, function (error, isMatch) {
+        if (user.status == 'Blocked') {
+            //followUserBehavior(appConst.LOGIN_FAIL + appConst.USER_BLOCKED, 0);
+            return done(null, false, { message: appConst.USER_BLOCKED });
+        }
+
+        userModel.comparePwd(password, user.password, function (error, isMatch) {
             if (error)
                 throw error;
             if (isMatch)
-                return done(null, username);
+                return done(null, user);
             else {
                 //followUserBehavior(appConst.LOGIN_FAIL + appConst.WRONG_PW, 0);
                 return done(null, false, { message: appConst.WRONG_PW });
@@ -426,7 +438,7 @@ exports.checkregister = function (req, res, next) {
                 res.render("register", { errors: errors, success: false, title: subject });
             } else {
                 sendHTMLEmail(appConst.MAIL_USER, username, subject, getMailContent(subject, new Date()));
-                var newUser = new userModel({ username: req.body.username, password: req.body.password, name: req.body.name, phone: req.body.phone, address: req.body.address, balance: appConst.BALANCE_INIT });
+                var newUser = new userModel({ username: req.body.username, password: req.body.password, name: req.body.name, phone: req.body.phone, address: req.body.address, balance: appConst.BALANCE_INIT, status: 'Valid' });
                 userModel.addUser(newUser);
                 var newActivity = new activityModel({ username: req.body.username, name: subject, click: 'register', details: appConst.SIGNUP_DETAIL + req.body.username, note: appConst.ACCOUNT_INIT, content: appConst.TKS_SIGNUP, response: appConst.NO_RES });
                 activityModel.addActivity(newActivity);
