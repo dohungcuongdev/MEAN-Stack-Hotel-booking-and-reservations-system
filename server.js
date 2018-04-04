@@ -21,8 +21,6 @@ var index = require('./routes/index');
 var userapi = require('./routes/user-api');
 var activity_api = require('./routes/activity-api');
 var follow_users_api = require('./routes/follow-users-api');
-var roomapi = require('./routes/room-api');
-var hotel_service_api = require('./routes/hotel-service-api');
 
 //const
 var appConst = require('./const/app-const');
@@ -100,8 +98,14 @@ app.use('/', index);
 app.use(appConst.USER_API, userapi);
 app.use(appConst.ACTIVITY_API, activity_api);
 app.use(appConst.FOLLOW_USER_API, follow_users_api);
-// app.use(appConst.ROOM_API, roomapi);                  // old version mongodb 
-// app.use(appConst.RESTAURANT_API, hotel_service_api);  // old version mongodb 
+
+if(appConst.DB_SYSTEM == 'mongodb only') {
+    var roomapi = require('./routes/room-api');
+    var hotel_service_api = require('./routes/hotel-service-api');
+    app.use(appConst.ROOM_API, roomapi);                  // old version mongodb 
+    app.use(appConst.RESTAURANT_API, hotel_service_api);  // old version mongodb 
+}
+
 
 // Initialize the app.
 var server = app.listen(process.env.PORT || appConst.PORT, function () {

@@ -473,6 +473,8 @@ function updateNewIpSuggest(ipSuggestModel, ipSuggest, userip) {
 
 exports.getRoomSuggestion = function (request, response) {
     var ip_address = getIpAddress(request);
+
+    if(appConst.DB_SYSTEM == 'sql only' || appConst.DB_SYSTEM == 'mongodb + sql')
     httpRequest({ url: appConst.ROOM_API_URL, json: true }, function (error, res, rooms) {
         if (!error && res.statusCode === 200) {
             ipSuggestModel.findByUserIP(ip_address, function (err, ip_suggest) {
@@ -487,12 +489,33 @@ exports.getRoomSuggestion = function (request, response) {
                 }
             });
         }
-    })
+    });
+
+    if(appConst.DB_SYSTEM == 'mongodb only')  // old version mongodb 
+    roomModel.find({}, function (err, rooms) {
+        if (err) {
+            response.send(err).status(404);
+        } else {
+            ipSuggestModel.findByUserIP(ip_address, function (err, ip_suggest) {
+                if (err) {
+                    console.log(err);
+                } else if (ip_suggest) {
+                    //console.log('ip exist on db');
+                    response.send(getSuggestionRoom(rooms, ip_suggest.price, ip_suggest.size, ip_suggest.avgAminities)).status(200);
+                } else {
+                    //console.log('new ip');
+                    response.send(getSuggestionRoom(rooms, appConst.DEFAULT_ROOM_PRICE, appConst.DEFAULT_ROOM_SIZE, appConst.DEFAULT_ROOM_AMINITY)).status(200);
+                }
+            });
+        }
+    });
 };
 
 function updateRecommemdationRoom(follow_users, ip_address) {
     var roomname = getRoomNameCustomerClicked(follow_users);
+
     if (roomname != '') {
+        if(appConst.DB_SYSTEM == 'sql only' || appConst.DB_SYSTEM == 'mongodb + sql')
         httpRequest({ url: appConst.ROOM_API_URL + roomname, json: true }, function (error, res, room) {
             if (!error && res.statusCode === 200) {
                 ipSuggestModel.findByUserIP(ip_address, function (err, userip) {
@@ -505,7 +528,24 @@ function updateRecommemdationRoom(follow_users, ip_address) {
                         ipSuggestModel.add(ipSuggest);
                 });
             }
-        })
+        });
+
+        if(appConst.DB_SYSTEM == 'mongodb only')  // old version mongodb 
+        roomModel.findRoomByRoomName(roomname, function (err, room) {
+            if (err) {
+                console.log(err);
+            } else {
+                ipSuggestModel.findByUserIP(ip_address, function (err, userip) {
+                    if (err)
+                        console.log(err);
+                    var ipSuggest = new ipSuggestModel({ ip: ip_address, size: room.size, price: room.price, avgAminities: room.avgAminities, count: 1, });
+                    if (userip)
+                        updateNewIpSuggest(ipSuggestModel, ipSuggest, userip);
+                    else
+                        ipSuggestModel.add(ipSuggest);
+                });
+            }
+        });
     }
 }
 
@@ -741,45 +781,60 @@ function ipSuggestIsAbleToUpdate(ipSuggest) {
 }
 
 
-//Old version use mongodb
-var roomModel = require('../models/room-model.js');
-var serviceModel = require('../models/hotel-service-model');
+// old version mongodb 
+if(appConst.DB_SYSTEM == 'mongodb only') {
+    var roomModel = require('../models/room-model.js');
+    var serviceModel = require('../models/hotel-service-model');
 
-exports.getRoomByID = function (request, response) {
-    var id = request.params.id;
-    roomModel.findById(id, function (err, res) {
-        getApi(response, err, res);
-    });
-};
+    exports.getRoomByID = function (request, response) {
+        var id = request.params.id;
+        roomModel.findById(id, function (err, res) {
+            getApi(response, err, res);
+        });
+    };
 
+    exports.getRoomByName = function (request, response) {
+        var roomname = request.params.name;
+        roomModel.findRoomByRoomName(roomname, function (err, res) {
+            getApi(response, err, res);
+        });
+    };
 
-exports.getRoom = function (request, response) {
-    roomModel.find({}, function (err, res) {
-        getApi(response, err, res);
-    });
-};
+    exports.getRoom = function (request, response) {
+        roomModel.find({}, function (err, res) {
+            getApi(response, err, res);
+        });
+    };
 
-exports.putRoom = function (req, response, next) {
-    roomModel.findByIdAndUpdate(req.params.id, req.body, function (err, res) {
-        putApi(response, err, res);
-    });
-};
+    exports.putRoom = function (req, response, next) {
+        let room = req.body;
+        roomModel.findByIdAndUpdate(room._id, room, function (err, res) {
+            if (err) return next(err);
+            else {
+                response.json(res);
+            }
+        });
+    };
 
-exports.getSerivceByID = function (request, response) {
-    var id = request.params.id;
-    serviceModel.findById(id, function (err, res) {
-        getApi(response, err, res);
-    });
-};
+    exports.getSerivceByID = function (request, response) {
+        var id = request.params.id;
+        serviceModel.findById(id, function (err, res) {
+            getApi(response, err, res);
+        });
+    };
 
-exports.getService = function (request, response) {
-    serviceModel.find({}, function (err, res) {
-        getApi(response, err, res);
-    });
-};
+    exports.getService = function (request, response) {
+        serviceModel.find({}, function (err, res) {
+            getApi(response, err, res);
+        });
+    };
 
-exports.putService = function (req, response, next) {
-    serviceModel.findByIdAndUpdate(req.params.id, req.body, function (err, res) {
-        putApi(response, err, res);
-    });
-};
+    exports.putService = function (req, response, next) {
+        serviceModel.findByIdAndUpdate(req.params.id, req.body, function (err, res) {
+            if (err) return next(err);
+            else {
+                response.json(res);
+            }
+        });
+    };
+} 

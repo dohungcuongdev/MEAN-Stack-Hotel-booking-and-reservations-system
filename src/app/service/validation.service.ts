@@ -52,15 +52,15 @@ export class ValidationService {
   }
 
   swAlertNoCheckDate() {
-    this.swAlertUsualErr(AppConst.NO_CHECKIN_CHECKOUT)
+    this.swAlertErr(AppConst.NO_CHECKIN_CHECKOUT)
   }
 
   swAlertBookUpToDate() {
-    this.swAlertUsualErr(AppConst.UP_TO_DATE)
+    this.swAlertErr(AppConst.UP_TO_DATE)
   }
 
   swAlertBookOutOfDate() {
-    this.swAlertUsualErr(AppConst.OUT_OF_DATE)
+    this.swAlertErr(AppConst.OUT_OF_DATE)
   }
 
   swAlertCannotPay() {

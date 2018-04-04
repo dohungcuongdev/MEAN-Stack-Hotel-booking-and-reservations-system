@@ -1,34 +1,86 @@
+/* change server config here */
+const SERVER_CONFIGURATION = 'custom';
+// const SERVER_CONFIGURATION = 'localhost:3000';
+// const SERVER_CONFIGURATION = 'localhost:3000 & localhost:8080';
+// const SERVER_CONFIGURATION = 'https://hotel-booking-and-reservations.herokuapp.com';
+// const SERVER_CONFIGURATION = 'https://hotel-booking-system-v1.herokuapp.com';
+// const SERVER_CONFIGURATION = 'https://hotel-booking-system-v2.herokuapp.com';
 
-//local
-exports.RUN_ON_SERVER = "localhost";
-const MEAN_SERVER_URL = "http://localhost:3000/";
-const SPRING_SERVER_URL = "http://localhost:8080/Hotel-booking-and-reservations-system-admin/"
-const DATABASE = "HotelBookingReservationsSystem";
-const DB_HOST = "localhost";
-const DB_PORT = "27017";
-exports.DB_CONNECTION = "mongodb://" + DB_HOST + ":" + DB_PORT + "/" + DATABASE;
+/* change database system here */
+// const DB_SYSTEM = 'sql only';
+// const DB_SYSTEM = 'mongodb only';
+const DB_SYSTEM = 'mongodb + sql';
 
-//online
-// exports.RUN_ON_SERVER = "online";
-// const DB_USERNAME = 'dohungcuongdev';
-// const DB_PW = 'ititiu13170';
-// const DB_MLAB_HOST = 'ds157057.mlab.com:57057';
-// const DB_MLAB = 'hotel_booking_system';
-// const DB_HOST_ONLINE = "mongodb://" + DB_USERNAME + ":" + DB_PW + "@" + DB_MLAB_HOST + "/" + DB_MLAB;
-// exports.DB_CONNECTION = DB_HOST_ONLINE;
+/* change database config here */
+const DB_CONFIGURATION = 'local';
+// const DB_CONFIGURATION = 'mlab';
 
-//online v2
-// const MEAN_SERVER_URL = "https://hotel-booking-and-reservations.herokuapp.com/";
-// const SPRING_SERVER_URL = "https://admin-hotel-booking.herokuapp.com/";
+var RUN_ON_SERVER;
+var MEAN_SERVER_URL;
+var SPRING_SERVER_URL;
+var DB_CONNECTION;
 
-//online v1
-// const MEAN_SERVER_URL = "https://hotel-booking-system-v1.herokuapp.com/";
-// const SPRING_SERVER_URL = "https://admin-hotel-booking-v1.herokuapp.com/";
+if(SERVER_CONFIGURATION == 'custom') {
+    // change your custom here
+    RUN_ON_SERVER = "localhost";
+    MEAN_SERVER_URL = "http://localhost:3000/";
+    SPRING_SERVER_URL = "http://localhost:8080/Hotel-booking-and-reservations-system-admin/";
+}
+
+if(SERVER_CONFIGURATION == 'http://localhost:3000') {
+    // change your custom here
+    RUN_ON_SERVER = "localhost";
+    MEAN_SERVER_URL = "http://localhost:3000/";
+    SPRING_SERVER_URL = "http://localhost:3000/";
+}
+
+if(SERVER_CONFIGURATION == 'localhost:3000 & localhost:8080') {
+    RUN_ON_SERVER = "localhost";
+    MEAN_SERVER_URL = "http://localhost:3000/";
+    SPRING_SERVER_URL = "http://localhost:8080/Hotel-booking-and-reservations-system-admin/";
+}
+
+if(SERVER_CONFIGURATION == 'https://hotel-booking-and-reservations.herokuapp.com') {
+    RUN_ON_SERVER = "online";
+    MEAN_SERVER_URL = "https://hotel-booking-and-reservations.herokuapp.com/";
+    SPRING_SERVER_URL = "https://admin-hotel-booking.herokuapp.com/";
+}
+
+if(SERVER_CONFIGURATION == 'https://hotel-booking-system-v1.herokuapp.com') {
+    RUN_ON_SERVER = "online";
+    MEAN_SERVER_URL = "https://hotel-booking-system-v1.herokuapp.com/";
+    SPRING_SERVER_URL = "https://admin-hotel-booking-v1.herokuapp.com/";
+}
+
+if(SERVER_CONFIGURATION == 'https://hotel-booking-system-v2.herokuapp.com') {
+    RUN_ON_SERVER = "online";
+    MEAN_SERVER_URL = "https://hotel-booking-system-v2.herokuapp.com/";
+    SPRING_SERVER_URL = "https://admin-hotel-booking-v1.herokuapp.com/";
+}
+
+if(DB_CONFIGURATION == 'local') {
+    let DATABASE = "HotelBookingReservationsSystem";
+    let DB_HOST = "localhost";
+    let DB_PORT = "27017";
+    DB_CONNECTION = "mongodb://" + DB_HOST + ":" + DB_PORT + "/" + DATABASE;
+}
+
+if(DB_CONFIGURATION == 'mlab') {
+    let DB_USERNAME = 'dohungcuongdev';
+    let DB_PW = 'ititiu13170';
+    let DB_MLAB_HOST = 'ds157057.mlab.com:57057';
+    let DB_MLAB = 'hotel_booking_system';
+    DB_CONNECTION = "mongodb://" + DB_USERNAME + ":" + DB_PW + "@" + DB_MLAB_HOST + "/" + DB_MLAB;
+}
 
 const SPRING_API_URL = SPRING_SERVER_URL + "api/"
 const RESTAURANT_API = 'restaurant/'
 const ROOM_API = 'rooms/'
 const ROOM_NAME_API = 'rooms/roomname/'
+
+exports.RUN_ON_SERVER = RUN_ON_SERVER;
+exports.DB_SYSTEM = DB_SYSTEM;
+exports.DB_CONNECTION = DB_CONNECTION;
 
 exports.RESTAURANT_API_URL = SPRING_API_URL + RESTAURANT_API
 exports.ROOM_API_URL = SPRING_API_URL + ROOM_API

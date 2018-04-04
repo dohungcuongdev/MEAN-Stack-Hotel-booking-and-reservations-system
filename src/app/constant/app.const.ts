@@ -1,23 +1,57 @@
 
 'use strict';
 
-//local
-export const EXPRESS_SERVER_URL = 'http://localhost:3000/'
-export const SPRING_SERVER_URL = "http://localhost:8080/Hotel-booking-and-reservations-system-admin/"
+/* change server config here */
+var SERVER_CONFIGURATION = 'custom';
+// var SERVER_CONFIGURATION = 'localhost:3000';
+// var SERVER_CONFIGURATION = 'localhost:3000 & localhost:8080';
+// var SERVER_CONFIGURATION = 'https://hotel-booking-and-reservations.herokuapp.com';
+// var SERVER_CONFIGURATION = 'https://hotel-booking-system-v1.herokuapp.com';
+// var SERVER_CONFIGURATION = 'https://hotel-booking-system-v2.herokuapp.com';
 
-//online v2
-// export const EXPRESS_SERVER_URL = 'https://hotel-booking-and-reservations.herokuapp.com/'
-// export const SPRING_SERVER_URL = "https://admin-hotel-booking.herokuapp.com/"
+/* var database system here */
+// var DB_SYSTEM = 'sql only';
+// var DB_SYSTEM = 'mongodb only';
+var DB_SYSTEM = 'mongodb + sql';
 
-//online v1
-// const EXPRESS_SERVER_URL = "https://hotel-booking-system-v1.herokuapp.com/"
-// const SPRING_SERVER_URL = "https://admin-hotel-booking-v1.herokuapp.com/"
+var MEAN_SERVER_URL;
+var SPRING_SERVER_URL;
 
+if(SERVER_CONFIGURATION == 'custom') {
+    // change your custom here
+    MEAN_SERVER_URL = "http://localhost:3000/";
+    SPRING_SERVER_URL = "http://localhost:8080/Hotel-booking-and-reservations-system-admin/";
+}
+
+if(SERVER_CONFIGURATION == 'localhost:3000') {
+    MEAN_SERVER_URL = "http://localhost:3000/";
+    SPRING_SERVER_URL = "http://localhost:3000/";
+}
+
+if(SERVER_CONFIGURATION == 'localhost:3000 & localhost:8080') {
+    MEAN_SERVER_URL = "http://localhost:3000/";
+    SPRING_SERVER_URL = "http://localhost:8080/Hotel-booking-and-reservations-system-admin/";
+}
+
+if(SERVER_CONFIGURATION == 'https://hotel-booking-and-reservations.herokuapp.com') {
+    MEAN_SERVER_URL = "https://hotel-booking-and-reservations.herokuapp.com/";
+    SPRING_SERVER_URL = "https://admin-hotel-booking.herokuapp.com/";
+}
+
+if(SERVER_CONFIGURATION == 'https://hotel-booking-system-v1.herokuapp.com') {
+    MEAN_SERVER_URL = "https://hotel-booking-system-v1.herokuapp.com/";
+    SPRING_SERVER_URL = "https://admin-hotel-booking-v1.herokuapp.com/";
+}
+
+if(SERVER_CONFIGURATION == 'https://hotel-booking-system-v2.herokuapp.com') {
+    MEAN_SERVER_URL = "https://hotel-booking-system-v2.herokuapp.com/";
+    SPRING_SERVER_URL = "https://admin-hotel-booking-v1.herokuapp.com/";
+}
 
 export const SPRING_RESOURCE_URL = SPRING_SERVER_URL + "resources/"
 export const SPRING_API_URL = SPRING_SERVER_URL + "api/"
 
-export const EXPRESS_API_URL = EXPRESS_SERVER_URL + 'api/'
+export const EXPRESS_API_URL = MEAN_SERVER_URL + 'api/'
 
 export const USER_API = 'users/'
 export const ACTIVITY_API = 'activity/'
@@ -35,8 +69,22 @@ export const RESTAURANT_API_URL = SPRING_API_URL + RESTAURANT_API
 export const ROOM_API_URL = SPRING_API_URL + ROOM_API
 export const SUGGEST_ROOM_API = EXPRESS_API_URL + FOLLOWUSER_API + "rooms/suggest-room/"
 export const USER_IP_FULL_API = EXPRESS_API_URL + FOLLOWUSER_API + "userIP/"
-export const BOOK_ROOM_API = SPRING_API_URL + 'book-room/'
-export const FEEDBACK_ROOM_API = SPRING_API_URL + 'feedback-room/'
+
+var bookRoomAPI;
+var feedbackRoomAPI;
+
+if(DB_SYSTEM == 'mongodb only') {
+    bookRoomAPI = SPRING_API_URL + ROOM_API
+    feedbackRoomAPI = ROOM_API_URL
+}
+
+if(DB_SYSTEM == 'mongodb + sql' || DB_SYSTEM == 'sql only') {
+    bookRoomAPI = SPRING_API_URL + 'book-room/'
+    feedbackRoomAPI = SPRING_API_URL + 'feedback-room/'
+}
+
+export const BOOK_ROOM_API = bookRoomAPI
+export const FEEDBACK_ROOM_API = feedbackRoomAPI
 
 export const IMG_URL = "images/"
 export const PHOTO_URL = IMG_URL + "photos/"
