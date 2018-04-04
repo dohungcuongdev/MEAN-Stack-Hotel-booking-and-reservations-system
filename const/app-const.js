@@ -1,7 +1,7 @@
 /* change server config here */
-const SERVER_CONFIGURATION = 'custom';
+// const SERVER_CONFIGURATION = 'custom';
 // const SERVER_CONFIGURATION = 'localhost:3000';
-// const SERVER_CONFIGURATION = 'localhost:3000 & localhost:8080';
+const SERVER_CONFIGURATION = 'localhost:3000 & localhost:8080';
 // const SERVER_CONFIGURATION = 'https://hotel-booking-and-reservations.herokuapp.com';
 // const SERVER_CONFIGURATION = 'https://hotel-booking-system-v1.herokuapp.com';
 // const SERVER_CONFIGURATION = 'https://hotel-booking-system-v2.herokuapp.com';
@@ -28,7 +28,6 @@ if(SERVER_CONFIGURATION == 'custom') {
 }
 
 if(SERVER_CONFIGURATION == 'http://localhost:3000') {
-    // change your custom here
     RUN_ON_SERVER = "localhost";
     MEAN_SERVER_URL = "http://localhost:3000/";
     SPRING_SERVER_URL = "http://localhost:3000/";

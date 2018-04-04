@@ -1,8 +1,8 @@
 1/ To config API URL, Server URL, running option online or localhost for Express Nodejs 
-	D:\thesis-in-process\MEAN-Stack-Hotel-booking-and-reservations-system\const\app-const.js
+	const\app-const.js
 
 2/ To config API URL, Server URL, running option online or localhost for Angular 2 
-	D:\thesis-in-process\MEAN-Stack-Hotel-booking-and-reservations-system\src\app\constant\app.const.ts
+	src\app\constant\app.const.ts
 
 3/ To allow server send email via gmail account
 	https://accounts.google.com/displayunlockcaptcha

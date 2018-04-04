@@ -2,9 +2,9 @@
 'use strict';
 
 /* change server config here */
-var SERVER_CONFIGURATION = 'custom';
+// var SERVER_CONFIGURATION = 'custom';
 // var SERVER_CONFIGURATION = 'localhost:3000';
-// var SERVER_CONFIGURATION = 'localhost:3000 & localhost:8080';
+var SERVER_CONFIGURATION = 'localhost:3000 & localhost:8080';
 // var SERVER_CONFIGURATION = 'https://hotel-booking-and-reservations.herokuapp.com';
 // var SERVER_CONFIGURATION = 'https://hotel-booking-system-v1.herokuapp.com';
 // var SERVER_CONFIGURATION = 'https://hotel-booking-system-v2.herokuapp.com';
