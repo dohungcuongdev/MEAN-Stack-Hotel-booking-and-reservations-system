@@ -64,3 +64,16 @@ h3 {
       background-color: #FFFACD;
     }
 } /* responsive */
+
+
+/* desktop */
+@media only screen and (min-height: 760px) { 
+    .my-ejs-body {
+      margin-top: 150px;
+    }
+
+    .footer {
+      margin-top: 250px;
+      background-color: #FFFACD;
+    }
+} /* responsive */
